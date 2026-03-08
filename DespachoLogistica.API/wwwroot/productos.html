@@ -1,0 +1,499 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Productos — Despacho Logística</title>
+    <link rel="stylesheet" href="/css/app.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+</head>
+<body>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+        <div class="sidebar-logo">
+            <h2>LOGÍSTICA</h2>
+            <span>Sistema de Control Interno</span>
+        </div>
+        <div class="sidebar-user">
+            <div class="user-name" id="sidebar-nombre">Cargando...</div>
+            <div class="user-role" id="sidebar-rol"></div>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="/dashboard.html" class="nav-item"><i class="bi bi-speedometer2"></i> Dashboard</a>
+            <a href="/productos.html" class="nav-item active"><i class="bi bi-box-seam"></i> Productos</a>
+            <a href="/solicitudes.html" class="nav-item"><i class="bi bi-clipboard-check"></i> Solicitudes</a>
+            <a href="/kardex.html" class="nav-item"><i class="bi bi-journal-text"></i> Kardex</a>
+        </nav>
+        <div class="sidebar-footer">
+            <button class="btn-logout" onclick="auth.logout()">
+                <i class="bi bi-box-arrow-left"></i> Cerrar Sesión
+            </button>
+        </div>
+    </div>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <div class="main-content">
+        <div class="topbar">
+            <div>
+                <div class="topbar-title">Productos</div>
+                <div class="topbar-breadcrumb">Gestión de productos e inventario</div>
+            </div>
+            <button class="btn btn-primary" id="btn-nuevo-producto" style="display:none;"
+                    onclick="abrirModalProducto(null)">
+                <i class="bi bi-plus-lg"></i> Nuevo Producto
+            </button>
+        </div>
+
+        <div class="page-body">
+
+            <!-- BARRA DE FILTROS -->
+            <div class="filters-bar">
+                <i class="bi bi-search" style="color:#94A3B8;font-size:15px;"></i>
+                <input type="text" id="input-busqueda" class="form-control"
+                       placeholder="Buscar por código o nombre..."
+                       oninput="filtrarTabla(this.value)"
+                       style="min-width:300px;">
+                <span class="text-muted" id="lbl-conteo"></span>
+            </div>
+
+            <!-- TABLA DE PRODUCTOS -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <i class="bi bi-box-seam"></i> Inventario de Productos
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Código</th>
+                                    <th>Nombre</th>
+                                    <th>Unidad</th>
+                                    <th style="text-align:center;">Stock Mín.</th>
+                                    <th style="text-align:center;">Stock Actual</th>
+                                    <th>Estado</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabla-productos">
+                                <tr>
+                                    <td colspan="7" style="text-align:center;color:#94A3B8;padding:32px;">
+                                        Cargando productos...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════
+         MODAL — CREAR / EDITAR PRODUCTO
+    ══════════════════════════════════════════════ -->
+    <div class="modal-overlay" id="modal-producto">
+        <div class="modal-box">
+            <div class="modal-header">
+                <div class="modal-title" id="modal-producto-titulo">Nuevo Producto</div>
+                <button class="modal-close" onclick="cerrarModalProducto()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="alert-producto" class="alert"></div>
+                <input type="hidden" id="prod-id">
+
+                <div class="form-group">
+                    <label class="form-label">Código <span style="color:#EF4444;">*</span></label>
+                    <input type="text" class="form-control" id="prod-codigo"
+                           placeholder="Ej: PROD-001" maxlength="50">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Nombre <span style="color:#EF4444;">*</span></label>
+                    <input type="text" class="form-control" id="prod-nombre"
+                           placeholder="Nombre del producto" maxlength="200">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Descripción</label>
+                    <textarea class="form-control" id="prod-descripcion" rows="3"
+                              placeholder="Descripción opcional"
+                              style="resize:vertical;"></textarea>
+                </div>
+
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+                    <div class="form-group">
+                        <label class="form-label">Unidad de Medida <span style="color:#EF4444;">*</span></label>
+                        <input type="text" class="form-control" id="prod-unidad"
+                               placeholder="Ej: unidad, kg, litro" maxlength="50">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Stock Mínimo <span style="color:#EF4444;">*</span></label>
+                        <input type="number" class="form-control" id="prod-stock-minimo"
+                               placeholder="0" min="0">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="cerrarModalProducto()">Cancelar</button>
+                <button class="btn btn-primary" id="btn-guardar-producto" onclick="guardarProducto()">
+                    <i class="bi bi-check-lg"></i> Guardar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════
+         MODAL — AJUSTAR STOCK
+    ══════════════════════════════════════════════ -->
+    <div class="modal-overlay" id="modal-ajuste">
+        <div class="modal-box" style="max-width:460px;">
+            <div class="modal-header">
+                <div class="modal-title">Ajustar Stock</div>
+                <button class="modal-close" onclick="cerrarModalAjuste()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="alert-ajuste" class="alert"></div>
+
+                <!-- Info del producto seleccionado -->
+                <div style="background:#F8FAFC;border:1px solid #E2E8F0;border-radius:8px;
+                            padding:12px 16px;margin-bottom:20px;">
+                    <div style="font-size:11px;color:#94A3B8;font-weight:600;
+                                text-transform:uppercase;letter-spacing:0.5px;">Producto</div>
+                    <div style="font-size:14px;font-weight:700;color:#1B3A5C;margin-top:4px;"
+                         id="ajuste-producto-nombre">—</div>
+                </div>
+
+                <input type="hidden" id="ajuste-producto-id">
+
+                <div class="form-group">
+                    <label class="form-label">Bodega <span style="color:#EF4444;">*</span></label>
+                    <select class="form-control" id="ajuste-bodega-id">
+                        <option value="">Cargando bodegas...</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Cantidad <span style="color:#EF4444;">*</span></label>
+                    <input type="number" class="form-control" id="ajuste-cantidad"
+                           placeholder="Positivo = ingreso  |  Negativo = salida">
+                    <div class="text-muted mt-1">
+                        <i class="bi bi-info-circle"></i>
+                        Use número negativo para reducir stock (ej: -5)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Motivo <span style="color:#EF4444;">*</span></label>
+                    <textarea class="form-control" id="ajuste-motivo" rows="3"
+                              placeholder="Describa el motivo del ajuste"
+                              style="resize:vertical;"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="cerrarModalAjuste()">Cancelar</button>
+                <button class="btn btn-primary" id="btn-guardar-ajuste" onclick="guardarAjuste()">
+                    <i class="bi bi-arrow-left-right"></i> Aplicar Ajuste
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/utils.js"></script>
+    <script>
+
+    // ── INIT ────────────────────────────────────────────────────────────────────
+    auth.checkAuth();
+
+    const user = auth.getUser();
+    document.getElementById('sidebar-nombre').textContent = user.nombre;
+    document.getElementById('sidebar-rol').textContent    = user.rol;
+
+    // Botón Nuevo Producto: solo Admin
+    if (auth.hasRole('Admin')) {
+        document.getElementById('btn-nuevo-producto').style.display = 'inline-flex';
+    }
+
+    let todosLosProductos = [];   // cache local para filtrado en cliente
+    let bodegasCache      = [];   // cache para no llamar la API cada vez
+
+    // ── CARGAR PRODUCTOS ────────────────────────────────────────────────────────
+    async function cargarProductos() {
+        const res = await apiCall('GET', '/productos');
+        if (res && res.success) {
+            todosLosProductos = res.data || [];
+            renderTabla(todosLosProductos);
+        }
+    }
+
+    function renderTabla(lista) {
+        const tbody = document.getElementById('tabla-productos');
+        const conteo = document.getElementById('lbl-conteo');
+
+        conteo.textContent = lista.length === todosLosProductos.length
+            ? `${lista.length} producto${lista.length !== 1 ? 's' : ''}`
+            : `${lista.length} de ${todosLosProductos.length} productos`;
+
+        if (!lista || lista.length === 0) {
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="7" style="text-align:center;color:#94A3B8;padding:32px;">
+                        No se encontraron productos
+                    </td>
+                </tr>`;
+            return;
+        }
+
+        const esAdmin = auth.hasRole('Admin');
+
+        tbody.innerHTML = lista.map(p => {
+            // Determinar color del stock actual visualmente
+            let colorStock = '#10B981';
+            if (p.stockActual === 0)              colorStock = '#EF4444';
+            else if (p.stockActual <= p.stockMinimo) colorStock = '#F59E0B';
+
+            // Escapar datos para atributos HTML
+            const dataProducto = encodeURIComponent(JSON.stringify(p));
+
+            return `
+            <tr>
+                <td>
+                    <code style="background:#F1F5F9;padding:2px 8px;border-radius:4px;
+                                 font-size:12px;color:#1B3A5C;">${p.codigo}</code>
+                </td>
+                <td>
+                    <div style="font-weight:600;color:#1B3A5C;">${p.nombre}</div>
+                    ${p.descripcion
+                        ? `<div style="font-size:11px;color:#94A3B8;margin-top:2px;">
+                               ${p.descripcion}
+                           </div>`
+                        : ''}
+                </td>
+                <td>${p.unidadMedida}</td>
+                <td style="text-align:center;">${p.stockMinimo}</td>
+                <td style="text-align:center;font-weight:700;color:${colorStock};">
+                    ${p.stockActual}
+                </td>
+                <td>${badgeStock(p.stockActual, p.stockMinimo)}</td>
+                <td>
+                    <div class="d-flex gap-2">
+                        ${esAdmin ? `
+                        <button class="btn btn-secondary btn-sm"
+                                title="Editar producto"
+                                onclick="abrirModalProducto(decodeProducto('${dataProducto}'))">
+                            <i class="bi bi-pencil"></i>
+                        </button>` : ''}
+                        <button class="btn btn-secondary btn-sm"
+                                title="Ajustar stock"
+                                onclick="abrirModalAjuste(${p.productoID}, '${p.nombre.replace(/'/g, "\\'")}')">
+                            <i class="bi bi-arrow-left-right"></i>
+                        </button>
+                    </div>
+                </td>
+            </tr>`;
+        }).join('');
+    }
+
+    // Decodifica el producto serializado en el atributo onclick
+    function decodeProducto(encoded) {
+        return JSON.parse(decodeURIComponent(encoded));
+    }
+
+    // ── FILTRO EN TIEMPO REAL (100% cliente) ────────────────────────────────────
+    function filtrarTabla(query) {
+        const q = query.toLowerCase().trim();
+        if (!q) {
+            renderTabla(todosLosProductos);
+            return;
+        }
+        const filtrados = todosLosProductos.filter(p =>
+            p.codigo.toLowerCase().includes(q) ||
+            p.nombre.toLowerCase().includes(q)
+        );
+        renderTabla(filtrados);
+    }
+
+    // ── MODAL CREAR / EDITAR ────────────────────────────────────────────────────
+    function abrirModalProducto(producto) {
+        limpiarAlerta('alert-producto');
+
+        const esEdicion = producto !== null;
+        document.getElementById('modal-producto-titulo').textContent =
+            esEdicion ? 'Editar Producto' : 'Nuevo Producto';
+
+        document.getElementById('prod-id').value             = esEdicion ? producto.productoID : '';
+        document.getElementById('prod-codigo').value         = esEdicion ? producto.codigo : '';
+        document.getElementById('prod-nombre').value         = esEdicion ? producto.nombre : '';
+        document.getElementById('prod-descripcion').value    = esEdicion ? (producto.descripcion || '') : '';
+        document.getElementById('prod-unidad').value         = esEdicion ? producto.unidadMedida : '';
+        document.getElementById('prod-stock-minimo').value   = esEdicion ? producto.stockMinimo : '';
+
+        // El código no se puede cambiar en edición
+        document.getElementById('prod-codigo').disabled = esEdicion;
+
+        const btn = document.getElementById('btn-guardar-producto');
+        btn.disabled = false;
+        btn.innerHTML = '<i class="bi bi-check-lg"></i> Guardar';
+
+        document.getElementById('modal-producto').classList.add('show');
+    }
+
+    function cerrarModalProducto() {
+        document.getElementById('modal-producto').classList.remove('show');
+    }
+
+    async function guardarProducto() {
+        limpiarAlerta('alert-producto');
+
+        const id          = document.getElementById('prod-id').value;
+        const codigo      = document.getElementById('prod-codigo').value.trim();
+        const nombre      = document.getElementById('prod-nombre').value.trim();
+        const descripcion = document.getElementById('prod-descripcion').value.trim();
+        const unidad      = document.getElementById('prod-unidad').value.trim();
+        const stockMinimo = document.getElementById('prod-stock-minimo').value;
+
+        // Validaciones
+        if (!codigo || !nombre || !unidad || stockMinimo === '') {
+            mostrarAlerta('alert-producto', 'Complete todos los campos obligatorios (*).', 'danger');
+            return;
+        }
+        if (parseInt(stockMinimo) < 0) {
+            mostrarAlerta('alert-producto', 'El stock mínimo no puede ser negativo.', 'danger');
+            return;
+        }
+
+        const btn = document.getElementById('btn-guardar-producto');
+        btn.disabled = true;
+        btn.innerHTML = '<span class="spinner"></span> Guardando...';
+
+        const body = {
+            codigo,
+            nombre,
+            descripcion,
+            unidadMedida: unidad,
+            stockMinimo: parseInt(stockMinimo)
+        };
+        if (id) body.productoID = parseInt(id);
+
+        const method = id ? 'PUT' : 'POST';
+        const url    = id ? `/productos/${id}` : '/productos';
+
+        const res = await apiCall(method, url, body);
+
+        btn.disabled = false;
+        btn.innerHTML = '<i class="bi bi-check-lg"></i> Guardar';
+
+        if (res && res.success) {
+            cerrarModalProducto();
+            showAlert(id ? 'Producto actualizado correctamente.' : 'Producto creado correctamente.', 'success');
+            await cargarProductos();
+        } else {
+            mostrarAlerta('alert-producto', res?.message || 'Ocurrió un error al guardar.', 'danger');
+        }
+    }
+
+    // ── MODAL AJUSTAR STOCK ─────────────────────────────────────────────────────
+    async function abrirModalAjuste(productoID, nombreProducto) {
+        limpiarAlerta('alert-ajuste');
+
+        document.getElementById('ajuste-producto-id').value        = productoID;
+        document.getElementById('ajuste-producto-nombre').textContent = nombreProducto;
+        document.getElementById('ajuste-cantidad').value           = '';
+        document.getElementById('ajuste-motivo').value             = '';
+
+        // Cargar bodegas solo si no están en caché
+        if (bodegasCache.length === 0) {
+            const resBodegas = await apiCall('GET', '/bodegas');
+            if (resBodegas && resBodegas.success) {
+                bodegasCache = resBodegas.data || [];
+            }
+        }
+
+        const select = document.getElementById('ajuste-bodega-id');
+        if (bodegasCache.length > 0) {
+            select.innerHTML =
+                '<option value="">— Seleccione una bodega —</option>' +
+                bodegasCache.map(b =>
+                    `<option value="${b.bodegaID}">${b.nombre}</option>`
+                ).join('');
+        } else {
+            select.innerHTML = '<option value="">No hay bodegas disponibles</option>';
+        }
+
+        const btn = document.getElementById('btn-guardar-ajuste');
+        btn.disabled = false;
+        btn.innerHTML = '<i class="bi bi-arrow-left-right"></i> Aplicar Ajuste';
+
+        document.getElementById('modal-ajuste').classList.add('show');
+    }
+
+    function cerrarModalAjuste() {
+        document.getElementById('modal-ajuste').classList.remove('show');
+    }
+
+    async function guardarAjuste() {
+        limpiarAlerta('alert-ajuste');
+
+        const productoID = document.getElementById('ajuste-producto-id').value;
+        const bodegaID   = document.getElementById('ajuste-bodega-id').value;
+        const cantidad   = document.getElementById('ajuste-cantidad').value;
+        const motivo     = document.getElementById('ajuste-motivo').value.trim();
+
+        if (!bodegaID) {
+            mostrarAlerta('alert-ajuste', 'Seleccione una bodega.', 'danger');
+            return;
+        }
+        if (cantidad === '' || parseInt(cantidad) === 0) {
+            mostrarAlerta('alert-ajuste', 'La cantidad no puede ser 0 ni estar vacía.', 'danger');
+            return;
+        }
+        if (!motivo) {
+            mostrarAlerta('alert-ajuste', 'Ingrese el motivo del ajuste.', 'danger');
+            return;
+        }
+
+        const btn = document.getElementById('btn-guardar-ajuste');
+        btn.disabled = true;
+        btn.innerHTML = '<span class="spinner"></span> Aplicando...';
+
+        const res = await apiCall('POST', `/productos/${productoID}/ajustar-stock`, {
+            bodegaID: parseInt(bodegaID),
+            cantidad: parseInt(cantidad),
+            motivo
+        });
+
+        btn.disabled = false;
+        btn.innerHTML = '<i class="bi bi-arrow-left-right"></i> Aplicar Ajuste';
+
+        if (res && res.success) {
+            cerrarModalAjuste();
+            showAlert('Stock ajustado correctamente.', 'success');
+            await cargarProductos();
+        } else {
+            mostrarAlerta('alert-ajuste', res?.message || 'Error al ajustar el stock.', 'danger');
+        }
+    }
+
+    // ── HELPERS LOCALES ─────────────────────────────────────────────────────────
+    function mostrarAlerta(id, mensaje, tipo) {
+        const el = document.getElementById(id);
+        el.className = `alert alert-${tipo} show`;
+        el.textContent = mensaje;
+    }
+
+    function limpiarAlerta(id) {
+        const el = document.getElementById(id);
+        el.className = 'alert';
+        el.textContent = '';
+    }
+
+    // ── ARRANQUE ─────────────────────────────────────────────────────────────────
+    cargarProductos();
+
+    </script>
+</body>
+</html>

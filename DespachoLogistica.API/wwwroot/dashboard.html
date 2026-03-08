@@ -1,0 +1,272 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard — Despacho Logística</title>
+    <link rel="stylesheet" href="/css/app.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+        <div class="sidebar-logo">
+            <h2>LOGÍSTICA</h2>
+            <span>Sistema de Control Interno</span>
+        </div>
+        <div class="sidebar-user">
+            <div class="user-name" id="sidebar-nombre">Cargando...</div>
+            <div class="user-role" id="sidebar-rol"></div>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="/dashboard.html" class="nav-item active"><i class="bi bi-speedometer2"></i> Dashboard</a>
+            <a href="/productos.html" class="nav-item"><i class="bi bi-box-seam"></i> Productos</a>
+            <a href="/solicitudes.html" class="nav-item"><i class="bi bi-clipboard-check"></i> Solicitudes</a>
+            <a href="/kardex.html" class="nav-item"><i class="bi bi-journal-text"></i> Kardex</a>
+        </nav>
+        <div class="sidebar-footer">
+            <button class="btn-logout" onclick="auth.logout()">
+                <i class="bi bi-box-arrow-left"></i> Cerrar Sesión
+            </button>
+        </div>
+    </div>
+
+    <!-- CONTENIDO -->
+    <div class="main-content">
+        <div class="topbar">
+            <div>
+                <div class="topbar-title">Dashboard</div>
+                <div class="topbar-breadcrumb">Resumen general del sistema</div>
+            </div>
+            <div id="last-update" class="text-muted"></div>
+        </div>
+
+        <div class="page-body">
+
+            <!-- KPIs -->
+            <div class="kpi-grid">
+                <div class="kpi-card danger">
+                    <div class="kpi-icon"><i class="bi bi-exclamation-triangle"></i></div>
+                    <div class="kpi-label">Bajo Mínimo</div>
+                    <div class="kpi-value" id="kpi-bajo">-</div>
+                </div>
+                <div class="kpi-card warning">
+                    <div class="kpi-icon"><i class="bi bi-hourglass-split"></i></div>
+                    <div class="kpi-label">Pendientes</div>
+                    <div class="kpi-value" id="kpi-pendientes">-</div>
+                </div>
+                <div class="kpi-card success">
+                    <div class="kpi-icon"><i class="bi bi-truck"></i></div>
+                    <div class="kpi-label">Despachos Hoy</div>
+                    <div class="kpi-value" id="kpi-despachos">-</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon"><i class="bi bi-arrow-left-right"></i></div>
+                    <div class="kpi-label">Movimientos Mes</div>
+                    <div class="kpi-value" id="kpi-movimientos">-</div>
+                </div>
+                <div class="kpi-card success">
+                    <div class="kpi-icon"><i class="bi bi-box-seam"></i></div>
+                    <div class="kpi-label">Productos Activos</div>
+                    <div class="kpi-value" id="kpi-productos">-</div>
+                </div>
+            </div>
+
+            <!-- GRÁFICOS -->
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <div class="chart-title">Solicitudes por Estado — Este Mes</div>
+                    <canvas id="chart-estados" height="200"></canvas>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-title">Top Productos con Más Salidas</div>
+                    <canvas id="chart-rotacion" height="200"></canvas>
+                </div>
+            </div>
+
+            <!-- TABLA SOLICITUDES PENDIENTES -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title"><i class="bi bi-hourglass-split"></i> Solicitudes Pendientes de Aprobación</div>
+                    <a href="/solicitudes.html" class="btn btn-secondary btn-sm">Ver todas</a>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Número</th>
+                                    <th>Solicitante</th>
+                                    <th>Bodega</th>
+                                    <th>Fecha</th>
+                                    <th>Líneas</th>
+                                    <th>Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabla-pendientes">
+                                <tr><td colspan="6" style="text-align:center;color:#94A3B8;">Cargando...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="/js/utils.js"></script>
+    <script>
+    // Verificar autenticación
+    auth.checkAuth();
+
+    // Mostrar usuario en sidebar
+    const user = auth.getUser();
+    document.getElementById('sidebar-nombre').textContent = user.nombre;
+    document.getElementById('sidebar-rol').textContent    = user.rol;
+
+    let chartEstados  = null;
+    let chartRotacion = null;
+
+    async function cargarDashboard() {
+        // KPIs
+        const resKpis = await apiCall('GET', '/dashboard/kpis');
+        if (resKpis && resKpis.success) {
+            const d = resKpis.data;
+            animarNumero('kpi-bajo',        d.totalProductosBajoMinimo);
+            animarNumero('kpi-pendientes',   d.solicitudesPendientes);
+            animarNumero('kpi-despachos',    d.despachosDia);
+            animarNumero('kpi-movimientos',  d.totalMovimientosMes);
+            animarNumero('kpi-productos',    d.totalProductosActivos);
+
+            // Cambiar color si hay alertas
+            if (d.totalProductosBajoMinimo > 0)
+                document.querySelector('.kpi-card.danger .kpi-value').style.color = '#EF4444';
+            if (d.solicitudesPendientes > 0)
+                document.querySelector('.kpi-card.warning .kpi-value').style.color = '#F59E0B';
+        }
+
+        // Gráfico solicitudes por estado
+        const mes  = new Date().getMonth() + 1;
+        const anio = new Date().getFullYear();
+
+        const resEstados = await apiCall('GET', `/dashboard/solicitudes-por-estado?mes=${mes}&anio=${anio}`);
+        if (resEstados && resEstados.success) {
+            renderChartEstados(resEstados.data);
+        }
+
+        // Gráfico rotación
+        const resRotacion = await apiCall('GET', `/dashboard/rotacion?mes=${mes}&anio=${anio}`);
+        if (resRotacion && resRotacion.success) {
+            renderChartRotacion(resRotacion.data);
+        }
+
+        // Tabla pendientes
+        const resSol = await apiCall('GET', '/solicitudes?estado=Pendiente');
+        if (resSol && resSol.success) {
+            renderTablaPendientes(resSol.data);
+        }
+
+        // Última actualización
+        document.getElementById('last-update').textContent =
+            'Actualizado: ' + new Date().toLocaleTimeString('es-GT');
+    }
+
+    function animarNumero(id, valor) {
+        const el  = document.getElementById(id);
+        let start = 0;
+        const step = Math.ceil(valor / 20);
+        const timer = setInterval(() => {
+            start += step;
+            if (start >= valor) { el.textContent = valor; clearInterval(timer); }
+            else el.textContent = start;
+        }, 40);
+    }
+
+    function renderChartEstados(data) {
+        const estados = ['Borrador','Pendiente','Aprobada','Rechazada','Despachada'];
+        const colores = ['#94A3B8','#F59E0B','#2563EB','#EF4444','#10B981'];
+        const totales = estados.map(e => {
+            const found = data.find(d => d.estado === e);
+            return found ? found.total : 0;
+        });
+
+        if (chartEstados) chartEstados.destroy();
+        chartEstados = new Chart(document.getElementById('chart-estados'), {
+            type: 'doughnut',
+            data: {
+                labels: estados,
+                datasets: [{ data: totales, backgroundColor: colores, borderWidth: 2 }]
+            },
+            options: {
+                responsive: true,
+                plugins: { legend: { position: 'bottom', labels: { font: { size: 11 } } } }
+            }
+        });
+    }
+
+    function renderChartRotacion(data) {
+        if (!data || data.length === 0) {
+            document.getElementById('chart-rotacion').parentElement.innerHTML =
+                '<div class="chart-title">Top Productos con Más Salidas</div>' +
+                '<p style="color:#94A3B8;font-size:13px;text-align:center;padding:40px 0;">Sin datos este mes</p>';
+            return;
+        }
+
+        if (chartRotacion) chartRotacion.destroy();
+        chartRotacion = new Chart(document.getElementById('chart-rotacion'), {
+            type: 'bar',
+            data: {
+                labels: data.map(d => d.nombre.length > 20 ? d.nombre.substring(0,20)+'...' : d.nombre),
+                datasets: [{
+                    label: 'Unidades despachadas',
+                    data: data.map(d => d.totalSalidas),
+                    backgroundColor: '#2563EB',
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                plugins: { legend: { display: false } },
+                scales: { x: { grid: { display: false } } }
+            }
+        });
+    }
+
+    function renderTablaPendientes(data) {
+        const tbody = document.getElementById('tabla-pendientes');
+        if (!data || data.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:#94A3B8;padding:24px;">No hay solicitudes pendientes</td></tr>';
+            return;
+        }
+
+        tbody.innerHTML = data.map(s => `
+            <tr>
+                <td><strong>${s.numeroSolicitud}</strong></td>
+                <td>${s.solicitante}</td>
+                <td>${s.bodega}</td>
+                <td>${formatDate(s.fechaCreacion)}</td>
+                <td style="text-align:center;">${s.totalLineas}</td>
+                <td>${badgeEstado(s.estado)}</td>
+            </tr>
+        `).join('');
+    }
+
+    // Cargar al inicio
+    cargarDashboard();
+
+    // Auto-refresh cada 60 segundos
+    setInterval(cargarDashboard, 60000);
+    </script>
+
+</body>
+</html>
+```
+
+---
+
+Presiona **Ctrl + Shift + B** luego **F5** y abre:
+```
+https://localhost:7185/index.html

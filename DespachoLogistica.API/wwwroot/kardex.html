@@ -1,0 +1,482 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kardex — Despacho Logística</title>
+    <link rel="stylesheet" href="/css/app.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <style>
+        .tipo-entrada {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            color: #166534;
+            font-weight: 600;
+            font-size: 12px;
+        }
+
+        .tipo-salida {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            color: #991B1B;
+            font-weight: 600;
+            font-size: 12px;
+        }
+
+        .tipo-ajuste {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            color: #1E40AF;
+            font-weight: 600;
+            font-size: 12px;
+        }
+
+        .kpi-kardex {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+            margin-bottom: 18px;
+        }
+
+            .kpi-kardex .kpi-card {
+                margin-bottom: 0;
+            }
+
+        .empty-state {
+            text-align: center;
+            padding: 48px 24px;
+            color: #94A3B8;
+        }
+
+            .empty-state i {
+                font-size: 40px;
+                display: block;
+                margin-bottom: 12px;
+            }
+
+            .empty-state p {
+                font-size: 14px;
+            }
+    </style>
+</head>
+<body>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+        <div class="sidebar-logo">
+            <h2>LOGÍSTICA</h2>
+            <span>Sistema de Control Interno</span>
+        </div>
+        <div class="sidebar-user">
+            <div class="user-name" id="sidebar-nombre">Cargando...</div>
+            <div class="user-role" id="sidebar-rol"></div>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="/dashboard.html" class="nav-item"><i class="bi bi-speedometer2"></i> Dashboard</a>
+            <a href="/productos.html" class="nav-item"><i class="bi bi-box-seam"></i> Productos</a>
+            <a href="/solicitudes.html" class="nav-item"><i class="bi bi-clipboard-check"></i> Solicitudes</a>
+            <a href="/kardex.html" class="nav-item active"><i class="bi bi-journal-text"></i> Kardex</a>
+        </nav>
+        <div class="sidebar-footer">
+            <button class="btn-logout" onclick="auth.logout()">
+                <i class="bi bi-box-arrow-left"></i> Cerrar Sesión
+            </button>
+        </div>
+    </div>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <div class="main-content">
+        <div class="topbar">
+            <div>
+                <div class="topbar-title">Kardex de Inventario</div>
+                <div class="topbar-breadcrumb">Historial de movimientos por producto</div>
+            </div>
+            <button class="btn btn-secondary" id="btn-exportar"
+                    onclick="exportarCSV()" style="display:none;">
+                <i class="bi bi-download"></i> Exportar CSV
+            </button>
+        </div>
+
+        <div class="page-body">
+
+            <!-- FILTROS -->
+            <div class="filters-bar">
+                <div style="display:flex;align-items:center;gap:6px;">
+                    <i class="bi bi-box-seam" style="color:#94A3B8;font-size:15px;"></i>
+                    <select class="form-control" id="filtro-producto"
+                            style="min-width:240px;">
+                        <option value="">— Todos los productos —</option>
+                    </select>
+                </div>
+
+                <div style="display:flex;align-items:center;gap:6px;">
+                    <i class="bi bi-building" style="color:#94A3B8;font-size:15px;"></i>
+                    <select class="form-control" id="filtro-bodega"
+                            style="min-width:180px;">
+                        <option value="">— Todas las bodegas —</option>
+                    </select>
+                </div>
+
+                <div style="display:flex;align-items:center;gap:6px;">
+                    <i class="bi bi-calendar-range" style="color:#94A3B8;font-size:15px;"></i>
+                    <input type="date" class="form-control" id="filtro-desde"
+                           style="width:150px;" title="Fecha desde">
+                    <span style="color:#94A3B8;font-size:12px;">hasta</span>
+                    <input type="date" class="form-control" id="filtro-hasta"
+                           style="width:150px;" title="Fecha hasta">
+                </div>
+
+                <button class="btn btn-primary" onclick="buscarKardex()">
+                    <i class="bi bi-search"></i> Consultar
+                </button>
+                <button class="btn btn-secondary" onclick="limpiarFiltros()">
+                    <i class="bi bi-x-lg"></i> Limpiar
+                </button>
+            </div>
+
+            <!-- KPIs de resumen (se muestran tras la consulta) -->
+            <div class="kpi-kardex" id="kpi-kardex" style="display:none;">
+                <div class="kpi-card success">
+                    <div class="kpi-icon" style="color:#10B981;">
+                        <i class="bi bi-arrow-down-circle"></i>
+                    </div>
+                    <div class="kpi-label">Total Entradas</div>
+                    <div class="kpi-value" id="kpi-entradas">0</div>
+                </div>
+                <div class="kpi-card danger">
+                    <div class="kpi-icon" style="color:#EF4444;">
+                        <i class="bi bi-arrow-up-circle"></i>
+                    </div>
+                    <div class="kpi-label">Total Salidas</div>
+                    <div class="kpi-value" id="kpi-salidas">0</div>
+                </div>
+                <div class="kpi-card warning">
+                    <div class="kpi-icon" style="color:#F59E0B;">
+                        <i class="bi bi-arrow-left-right"></i>
+                    </div>
+                    <div class="kpi-label">Ajustes</div>
+                    <div class="kpi-value" id="kpi-ajustes">0</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon">
+                        <i class="bi bi-list-ol"></i>
+                    </div>
+                    <div class="kpi-label">Total Registros</div>
+                    <div class="kpi-value" id="kpi-total">0</div>
+                </div>
+            </div>
+
+            <!-- TABLA KARDEX -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <i class="bi bi-journal-text"></i>
+                        Movimientos de Inventario
+                    </div>
+                    <span class="text-muted" id="lbl-resultado"></span>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Fecha</th>
+                                    <th>Tipo</th>
+                                    <th style="text-align:center;">Cantidad</th>
+                                    <th style="text-align:center;">Stock Anterior</th>
+                                    <th style="text-align:center;">Stock Nuevo</th>
+                                    <th>Referencia</th>
+                                    <th>Usuario</th>
+                                    <th>Bodega</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabla-kardex">
+                                <tr>
+                                    <td colspan="8">
+                                        <div class="empty-state">
+                                            <i class="bi bi-funnel"></i>
+                                            <p>Seleccione los filtros y haga clic en <strong>Consultar</strong></p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="/js/utils.js"></script>
+    <script>
+
+    // ── INIT ─────────────────────────────────────────────────────────────────────
+    auth.checkAuth();
+
+    const user = auth.getUser();
+    document.getElementById('sidebar-nombre').textContent = user.nombre;
+    document.getElementById('sidebar-rol').textContent    = user.rol;
+
+    // Fechas por defecto: primer día del mes actual → hoy
+    const hoy        = new Date();
+    const primerDia  = new Date(hoy.getFullYear(), hoy.getMonth(), 1);
+    document.getElementById('filtro-desde').value = primerDia.toISOString().split('T')[0];
+    document.getElementById('filtro-hasta').value = hoy.toISOString().split('T')[0];
+
+    let kardexData = [];  // resultado actual, usado para calcular KPIs y exportar
+
+    // ── CARGAR SELECTS ───────────────────────────────────────────────────────────
+    async function cargarSelects() {
+        const [resProds, resBodegas] = await Promise.all([
+            apiCall('GET', '/productos'),
+            apiCall('GET', '/bodegas')
+        ]);
+
+        if (resProds && resProds.success) {
+            const selProd = document.getElementById('filtro-producto');
+            selProd.innerHTML =
+                '<option value="">— Todos los productos —</option>' +
+                (resProds.data || []).map(p =>
+                    `<option value="${p.productoID}">[${p.codigo}] ${p.nombre}</option>`
+                ).join('');
+        }
+
+        if (resBodegas && resBodegas.success) {
+            const selBod = document.getElementById('filtro-bodega');
+            selBod.innerHTML =
+                '<option value="">— Todas las bodegas —</option>' +
+                (resBodegas.data || []).map(b =>
+                    `<option value="${b.bodegaID}">${b.nombre}</option>`
+                ).join('');
+        }
+    }
+
+    // ── CONSULTAR KARDEX ─────────────────────────────────────────────────────────
+    async function buscarKardex() {
+        const productoID = document.getElementById('filtro-producto').value;
+        const bodegaID   = document.getElementById('filtro-bodega').value;
+        const desde      = document.getElementById('filtro-desde').value;
+        const hasta      = document.getElementById('filtro-hasta').value;
+
+        // Construir query string solo con parámetros con valor
+        const params = new URLSearchParams();
+        if (productoID) params.append('productoID', productoID);
+        if (bodegaID)   params.append('bodegaID',   bodegaID);
+        if (desde)      params.append('fechaDesde', desde);
+        if (hasta)      params.append('fechaHasta', hasta);
+
+        // Estado de carga
+        const tbody = document.getElementById('tabla-kardex');
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="8" style="text-align:center;color:#94A3B8;padding:32px;">
+                    <span class="spinner" style="border-color:rgba(37,99,235,0.3);
+                          border-top-color:#2563EB;width:20px;height:20px;"></span>
+                </td>
+            </tr>`;
+        document.getElementById('lbl-resultado').textContent = '';
+        document.getElementById('kpi-kardex').style.display  = 'none';
+        document.getElementById('btn-exportar').style.display = 'none';
+
+        const qs  = params.toString() ? `?${params.toString()}` : '';
+        const res = await apiCall('GET', `/dashboard/kardex${qs}`);
+
+        if (res && res.success) {
+            kardexData = res.data || [];
+            renderTablaKardex(kardexData);
+            renderKPIs(kardexData);
+            if (kardexData.length > 0) {
+                document.getElementById('btn-exportar').style.display = 'inline-flex';
+            }
+        } else {
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="8">
+                        <div class="empty-state">
+                            <i class="bi bi-exclamation-circle" style="color:#EF4444;"></i>
+                            <p>Error al cargar los movimientos. Intente nuevamente.</p>
+                        </div>
+                    </td>
+                </tr>`;
+        }
+    }
+
+    // ── RENDER TABLA ─────────────────────────────────────────────────────────────
+    function renderTablaKardex(data) {
+        const tbody  = document.getElementById('tabla-kardex');
+        const lbl    = document.getElementById('lbl-resultado');
+
+        lbl.textContent = `${data.length} registro${data.length !== 1 ? 's' : ''} encontrado${data.length !== 1 ? 's' : ''}`;
+
+        if (!data || data.length === 0) {
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="8">
+                        <div class="empty-state">
+                            <i class="bi bi-inbox"></i>
+                            <p>No se encontraron movimientos con los filtros seleccionados</p>
+                        </div>
+                    </td>
+                </tr>`;
+            return;
+        }
+
+        tbody.innerHTML = data.map(m => {
+            const tipoBadge = renderTipo(m.tipo);
+
+            // Colorear cantidad según tipo
+            const esEntrada = estipoEntrada(m.tipo);
+            const esSalida  = estipoSalida(m.tipo);
+            const colorCant = esEntrada ? '#10B981' : esSalida ? '#EF4444' : '#2563EB';
+            const signoCant = esEntrada ? '+' : esSalida ? '−' : '±';
+
+            return `
+            <tr>
+                <td style="white-space:nowrap;">${formatDate(m.fecha)}</td>
+                <td>${tipoBadge}</td>
+                <td style="text-align:center;font-weight:700;color:${colorCant};">
+                    ${signoCant}${Math.abs(m.cantidad)}
+                </td>
+                <td style="text-align:center;color:#64748B;">${m.stockAnterior}</td>
+                <td style="text-align:center;font-weight:600;color:#1B3A5C;">${m.stockNuevo}</td>
+                <td>
+                    ${m.referencia
+                        ? `<code style="background:#F1F5F9;padding:2px 7px;border-radius:4px;
+                                        font-size:11px;color:#1B3A5C;">${m.referencia}</code>`
+                        : `<span style="color:#CBD5E1;">—</span>`}
+                </td>
+                <td>${m.usuario || '<span style="color:#CBD5E1;">—</span>'}</td>
+                <td>${m.bodega  || '<span style="color:#CBD5E1;">—</span>'}</td>
+            </tr>`;
+        }).join('');
+    }
+
+    // ── RENDER KPIs ──────────────────────────────────────────────────────────────
+    function renderKPIs(data) {
+        const entradas = data.filter(m => estipoEntrada(m.tipo))
+                             .reduce((s, m) => s + Math.abs(m.cantidad), 0);
+        const salidas  = data.filter(m => estipoSalida(m.tipo))
+                             .reduce((s, m) => s + Math.abs(m.cantidad), 0);
+        const ajustes  = data.filter(m => !estipoEntrada(m.tipo) && !estipoSalida(m.tipo)).length;
+
+        document.getElementById('kpi-entradas').textContent = entradas;
+        document.getElementById('kpi-salidas').textContent  = salidas;
+        document.getElementById('kpi-ajustes').textContent  = ajustes;
+        document.getElementById('kpi-total').textContent    = data.length;
+        document.getElementById('kpi-kardex').style.display = 'grid';
+    }
+
+    // ── TIPOS DE MOVIMIENTO ───────────────────────────────────────────────────────
+    function estipoEntrada(tipo) {
+        if (!tipo) return false;
+        const t = tipo.toLowerCase();
+        return t.includes('entrada') || t.includes('ingreso') || t.includes('compra');
+    }
+
+    function estipoSalida(tipo) {
+        if (!tipo) return false;
+        const t = tipo.toLowerCase();
+        return t.includes('salida') || t.includes('despacho') || t.includes('egreso');
+    }
+
+    function renderTipo(tipo) {
+        if (!tipo) return `<span style="color:#CBD5E1;">—</span>`;
+        if (estipoEntrada(tipo)) {
+            return `<span class="tipo-entrada">
+                        <i class="bi bi-arrow-down-circle-fill"></i> ${tipo}
+                    </span>`;
+        }
+        if (estipoSalida(tipo)) {
+            return `<span class="tipo-salida">
+                        <i class="bi bi-arrow-up-circle-fill"></i> ${tipo}
+                    </span>`;
+        }
+        return `<span class="tipo-ajuste">
+                    <i class="bi bi-arrow-left-right"></i> ${tipo}
+                </span>`;
+    }
+
+    // ── EXPORTAR CSV ─────────────────────────────────────────────────────────────
+    async function exportarCSV() {
+        const productoID = document.getElementById('filtro-producto').value;
+        const bodegaID   = document.getElementById('filtro-bodega').value;
+        const desde      = document.getElementById('filtro-desde').value;
+        const hasta      = document.getElementById('filtro-hasta').value;
+
+        const params = new URLSearchParams();
+        if (productoID) params.append('productoID', productoID);
+        if (bodegaID)   params.append('bodegaID',   bodegaID);
+        if (desde)      params.append('fechaDesde', desde);
+        if (hasta)      params.append('fechaHasta', hasta);
+
+        const btn = document.getElementById('btn-exportar');
+        btn.disabled = true;
+        btn.innerHTML = '<span class="spinner"></span> Exportando...';
+
+        try {
+            const token = sessionStorage.getItem('jwt_token');
+            const qs    = params.toString() ? `?${params.toString()}` : '';
+            const url   = `${API_BASE}/dashboard/exportar-kardex${qs}`;
+
+            const response = await fetch(url, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+
+            if (!response.ok) throw new Error('Error en la respuesta del servidor');
+
+            // Obtener nombre de archivo desde Content-Disposition o generar uno
+            const disposition = response.headers.get('Content-Disposition') || '';
+            const match        = disposition.match(/filename[^;=\n]*=(['"]?)([^'";\n]*)\1/);
+            const filename     = match ? match[2] : `kardex_${desde || 'todo'}_${hasta || 'todo'}.csv`;
+
+            const blob = await response.blob();
+            const link = document.createElement('a');
+            link.href  = URL.createObjectURL(blob);
+            link.download = filename;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(link.href);
+
+            showAlert('Archivo CSV descargado correctamente.', 'success');
+
+        } catch (err) {
+            showAlert('Error al exportar el archivo. Intente nuevamente.', 'danger');
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = '<i class="bi bi-download"></i> Exportar CSV';
+        }
+    }
+
+    // ── LIMPIAR FILTROS ───────────────────────────────────────────────────────────
+    function limpiarFiltros() {
+        document.getElementById('filtro-producto').value = '';
+        document.getElementById('filtro-bodega').value   = '';
+        document.getElementById('filtro-desde').value    = primerDia.toISOString().split('T')[0];
+        document.getElementById('filtro-hasta').value    = hoy.toISOString().split('T')[0];
+
+        kardexData = [];
+        document.getElementById('tabla-kardex').innerHTML = `
+            <tr>
+                <td colspan="8">
+                    <div class="empty-state">
+                        <i class="bi bi-funnel"></i>
+                        <p>Seleccione los filtros y haga clic en <strong>Consultar</strong></p>
+                    </div>
+                </td>
+            </tr>`;
+        document.getElementById('lbl-resultado').textContent   = '';
+        document.getElementById('kpi-kardex').style.display    = 'none';
+        document.getElementById('btn-exportar').style.display  = 'none';
+    }
+
+    // ── ARRANQUE ─────────────────────────────────────────────────────────────────
+    cargarSelects();
+
+    </script>
+</body>
+</html>

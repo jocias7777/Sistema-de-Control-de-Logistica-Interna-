@@ -1,0 +1,123 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login — Despacho Logística</title>
+    <link rel="stylesheet" href="/css/app.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+</head>
+<body>
+    <div class="login-page">
+        <div class="login-card">
+
+            <div class="login-logo">
+                <i class="bi bi-box-seam" style="font-size:36px; color:#2563EB;"></i>
+                <h1>DESPACHO &<br>LOGÍSTICA</h1>
+                <p>Sistema de Control Interno</p>
+            </div>
+
+            <div id="alert-container" class="alert"></div>
+
+            <div class="form-group">
+                <label class="form-label">Correo electrónico</label>
+                <input type="email" id="email" class="form-control"
+                       placeholder="usuario@empresa.gt" autofocus>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Contraseña</label>
+                <div style="position:relative;">
+                    <input type="password" id="password" class="form-control"
+                           placeholder="••••••••" style="padding-right:40px;">
+                    <button onclick="togglePassword()" id="btn-eye"
+                            style="position:absolute;right:10px;top:50%;transform:translateY(-50%);
+                               background:none;border:none;cursor:pointer;color:#94A3B8;font-size:16px;">
+                        <i class="bi bi-eye" id="eye-icon"></i>
+                    </button>
+                </div>
+            </div>
+
+            <button class="btn btn-primary w-100" id="btn-login" onclick="doLogin()">
+                <i class="bi bi-box-arrow-in-right"></i> Iniciar Sesión
+            </button>
+
+        </div>
+    </div>
+
+    <script src="/js/utils.js"></script>
+    <script>
+        // Si ya está autenticado redirigir directo
+        if (auth.isAuthenticated()) {
+            window.location.href = '/dashboard.html';
+        }
+
+        function togglePassword() {
+            const input = document.getElementById('password');
+            const icon  = document.getElementById('eye-icon');
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.className = 'bi bi-eye-slash';
+            } else {
+                input.type = 'password';
+                icon.className = 'bi bi-eye';
+            }
+        }
+
+        // Permitir Enter en el campo password
+        document.getElementById('password').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') doLogin();
+        });
+
+        async function doLogin() {
+            const email    = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const btn      = document.getElementById('btn-login');
+
+            if (!email || !password) {
+                showAlert('Ingresa tu correo y contraseña.', 'danger');
+                return;
+            }
+
+            // Deshabilitar botón y mostrar spinner
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner"></span> Verificando...';
+
+            try {
+                const res = await apiCall('POST', '/auth/login', { email, password });
+
+                if (res && res.success) {
+                    auth.login(res.data);
+
+                    // Redirigir según rol
+                    const rol = res.data.rol;
+                    if (rol === 'Admin' || rol === 'Gerente') {
+                        window.location.href = '/dashboard.html';
+                    } else {
+                        window.location.href = '/solicitudes.html';
+                    }
+                } else {
+                    showAlert(res?.message || 'Credenciales incorrectas.', 'danger');
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="bi bi-box-arrow-in-right"></i> Iniciar Sesión';
+                }
+            } catch {
+                showAlert('No se pudo conectar con el servidor.', 'danger');
+                btn.disabled = false;
+                btn.innerHTML = '<i class="bi bi-box-arrow-in-right"></i> Iniciar Sesión';
+            }
+        }
+    </script>
+</body>
+</html>
+```
+
+---
+
+## PASO 43 — Compilar y probar el Login
+
+1. Presiona **Ctrl + Shift + B**
+2. Presiona **F5**
+3. En el navegador cambia la URL a:
+```
+   https://localhost:7185/index.html

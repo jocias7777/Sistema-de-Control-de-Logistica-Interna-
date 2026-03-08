@@ -1,0 +1,820 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solicitudes — Despacho Logística</title>
+    <link rel="stylesheet" href="/css/app.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <style>
+        .tabs-bar {
+            display: flex;
+            gap: 4px;
+            background: #FFFFFF;
+            padding: 8px;
+            border-radius: 10px;
+            margin-bottom: 16px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+        }
+
+        .tab-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 9px 18px;
+            border-radius: 6px;
+            border: none;
+            background: transparent;
+            color: #64748B;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+
+            .tab-btn:hover {
+                background: #F1F5F9;
+                color: #334155;
+            }
+
+            .tab-btn.active {
+                background: #2563EB;
+                color: #FFFFFF;
+            }
+
+        .tab-count {
+            background: #F1F5F9;
+            color: #64748B;
+            padding: 1px 8px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .tab-btn.active .tab-count {
+            background: rgba(255,255,255,0.25);
+            color: #FFFFFF;
+        }
+
+        .tab-panel {
+            display: none;
+        }
+
+            .tab-panel.active {
+                display: block;
+            }
+
+        .detalle-fila {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #F1F5F9;
+            font-size: 13px;
+        }
+
+            .detalle-fila:last-child {
+                border-bottom: none;
+            }
+
+        .detalle-lbl {
+            font-size: 11px;
+            font-weight: 700;
+            color: #94A3B8;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+
+        .detalle-val {
+            font-weight: 600;
+            color: #1B3A5C;
+        }
+
+        .fila-producto {
+            display: grid;
+            grid-template-columns: 1fr 90px 36px;
+            gap: 8px;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+        <div class="sidebar-logo">
+            <h2>LOGÍSTICA</h2>
+            <span>Sistema de Control Interno</span>
+        </div>
+        <div class="sidebar-user">
+            <div class="user-name" id="sidebar-nombre">Cargando...</div>
+            <div class="user-role" id="sidebar-rol"></div>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="/dashboard.html" class="nav-item"><i class="bi bi-speedometer2"></i> Dashboard</a>
+            <a href="/productos.html" class="nav-item"><i class="bi bi-box-seam"></i> Productos</a>
+            <a href="/solicitudes.html" class="nav-item active"><i class="bi bi-clipboard-check"></i> Solicitudes</a>
+            <a href="/kardex.html" class="nav-item"><i class="bi bi-journal-text"></i> Kardex</a>
+        </nav>
+        <div class="sidebar-footer">
+            <button class="btn-logout" onclick="auth.logout()">
+                <i class="bi bi-box-arrow-left"></i> Cerrar Sesión
+            </button>
+        </div>
+    </div>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <div class="main-content">
+        <div class="topbar">
+            <div>
+                <div class="topbar-title">Solicitudes de Despacho</div>
+                <div class="topbar-breadcrumb">Control y seguimiento de solicitudes</div>
+            </div>
+            <button class="btn btn-primary" onclick="abrirModalNueva()">
+                <i class="bi bi-plus-lg"></i> Nueva Solicitud
+            </button>
+        </div>
+
+        <div class="page-body">
+
+            <!-- TABS -->
+            <div class="tabs-bar">
+                <button class="tab-btn active" id="tab-mis" onclick="switchTab('mis')">
+                    <i class="bi bi-person-lines-fill"></i>
+                    Mis Solicitudes
+                    <span class="tab-count" id="cnt-mis">0</span>
+                </button>
+                <button class="tab-btn" id="tab-bandeja" onclick="switchTab('bandeja')"
+                        style="display:none;">
+                    <i class="bi bi-inbox-fill"></i>
+                    Bandeja de Aprobación
+                    <span class="tab-count" id="cnt-bandeja">0</span>
+                </button>
+                <button class="tab-btn" id="tab-historial" onclick="switchTab('historial')"
+                        style="display:none;">
+                    <i class="bi bi-clock-history"></i>
+                    Historial Completo
+                    <span class="tab-count" id="cnt-historial">0</span>
+                </button>
+            </div>
+
+            <!-- PANEL: MIS SOLICITUDES -->
+            <div class="tab-panel active" id="panel-mis">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <i class="bi bi-person-lines-fill"></i> Mis Solicitudes
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Número</th>
+                                        <th>Bodega</th>
+                                        <th>Fecha</th>
+                                        <th style="text-align:center;">Líneas</th>
+                                        <th>Estado</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody-mis">
+                                    <tr><td colspan="6" style="text-align:center;color:#94A3B8;padding:32px;">Cargando...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PANEL: BANDEJA DE APROBACIÓN -->
+            <div class="tab-panel" id="panel-bandeja">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <i class="bi bi-inbox-fill"></i> Solicitudes Pendientes de Aprobación
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Número</th>
+                                        <th>Solicitante</th>
+                                        <th>Bodega</th>
+                                        <th>Fecha</th>
+                                        <th style="text-align:center;">Líneas</th>
+                                        <th>Estado</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody-bandeja">
+                                    <tr><td colspan="7" style="text-align:center;color:#94A3B8;padding:32px;">Cargando...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PANEL: HISTORIAL -->
+            <div class="tab-panel" id="panel-historial">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <i class="bi bi-clock-history"></i> Historial de Solicitudes
+                        </div>
+                        <div class="d-flex gap-2 align-center">
+                            <select class="form-control" id="filtro-estado-historial"
+                                    onchange="renderHistorial()"
+                                    style="width:auto;font-size:12px;padding:5px 10px;">
+                                <option value="">Todos los estados</option>
+                                <option value="Borrador">Borrador</option>
+                                <option value="Pendiente">Pendiente</option>
+                                <option value="Aprobada">Aprobada</option>
+                                <option value="Rechazada">Rechazada</option>
+                                <option value="Despachada">Despachada</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Número</th>
+                                        <th>Solicitante</th>
+                                        <th>Bodega</th>
+                                        <th>Fecha</th>
+                                        <th style="text-align:center;">Líneas</th>
+                                        <th>Estado</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody-historial">
+                                    <tr><td colspan="7" style="text-align:center;color:#94A3B8;padding:32px;">Cargando...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════════
+         MODAL — NUEVA SOLICITUD
+    ════════════════════════════════════════════════ -->
+    <div class="modal-overlay" id="modal-nueva">
+        <div class="modal-box" style="max-width:700px;">
+            <div class="modal-header">
+                <div class="modal-title">Nueva Solicitud de Despacho</div>
+                <button class="modal-close" onclick="cerrarModalNueva()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="alert-nueva" class="alert"></div>
+
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+                    <div class="form-group">
+                        <label class="form-label">Bodega de Destino <span style="color:#EF4444;">*</span></label>
+                        <select class="form-control" id="sol-bodega-id">
+                            <option value="">— Seleccione bodega —</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Observaciones</label>
+                        <input type="text" class="form-control" id="sol-observaciones"
+                               placeholder="Notas adicionales (opcional)">
+                    </div>
+                </div>
+
+                <!-- ENCABEZADO PRODUCTOS -->
+                <div style="display:flex;align-items:center;justify-content:space-between;
+                            padding:10px 0;margin-top:4px;border-top:1px solid #F1F5F9;
+                            border-bottom:1px solid #F1F5F9;margin-bottom:12px;">
+                    <div style="font-size:13px;font-weight:700;color:#1B3A5C;">
+                        <i class="bi bi-list-ul"></i> Productos solicitados
+                    </div>
+                    <button class="btn btn-secondary btn-sm" onclick="agregarFilaProducto()">
+                        <i class="bi bi-plus"></i> Agregar producto
+                    </button>
+                </div>
+
+                <!-- FILAS DINÁMICAS -->
+                <div id="filas-productos">
+                    <div style="text-align:center;color:#94A3B8;padding:20px;font-size:13px;">
+                        <i class="bi bi-arrow-up" style="font-size:20px;display:block;margin-bottom:6px;"></i>
+                        Haga clic en "Agregar producto" para comenzar
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="cerrarModalNueva()">Cancelar</button>
+                <button class="btn btn-primary" id="btn-crear-solicitud" onclick="guardarSolicitud()">
+                    <i class="bi bi-check-lg"></i> Crear Solicitud
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════════
+         MODAL — DETALLE Y ACCIONES
+    ════════════════════════════════════════════════ -->
+    <div class="modal-overlay" id="modal-detalle">
+        <div class="modal-box" style="max-width:480px;">
+            <div class="modal-header">
+                <div class="modal-title" id="det-titulo">Detalle de Solicitud</div>
+                <button class="modal-close" onclick="cerrarModalDetalle()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="alert-detalle" class="alert"></div>
+
+                <div class="detalle-fila">
+                    <span class="detalle-lbl">Número</span>
+                    <span class="detalle-val" id="det-numero">—</span>
+                </div>
+                <div class="detalle-fila">
+                    <span class="detalle-lbl">Solicitante</span>
+                    <span class="detalle-val" id="det-solicitante">—</span>
+                </div>
+                <div class="detalle-fila">
+                    <span class="detalle-lbl">Bodega</span>
+                    <span class="detalle-val" id="det-bodega">—</span>
+                </div>
+                <div class="detalle-fila">
+                    <span class="detalle-lbl">Fecha de Creación</span>
+                    <span class="detalle-val" id="det-fecha">—</span>
+                </div>
+                <div class="detalle-fila">
+                    <span class="detalle-lbl">Líneas de Producto</span>
+                    <span class="detalle-val" id="det-lineas">—</span>
+                </div>
+                <div class="detalle-fila">
+                    <span class="detalle-lbl">Estado Actual</span>
+                    <span id="det-estado">—</span>
+                </div>
+
+                <!-- Campo motivo rechazo: oculto hasta que el usuario haga clic en Rechazar -->
+                <div id="bloque-rechazo" style="display:none;margin-top:16px;">
+                    <div class="form-group" style="margin-bottom:0;">
+                        <label class="form-label">
+                            Motivo de rechazo <span style="color:#EF4444;">*</span>
+                        </label>
+                        <textarea class="form-control" id="motivo-rechazo" rows="3"
+                                  placeholder="Explique el motivo del rechazo"
+                                  style="resize:vertical;"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" id="detalle-footer">
+                <button class="btn btn-secondary" onclick="cerrarModalDetalle()">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/utils.js"></script>
+    <script>
+
+    // ── INIT ─────────────────────────────────────────────────────────────────────
+    auth.checkAuth();
+
+    const user = auth.getUser();
+    document.getElementById('sidebar-nombre').textContent = user.nombre;
+    document.getElementById('sidebar-rol').textContent    = user.rol;
+
+    const esAdminOBodeguero = auth.hasRole('Admin') || auth.hasRole('Bodeguero');
+    const esAdminOGerente   = auth.hasRole('Admin') || auth.hasRole('Gerente');
+
+    if (esAdminOBodeguero) document.getElementById('tab-bandeja').style.display  = 'inline-flex';
+    if (esAdminOGerente)   document.getElementById('tab-historial').style.display = 'inline-flex';
+
+    // ── STATE ─────────────────────────────────────────────────────────────────────
+    let todasLasSolicitudes = [];
+    let productosCache      = [];
+    let bodegasCache        = [];
+    let solicitudActual     = null;
+    let filaIdx             = 0;
+    let filasProductos      = [];
+    let tabActivo           = 'mis';
+
+    // ── TABS ─────────────────────────────────────────────────────────────────────
+    function switchTab(tab) {
+        tabActivo = tab;
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+        document.getElementById('tab-'   + tab).classList.add('active');
+        document.getElementById('panel-' + tab).classList.add('active');
+        renderTabActivo();
+    }
+
+    function renderTabActivo() {
+        if      (tabActivo === 'mis')      renderMisSolicitudes();
+        else if (tabActivo === 'bandeja')  renderBandeja();
+        else if (tabActivo === 'historial') renderHistorial();
+    }
+
+    // ── CARGA DATOS ───────────────────────────────────────────────────────────────
+    async function cargarSolicitudes() {
+        const res = await apiCall('GET', '/solicitudes');
+        if (res && res.success) {
+            todasLasSolicitudes = res.data || [];
+            actualizarContadores();
+            renderTabActivo();
+        }
+    }
+
+    function actualizarContadores() {
+        const mis      = todasLasSolicitudes.filter(s => s.solicitante === user.nombre);
+        const pendientes = todasLasSolicitudes.filter(s => s.estado === 'Pendiente');
+
+        document.getElementById('cnt-mis').textContent      = mis.length;
+        document.getElementById('cnt-bandeja').textContent  = pendientes.length;
+        document.getElementById('cnt-historial').textContent = todasLasSolicitudes.length;
+
+        // Resaltar bandeja si hay pendientes
+        const tabBandeja = document.getElementById('tab-bandeja');
+        if (tabBandeja && pendientes.length > 0 && tabActivo !== 'bandeja') {
+            document.getElementById('cnt-bandeja').style.background = '#FEF3C7';
+            document.getElementById('cnt-bandeja').style.color      = '#92400E';
+        }
+    }
+
+    // ── RENDERS DE CADA TAB ───────────────────────────────────────────────────────
+    function renderMisSolicitudes() {
+        const lista = todasLasSolicitudes.filter(s => s.solicitante === user.nombre);
+        renderTabla(lista, 'tbody-mis', false);
+    }
+
+    function renderBandeja() {
+        const lista = todasLasSolicitudes.filter(s => s.estado === 'Pendiente');
+        renderTabla(lista, 'tbody-bandeja', true);
+    }
+
+    function renderHistorial() {
+        const filtro = document.getElementById('filtro-estado-historial')?.value || '';
+        const lista  = filtro
+            ? todasLasSolicitudes.filter(s => s.estado === filtro)
+            : todasLasSolicitudes;
+        renderTabla(lista, 'tbody-historial', true);
+    }
+
+    function renderTabla(lista, tbodyId, mostrarSolicitante) {
+        const tbody = document.getElementById(tbodyId);
+        const cols  = mostrarSolicitante ? 7 : 6;
+
+        if (!lista || lista.length === 0) {
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="${cols}" style="text-align:center;color:#94A3B8;padding:32px;">
+                        No hay solicitudes para mostrar
+                    </td>
+                </tr>`;
+            return;
+        }
+
+        tbody.innerHTML = lista.map(s => `
+            <tr>
+                <td><strong>${s.numeroSolicitud}</strong></td>
+                ${mostrarSolicitante ? `<td>${s.solicitante}</td>` : ''}
+                <td>${s.bodega}</td>
+                <td>${formatDate(s.fechaCreacion)}</td>
+                <td style="text-align:center;">${s.totalLineas}</td>
+                <td>${badgeEstado(s.estado)}</td>
+                <td>
+                    <button class="btn btn-secondary btn-sm"
+                            onclick="abrirModalDetalle(${s.solicitudID})"
+                            title="Ver detalle y acciones">
+                        <i class="bi bi-eye"></i> Ver
+                    </button>
+                </td>
+            </tr>
+        `).join('');
+    }
+
+    // ── MODAL NUEVA SOLICITUD ────────────────────────────────────────────────────
+    async function abrirModalNueva() {
+        limpiarAlerta('alert-nueva');
+        filasProductos = [];
+        filaIdx = 0;
+        document.getElementById('sol-observaciones').value = '';
+        renderFilasProductos();
+
+        // Cargar bodegas (cache)
+        if (bodegasCache.length === 0) {
+            const r = await apiCall('GET', '/bodegas');
+            if (r && r.success) bodegasCache = r.data || [];
+        }
+        document.getElementById('sol-bodega-id').innerHTML =
+            '<option value="">— Seleccione bodega —</option>' +
+            bodegasCache.map(b => `<option value="${b.bodegaID}">${b.nombre}</option>`).join('');
+
+        // Cargar productos (cache)
+        if (productosCache.length === 0) {
+            const r = await apiCall('GET', '/productos');
+            if (r && r.success) productosCache = r.data || [];
+        }
+
+        const btn = document.getElementById('btn-crear-solicitud');
+        btn.disabled = false;
+        btn.innerHTML = '<i class="bi bi-check-lg"></i> Crear Solicitud';
+
+        document.getElementById('modal-nueva').classList.add('show');
+    }
+
+    function cerrarModalNueva() {
+        document.getElementById('modal-nueva').classList.remove('show');
+    }
+
+    // ── FILAS DINÁMICAS DE PRODUCTOS ─────────────────────────────────────────────
+    function agregarFilaProducto() {
+        filasProductos.push({ idx: filaIdx++, productoID: '', cantidad: '' });
+        renderFilasProductos();
+    }
+
+    function eliminarFila(idx) {
+        filasProductos = filasProductos.filter(f => f.idx !== idx);
+        renderFilasProductos();
+    }
+
+    function renderFilasProductos() {
+        const container = document.getElementById('filas-productos');
+        if (filasProductos.length === 0) {
+            container.innerHTML = `
+                <div style="text-align:center;color:#94A3B8;padding:20px;font-size:13px;">
+                    <i class="bi bi-arrow-up" style="font-size:20px;display:block;margin-bottom:6px;"></i>
+                    Haga clic en "Agregar producto" para comenzar
+                </div>`;
+            return;
+        }
+
+        container.innerHTML = filasProductos.map(f => `
+            <div class="fila-producto" id="fila-${f.idx}">
+                <select class="form-control" id="sel-prod-${f.idx}">
+                    <option value="">— Seleccione producto —</option>
+                    ${productosCache.map(p => `
+                        <option value="${p.productoID}"
+                            ${f.productoID == p.productoID ? 'selected' : ''}
+                            ${p.stockActual === 0 ? 'style="color:#EF4444;"' : ''}>
+                            [${p.codigo}] ${p.nombre} — Stock: ${p.stockActual} ${p.unidadMedida}
+                        </option>
+                    `).join('')}
+                </select>
+                <input type="number" class="form-control" id="cant-${f.idx}"
+                       placeholder="Cant." min="1" value="${f.cantidad || ''}"
+                       style="text-align:center;">
+                <button class="btn btn-danger btn-sm" onclick="eliminarFila(${f.idx})"
+                        title="Eliminar" style="padding:6px 9px;">
+                    <i class="bi bi-trash"></i>
+                </button>
+            </div>
+        `).join('');
+    }
+
+    async function guardarSolicitud() {
+        limpiarAlerta('alert-nueva');
+
+        const bodegaID      = document.getElementById('sol-bodega-id').value;
+        const observaciones = document.getElementById('sol-observaciones').value.trim();
+
+        if (!bodegaID) {
+            mostrarAlerta('alert-nueva', 'Seleccione una bodega de destino.', 'danger');
+            return;
+        }
+        if (filasProductos.length === 0) {
+            mostrarAlerta('alert-nueva', 'Agregue al menos un producto a la solicitud.', 'danger');
+            return;
+        }
+
+        // Leer valores actuales del DOM (por si onchange no disparó)
+        filasProductos.forEach(f => {
+            const sel  = document.getElementById(`sel-prod-${f.idx}`);
+            const cant = document.getElementById(`cant-${f.idx}`);
+            if (sel)  f.productoID = sel.value;
+            if (cant) f.cantidad   = cant.value;
+        });
+
+        // Validar filas
+        for (const f of filasProductos) {
+            if (!f.productoID) {
+                mostrarAlerta('alert-nueva', 'Seleccione un producto en todas las filas.', 'danger');
+                return;
+            }
+            if (!f.cantidad || parseInt(f.cantidad) <= 0) {
+                mostrarAlerta('alert-nueva', 'Ingrese una cantidad mayor a 0 en todas las filas.', 'danger');
+                return;
+            }
+        }
+
+        // Verificar duplicados
+        const ids = filasProductos.map(f => String(f.productoID));
+        if (new Set(ids).size !== ids.length) {
+            mostrarAlerta('alert-nueva', 'No puede repetir el mismo producto. Combine las cantidades en una sola fila.', 'warning');
+            return;
+        }
+
+        const btn = document.getElementById('btn-crear-solicitud');
+        btn.disabled = true;
+        btn.innerHTML = '<span class="spinner"></span> Creando...';
+
+        const res = await apiCall('POST', '/solicitudes', {
+            bodegaID: parseInt(bodegaID),
+            observaciones,
+            items: filasProductos.map(f => ({
+                productoID: parseInt(f.productoID),
+                cantidad:   parseInt(f.cantidad)
+            }))
+        });
+
+        btn.disabled = false;
+        btn.innerHTML = '<i class="bi bi-check-lg"></i> Crear Solicitud';
+
+        if (res && res.success) {
+            cerrarModalNueva();
+            const num = res.data?.numeroSolicitud ? ` ${res.data.numeroSolicitud}` : '';
+            showAlert(`Solicitud${num} creada en estado Borrador. Ábrala y envíela a aprobación.`, 'success');
+            await cargarSolicitudes();
+        } else {
+            mostrarAlerta('alert-nueva', res?.message || 'Error al crear la solicitud.', 'danger');
+        }
+    }
+
+    // ── MODAL DETALLE / ACCIONES ─────────────────────────────────────────────────
+    function abrirModalDetalle(solicitudID) {
+        solicitudActual = todasLasSolicitudes.find(s => s.solicitudID === solicitudID);
+        if (!solicitudActual) return;
+
+        limpiarAlerta('alert-detalle');
+        document.getElementById('bloque-rechazo').style.display = 'none';
+        document.getElementById('motivo-rechazo').value = '';
+
+        const s = solicitudActual;
+        document.getElementById('det-titulo').textContent     = `Solicitud — ${s.numeroSolicitud}`;
+        document.getElementById('det-numero').textContent      = s.numeroSolicitud;
+        document.getElementById('det-solicitante').textContent = s.solicitante;
+        document.getElementById('det-bodega').textContent      = s.bodega;
+        document.getElementById('det-fecha').textContent       = formatDate(s.fechaCreacion);
+        document.getElementById('det-lineas').textContent      = `${s.totalLineas} línea(s)`;
+        document.getElementById('det-estado').innerHTML        = badgeEstado(s.estado);
+
+        renderBotonesDetalle(s.estado);
+        document.getElementById('modal-detalle').classList.add('show');
+    }
+
+    function cerrarModalDetalle() {
+        document.getElementById('modal-detalle').classList.remove('show');
+        solicitudActual = null;
+    }
+
+    function renderBotonesDetalle(estado) {
+        const footer = document.getElementById('detalle-footer');
+        let html = `<button class="btn btn-secondary" onclick="cerrarModalDetalle()">Cerrar</button>`;
+
+        // Borrador → cualquier usuario puede enviarla a aprobación
+        if (estado === 'Borrador') {
+            html += `
+                <button class="btn btn-primary" id="btn-enviar" onclick="enviarAprobacion()">
+                    <i class="bi bi-send"></i> Enviar a Aprobación
+                </button>`;
+        }
+
+        // Pendiente → Admin o Bodeguero pueden aprobar o rechazar
+        if (estado === 'Pendiente' && esAdminOBodeguero) {
+            html += `
+                <button class="btn btn-danger" id="btn-rechazar" onclick="iniciarRechazo()">
+                    <i class="bi bi-x-circle"></i> Rechazar
+                </button>
+                <button class="btn btn-success" id="btn-aprobar" onclick="aprobarSolicitud()">
+                    <i class="bi bi-check-circle"></i> Aprobar
+                </button>`;
+        }
+
+        // Aprobada → Admin o Bodeguero pueden despachar
+        if (estado === 'Aprobada' && esAdminOBodeguero) {
+            html += `
+                <button class="btn btn-primary" id="btn-despachar" onclick="confirmarDespacho()">
+                    <i class="bi bi-truck"></i> Despachar
+                </button>`;
+        }
+
+        footer.innerHTML = html;
+    }
+
+    // ── FLUJO: ENVIAR A APROBACIÓN ───────────────────────────────────────────────
+    async function enviarAprobacion() {
+        await cambiarEstado(
+            'Pendiente', '',
+            'btn-enviar', 'Enviando...',
+            '<i class="bi bi-send"></i> Enviar a Aprobación',
+            'Solicitud enviada a aprobación correctamente.'
+        );
+    }
+
+    // ── FLUJO: APROBAR ───────────────────────────────────────────────────────────
+    async function aprobarSolicitud() {
+        await cambiarEstado(
+            'Aprobada', '',
+            'btn-aprobar', 'Aprobando...',
+            '<i class="bi bi-check-circle"></i> Aprobar',
+            'Solicitud aprobada correctamente.'
+        );
+    }
+
+    // ── FLUJO: RECHAZAR (2 pasos) ────────────────────────────────────────────────
+    function iniciarRechazo() {
+        document.getElementById('bloque-rechazo').style.display = 'block';
+        document.getElementById('detalle-footer').innerHTML = `
+            <button class="btn btn-secondary" onclick="cancelarRechazo()">Cancelar</button>
+            <button class="btn btn-danger" id="btn-confirmar-rechazo" onclick="rechazarSolicitud()">
+                <i class="bi bi-x-circle"></i> Confirmar Rechazo
+            </button>`;
+    }
+
+    function cancelarRechazo() {
+        document.getElementById('bloque-rechazo').style.display = 'none';
+        document.getElementById('motivo-rechazo').value = '';
+        renderBotonesDetalle('Pendiente');
+    }
+
+    async function rechazarSolicitud() {
+        const motivo = document.getElementById('motivo-rechazo').value.trim();
+        if (!motivo) {
+            mostrarAlerta('alert-detalle', 'Ingrese el motivo del rechazo.', 'danger');
+            return;
+        }
+        await cambiarEstado(
+            'Rechazada', motivo,
+            'btn-confirmar-rechazo', 'Rechazando...',
+            '<i class="bi bi-x-circle"></i> Confirmar Rechazo',
+            'Solicitud rechazada.'
+        );
+    }
+
+    // ── FLUJO: DESPACHAR (con confirm nativo) ────────────────────────────────────
+    function confirmarDespacho() {
+        const ok = confirm(
+            `¿Confirma el despacho de la solicitud ${solicitudActual.numeroSolicitud}?\n\nEsta acción descuenta el stock y no se puede deshacer.`
+        );
+        if (ok) despacharSolicitud();
+    }
+
+    async function despacharSolicitud() {
+        const btn = document.getElementById('btn-despachar');
+        if (btn) { btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> Despachando...'; }
+
+        const res = await apiCall('PUT', `/solicitudes/${solicitudActual.solicitudID}/despachar`, {});
+
+        if (res && res.success) {
+            cerrarModalDetalle();
+            showAlert('Solicitud despachada correctamente. Stock descontado.', 'success');
+            await cargarSolicitudes();
+        } else {
+            if (btn) { btn.disabled = false; btn.innerHTML = '<i class="bi bi-truck"></i> Despachar'; }
+            mostrarAlerta('alert-detalle', res?.message || 'Error al despachar la solicitud.', 'danger');
+        }
+    }
+
+    // ── HELPER GENÉRICO CAMBIAR ESTADO ───────────────────────────────────────────
+    async function cambiarEstado(nuevoEstado, motivo, btnId, txtLoading, txtOriginal, mensajeOk) {
+        const btn = document.getElementById(btnId);
+        if (btn) { btn.disabled = true; btn.innerHTML = `<span class="spinner"></span> ${txtLoading}`; }
+
+        const body = { estado: nuevoEstado };
+        if (motivo) body.motivo = motivo;
+
+        const res = await apiCall('PUT', `/solicitudes/${solicitudActual.solicitudID}/estado`, body);
+
+        if (res && res.success) {
+            cerrarModalDetalle();
+            showAlert(mensajeOk, 'success');
+            await cargarSolicitudes();
+        } else {
+            if (btn) { btn.disabled = false; btn.innerHTML = txtOriginal; }
+            mostrarAlerta('alert-detalle', res?.message || 'Error al cambiar el estado.', 'danger');
+        }
+    }
+
+    // ── HELPERS LOCALES ──────────────────────────────────────────────────────────
+    function mostrarAlerta(id, mensaje, tipo) {
+        const el = document.getElementById(id);
+        el.className = `alert alert-${tipo} show`;
+        el.textContent = mensaje;
+    }
+
+    function limpiarAlerta(id) {
+        const el = document.getElementById(id);
+        el.className = 'alert';
+        el.textContent = '';
+    }
+
+    // ── ARRANQUE ─────────────────────────────────────────────────────────────────
+    cargarSolicitudes();
+
+    </script>
+</body>
+</html>
