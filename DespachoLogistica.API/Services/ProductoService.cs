@@ -1,98 +1,192 @@
 ﻿using DespachoLogistica.API.Data;
 using DespachoLogistica.API.Models.DTOs;
-using Microsoft.Data.SqlClient;
+using DespachoLogistica.API.Models.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace DespachoLogistica.API.Services
 {
     public class ProductoService : IProductoService
     {
-        private readonly DatabaseContext _db;
+        private readonly AppDbContext _db;
 
-        public ProductoService(DatabaseContext db)
+        public ProductoService(AppDbContext db)
         {
             _db = db;
         }
 
+        // ─── PRODUCTOS ────────────────────────────────────────────────────────────
+
         public async Task<List<ProductoConStockDTO>> GetProductosAsync(int? bodegaId, bool soloStockBajo)
         {
-            var parameters = new[]
-            {
-                new SqlParameter("@BodegaID",      (object?)bodegaId ?? DBNull.Value),
-                new SqlParameter("@SoloStockBajo", soloStockBajo ? 1 : 0)
-            };
+            var productos = await _db.Productos.ToListAsync();
 
-            var tabla = await _db.ExecuteStoredProcedureAsync("sp_GetProductosConStock", parameters);
-            var resultado = new List<ProductoConStockDTO>();
+            var stocksQuery = _db.Stocks.AsQueryable();
+            if (bodegaId.HasValue)
+                stocksQuery = stocksQuery.Where(s => s.BodegaID == bodegaId.Value);
 
-            foreach (System.Data.DataRow row in tabla.Rows)
+            var stocks = await stocksQuery.ToListAsync();
+
+            var resultado = productos.Select(p => new ProductoConStockDTO
             {
-                resultado.Add(new ProductoConStockDTO
-                {
-                    ProductoID = Convert.ToInt32(row["ProductoID"]),
-                    Codigo = row["Codigo"].ToString()!,
-                    Nombre = row["Nombre"].ToString()!,
-                    UnidadMedida = row["UnidadMedida"].ToString()!,
-                    StockMinimo = Convert.ToDecimal(row["StockMinimo"]),
-                    StockActual = Convert.ToDecimal(row["StockActual"]),
-                    EsBajo = Convert.ToBoolean(row["EsBajo"])
-                });
-            }
+                ProductoID = p.ProductoID,
+                Codigo = p.Codigo,
+                Nombre = p.Nombre,
+                UnidadMedida = p.UnidadMedida,
+                StockMinimo = p.StockMinimo,
+                StockActual = stocks
+                    .Where(s => s.ProductoID == p.ProductoID)
+                    .Sum(s => s.Cantidad),
+                EsBajo = stocks
+                    .Where(s => s.ProductoID == p.ProductoID)
+                    .Sum(s => s.Cantidad) < p.StockMinimo
+            }).ToList();
+
+            if (soloStockBajo)
+                resultado = resultado.Where(p => p.EsBajo).ToList();
 
             return resultado;
         }
 
         public async Task<int> UpsertProductoAsync(UpsertProductoRequest request, int productoId, string usuarioCreacion)
         {
-            var parameters = new[]
+            if (productoId == 0)
             {
-                new SqlParameter("@ProductoID",      productoId == 0 ? DBNull.Value : productoId),
-                new SqlParameter("@Codigo",          request.Codigo),
-                new SqlParameter("@Nombre",          request.Nombre),
-                new SqlParameter("@Descripcion",     request.Descripcion),
-                new SqlParameter("@UnidadMedida",    request.UnidadMedida),
-                new SqlParameter("@StockMinimo",     request.StockMinimo),
-                new SqlParameter("@UsuarioCreacion", usuarioCreacion)
-            };
+                var producto = new Producto
+                {
+                    Codigo = request.Codigo,
+                    Nombre = request.Nombre,
+                    Descripcion = request.Descripcion,
+                    UnidadMedida = request.UnidadMedida,
+                    StockMinimo = request.StockMinimo
+                };
+                _db.Productos.Add(producto);
+                await _db.SaveChangesAsync();
+                return producto.ProductoID;
+            }
+            else
+            {
+                var producto = await _db.Productos.FindAsync(productoId);
+                if (producto == null) return 0;
 
-            var tabla = await _db.ExecuteStoredProcedureAsync("sp_UpsertProducto", parameters);
-
-            if (tabla.Rows.Count > 0)
-                return Convert.ToInt32(tabla.Rows[0]["ProductoID"]);
-
-            return 0;
+                producto.Codigo = request.Codigo;
+                producto.Nombre = request.Nombre;
+                producto.Descripcion = request.Descripcion;
+                producto.UnidadMedida = request.UnidadMedida;
+                producto.StockMinimo = request.StockMinimo;
+                await _db.SaveChangesAsync();
+                return producto.ProductoID;
+            }
         }
 
         public async Task AjustarStockAsync(int productoId, AjustarStockRequest request, int usuarioId)
         {
-            var parameters = new[]
-            {
-                new SqlParameter("@ProductoID", productoId),
-                new SqlParameter("@BodegaID",   request.BodegaID),
-                new SqlParameter("@Cantidad",   request.Cantidad),
-                new SqlParameter("@Motivo",     request.Motivo),
-                new SqlParameter("@UsuarioID",  usuarioId)
-            };
+            var stock = await _db.Stocks
+                .FirstOrDefaultAsync(s => s.ProductoID == productoId && s.BodegaID == request.BodegaID);
 
-            await _db.ExecuteNonQueryAsync("sp_AjustarStock", parameters);
+            if (stock == null)
+            {
+                stock = new Stock
+                {
+                    ProductoID = productoId,
+                    BodegaID = request.BodegaID,
+                    Cantidad = request.Cantidad
+                };
+                _db.Stocks.Add(stock);
+            }
+            else
+            {
+                stock.Cantidad += request.Cantidad;
+            }
+
+            await _db.SaveChangesAsync();
         }
+
+        // ─── BODEGAS ─────────────────────────────────────────────────────────────
 
         public async Task<List<BodegaDTO>> GetBodegasAsync()
         {
-            var tabla = await _db.ExecuteStoredProcedureAsync("sp_GetBodegas");
-            var resultado = new List<BodegaDTO>();
+            var bodegas = await _db.Bodegas
+                .Include(b => b.Stocks)
+                .ToListAsync();
 
-            foreach (System.Data.DataRow row in tabla.Rows)
+            return bodegas.Select(b => new BodegaDTO
             {
-                resultado.Add(new BodegaDTO
-                {
-                    BodegaID = Convert.ToInt32(row["BodegaID"]),
-                    Nombre = row["Nombre"].ToString()!,
-                    Ubicacion = row["Ubicacion"].ToString()!,
-                    Responsable = row["Responsable"].ToString()!
-                });
-            }
+                BodegaID = b.BodegaID,
+                Nombre = b.Nombre,
+                Ubicacion = b.Ubicacion,
+                Activa = b.Activa,
+                TotalProductos = b.Stocks.Select(s => s.ProductoID).Distinct().Count(),
+                TotalUnidades = b.Stocks.Any() ? b.Stocks.Sum(s => s.Cantidad) : 0
+            }).ToList();
+        }
 
-            return resultado;
+        public async Task<BodegaDTO> CreateBodegaAsync(UpsertBodegaRequest request)
+        {
+            var bodega = new Bodega
+            {
+                Nombre = request.Nombre,
+                Ubicacion = request.Ubicacion,
+                Activa = request.Activa
+            };
+            _db.Bodegas.Add(bodega);
+            await _db.SaveChangesAsync();
+
+            return new BodegaDTO
+            {
+                BodegaID = bodega.BodegaID,
+                Nombre = bodega.Nombre,
+                Ubicacion = bodega.Ubicacion,
+                Activa = bodega.Activa,
+                TotalProductos = 0,
+                TotalUnidades = 0
+            };
+        }
+
+        public async Task<BodegaDTO> UpdateBodegaAsync(int id, UpsertBodegaRequest request)
+        {
+            var bodega = await _db.Bodegas.FindAsync(id)
+                ?? throw new Exception("Bodega no encontrada");
+
+            bodega.Nombre = request.Nombre;
+            bodega.Ubicacion = request.Ubicacion;
+            bodega.Activa = request.Activa;
+            await _db.SaveChangesAsync();
+
+            return new BodegaDTO
+            {
+                BodegaID = bodega.BodegaID,
+                Nombre = bodega.Nombre,
+                Ubicacion = bodega.Ubicacion,
+                Activa = bodega.Activa,
+                TotalProductos = await _db.Stocks
+                    .Where(s => s.BodegaID == id)
+                    .Select(s => s.ProductoID).Distinct().CountAsync(),
+                TotalUnidades = await _db.Stocks
+                    .Where(s => s.BodegaID == id)
+                    .SumAsync(s => s.Cantidad)
+            };
+        }
+
+        public async Task<List<BodegaStockItemDTO>> GetStockPorBodegaAsync(int bodegaId)
+        {
+            var stocks = await _db.Stocks
+                .Where(s => s.BodegaID == bodegaId)
+                .Include(s => s.Producto)
+                .ToListAsync();
+
+            return stocks.Select(s => new BodegaStockItemDTO
+            {
+                Codigo = s.Producto!.Codigo,
+                Nombre = s.Producto.Nombre,
+                UnidadMedida = s.Producto.UnidadMedida,
+                StockMinimo = s.Producto.StockMinimo,
+                StockActual = s.Cantidad,
+                EstadoStock = s.Cantidad <= 0
+                    ? "Sin Stock"
+                    : s.Cantidad < s.Producto.StockMinimo
+                        ? "Bajo"
+                        : "OK"
+            }).ToList();
         }
     }
 }

@@ -3,7 +3,7 @@ using DespachoLogistica.API.Helpers;
 using DespachoLogistica.API.Models.Common;
 using DespachoLogistica.API.Models.DTOs;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 
 namespace DespachoLogistica.API.Controllers
 {
@@ -11,11 +11,11 @@ namespace DespachoLogistica.API.Controllers
     [Route("api/auth")]
     public class AuthController : ControllerBase
     {
-        private readonly DatabaseContext _db;
+        private readonly AppDbContext _db;
         private readonly JwtHelper _jwt;
         private readonly IConfiguration _config;
 
-        public AuthController(DatabaseContext db, JwtHelper jwt, IConfiguration config)
+        public AuthController(AppDbContext db, JwtHelper jwt, IConfiguration config)
         {
             _db = db;
             _jwt = jwt;
@@ -28,47 +28,27 @@ namespace DespachoLogistica.API.Controllers
             if (string.IsNullOrWhiteSpace(request.Email) || string.IsNullOrWhiteSpace(request.Password))
                 return BadRequest(ApiResponse<object>.Fail("Email y contraseña son requeridos.", 400));
 
-            var parameters = new[]
-            {
-                new SqlParameter("@Email", request.Email.Trim())
-            };
+            var usuario = await _db.Usuarios
+                .Include(u => u.Rol)
+                .FirstOrDefaultAsync(u => u.Email == request.Email.Trim());
 
-            var result = await _db.ExecuteStoredProcedureAsync("sp_Login", parameters);
-
-            if (result.Rows.Count == 0)
+            if (usuario == null || !BCrypt.Net.BCrypt.Verify(request.Password, usuario.PasswordHash))
                 return Unauthorized(ApiResponse<object>.Fail("Credenciales incorrectas.", 401));
 
-            var row = result.Rows[0];
-
-            if (Convert.ToBoolean(row["Activo"]) == false)
+            if (!usuario.Activo)
                 return Unauthorized(ApiResponse<object>.Fail("Usuario inactivo. Contacte al administrador.", 401));
 
-            var passwordHash = row["PasswordHash"].ToString()!;
-            var passwordValido = BCrypt.Net.BCrypt.Verify(request.Password, passwordHash);
+            var token = _jwt.GenerateToken(usuario.UsuarioID, usuario.Email, usuario.Rol!.Nombre, usuario.Nombre);
+            var expiracion = DateTime.UtcNow.AddHours(int.Parse(_config["Jwt:ExpiresHours"]!));
 
-            if (!passwordValido)
-                return Unauthorized(ApiResponse<object>.Fail("Credenciales incorrectas.", 401));
-
-            var usuarioId = Convert.ToInt32(row["UsuarioID"]);
-            var nombre = row["Nombre"].ToString()!;
-            var email = row["Email"].ToString()!;
-            var rol = row["RolNombre"].ToString()!;
-
-            var token = _jwt.GenerateToken(usuarioId, email, rol, nombre);
-            var expiracion = DateTime.UtcNow.AddHours(
-                int.Parse(_config["Jwt:ExpiresHours"]!));
-
-            var response = new LoginResponse
+            return Ok(ApiResponse<LoginResponse>.Ok(new LoginResponse
             {
                 Token = token,
-                Nombre = nombre,
-                Email = email,
-                Rol = rol,
+                Nombre = usuario.Nombre,
+                Email = usuario.Email,
+                Rol = usuario.Rol!.Nombre,
                 Expiracion = expiracion
-            };
-
-            return Ok(ApiResponse<LoginResponse>.Ok(response, "Login exitoso."));
+            }, "Login exitoso."));
         }
-
     }
 }

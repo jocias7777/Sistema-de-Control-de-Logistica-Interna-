@@ -98,15 +98,15 @@ namespace DespachoLogistica.API.Services
                 resultado.Add(new KardexDTO
                 {
                     MovimientoID = Convert.ToInt32(row["MovimientoID"]),
-                    FechaMovimiento = Convert.ToDateTime(row["FechaMovimiento"]),
-                    TipoMovimiento = row["TipoMovimiento"].ToString()!,
-                    Cantidad = Convert.ToDecimal(row["Cantidad"]),
-                    StockAnterior = Convert.ToDecimal(row["StockAnterior"]),
-                    StockNuevo = Convert.ToDecimal(row["StockNuevo"]),
-                    DocumentoReferencia = row["DocumentoReferencia"]?.ToString() ?? "",
-                    Observaciones = row["Observaciones"]?.ToString() ?? "",
-                    Usuario = row["Usuario"].ToString()!,
-                    Bodega = row["Bodega"].ToString()!
+                    FechaMovimiento = Convert.ToDateTime(row["fecha"]),         // ✅ SP devuelve "fecha"
+                    TipoMovimiento = row["tipoMovimiento"].ToString()!,        // ✅ SP devuelve "tipoMovimiento"
+                    Producto = row["producto"].ToString()!,              // ✅ SP devuelve "producto"
+                    Bodega = row["bodega"].ToString()!,                // ✅ SP devuelve "bodega"
+                    Cantidad = Convert.ToDecimal(row["cantidad"]),       // ✅ SP devuelve "cantidad"
+                    StockAnterior = Convert.ToDecimal(row["stockAntes"]),     // ✅ SP devuelve "stockAntes"
+                    StockNuevo = Convert.ToDecimal(row["stockDespues"]),   // ✅ SP devuelve "stockDespues"
+                    DocumentoReferencia = row["referencia"]?.ToString() ?? "",      // ✅ SP devuelve "referencia"
+                    Usuario = row["usuario"].ToString()!               // ✅ SP devuelve "usuario"
                 });
             }
 

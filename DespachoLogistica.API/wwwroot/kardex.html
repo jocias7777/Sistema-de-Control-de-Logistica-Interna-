@@ -4,207 +4,561 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kardex — Despacho Logística</title>
-    <link rel="stylesheet" href="/css/app.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
     <style>
-        .tipo-entrada {
-            display: inline-flex;
+        :root {
+            --sidebar-bg: #1a237e;
+            --sidebar-hover: #283593;
+            --blue: #1976D2;
+            --border: #E3E8EF;
+            --bg: #F4F6FA;
+            --sidebar-w: 225px;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins',sans-serif;
+            font-size: 14px;
+            background: var(--bg);
+            color: #212529;
+        }
+
+        #sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: var(--sidebar-w);
+            height: 100vh;
+            background: var(--sidebar-bg);
+            display: flex;
+            flex-direction: column;
+            z-index: 200;
+            overflow-y: auto;
+        }
+
+        .sidebar-brand {
+            padding: 20px 20px 16px;
+            display: flex;
+            flex-direction: column;
             align-items: center;
-            gap: 5px;
-            color: #166534;
-            font-weight: 600;
-            font-size: 12px;
+            gap: 6px;
+            border-bottom: 1px solid rgba(255,255,255,.1);
         }
 
-        .tipo-salida {
-            display: inline-flex;
+        .brand-icon {
+            width: 42px;
+            height: 42px;
+            background: var(--blue);
+            border-radius: 10px;
+            display: flex;
             align-items: center;
-            gap: 5px;
-            color: #991B1B;
-            font-weight: 600;
-            font-size: 12px;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: 800;
+            color: #fff;
         }
 
-        .tipo-ajuste {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            color: #1E40AF;
-            font-weight: 600;
-            font-size: 12px;
+        .brand-name {
+            font-size: 14px;
+            font-weight: 700;
+            color: #fff;
         }
 
-        .kpi-kardex {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 14px;
-            margin-bottom: 18px;
+        .brand-sub {
+            font-size: 10px;
+            color: rgba(255,255,255,.45);
+            text-align: center;
         }
 
-            .kpi-kardex .kpi-card {
-                margin-bottom: 0;
+        .sidebar-user {
+            padding: 12px 18px;
+            border-bottom: 1px solid rgba(255,255,255,.1);
+        }
+
+            .sidebar-user .user-name {
+                font-size: 14px;
+                font-weight: 600;
+                color: #fff;
             }
+
+            .sidebar-user .user-role {
+                font-size: 11px;
+                color: rgba(255,255,255,.5);
+                margin-top: 2px;
+            }
+
+        .sidebar-nav {
+            flex: 1;
+            padding: 10px 0;
+        }
+
+        .nav-section-label {
+            padding: 10px 20px 4px;
+            font-size: 10px;
+            font-weight: 700;
+            color: rgba(255,255,255,.3);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 20px;
+            color: rgba(255,255,255,.72) !important;
+            font-size: 13.5px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: background .15s;
+        }
+
+            .nav-link i {
+                font-size: 18px;
+                width: 20px;
+            }
+
+            .nav-link:hover {
+                background: var(--sidebar-hover);
+                color: #fff !important;
+            }
+
+            .nav-link.active {
+                background: rgba(255,255,255,.13);
+                color: #fff !important;
+                font-weight: 600;
+            }
+
+        .sidebar-footer {
+            padding: 10px 0;
+            border-top: 1px solid rgba(255,255,255,.1);
+        }
+
+        .btn-logout {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 20px;
+            background: transparent;
+            border: none;
+            color: rgba(255,255,255,.6);
+            font-size: 13.5px;
+            font-weight: 500;
+            cursor: pointer;
+            font-family: inherit;
+            transition: background .15s;
+        }
+
+            .btn-logout:hover {
+                background: var(--sidebar-hover);
+                color: #fff;
+            }
+
+        #main {
+            margin-left: var(--sidebar-w);
+            min-height: 100vh;
+        }
+
+        .topbar {
+            height: 56px;
+            background: #fff;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .topbar-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: #0F172A;
+        }
+
+        .topbar-sub {
+            font-size: 11px;
+            color: #94A3B8;
+        }
+
+        .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 13px;
+            font-weight: 500;
+            color: #374151;
+        }
+
+        .page-body {
+            padding: 22px 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .filter-card {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 16px 18px;
+            box-shadow: 0 1px 3px rgba(0,0,0,.06);
+        }
+
+        .filter-row {
+            display: grid;
+            grid-template-columns: 2fr 1.5fr 1fr 1fr auto;
+            gap: 12px;
+            align-items: end;
+        }
+
+        .filter-group label {
+            display: block;
+            font-size: 11px;
+            font-weight: 600;
+            color: #64748B;
+            text-transform: uppercase;
+            letter-spacing: .4px;
+            margin-bottom: 5px;
+        }
+
+        .filter-group select, .filter-group input {
+            width: 100%;
+            padding: 8px 11px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 13px;
+            font-family: inherit;
+            outline: none;
+        }
+
+            .filter-group select:focus, .filter-group input:focus {
+                border-color: var(--blue);
+            }
+
+        .btn-primary-sm {
+            padding: 8px 16px;
+            background: var(--blue);
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            font-family: inherit;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: background .15s;
+            white-space: nowrap;
+        }
+
+            .btn-primary-sm:hover {
+                background: #1565C0;
+            }
+
+        .btn-secondary-sm {
+            padding: 8px 16px;
+            background: #F1F5F9;
+            color: #374151;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            font-family: inherit;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: background .15s;
+            white-space: nowrap;
+        }
+
+            .btn-secondary-sm:hover {
+                background: #E2E8F0;
+            }
+
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(4,1fr);
+            gap: 16px;
+        }
+
+        .stat-card {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 14px 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,.06);
+        }
+
+        .stat-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+            .stat-icon.blue {
+                background: #E3F2FD;
+                color: #1976D2;
+            }
+
+            .stat-icon.green {
+                background: #E8F5E9;
+                color: #388E3C;
+            }
+
+            .stat-icon.red {
+                background: #FFEBEE;
+                color: #C62828;
+            }
+
+            .stat-icon.purple {
+                background: #EDE7F6;
+                color: #6A1B9A;
+            }
+
+        .stat-label {
+            font-size: 11px;
+            color: #64748B;
+            font-weight: 500;
+        }
+
+        .stat-value {
+            font-size: 22px;
+            font-weight: 700;
+            color: #0F172A;
+            line-height: 1.1;
+        }
+
+        .dash-card {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            box-shadow: 0 1px 3px rgba(0,0,0,.06);
+            overflow: hidden;
+        }
+
+        .dash-card-header {
+            padding: 13px 18px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .dash-card-title {
+            font-size: 13.5px;
+            font-weight: 700;
+            color: #0F172A;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead tr {
+            background: #F8FAFC;
+        }
+
+        th {
+            padding: 10px 16px;
+            font-size: 11px;
+            font-weight: 600;
+            color: #64748B;
+            text-transform: uppercase;
+            letter-spacing: .4px;
+            border-bottom: 1px solid var(--border);
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 11px 16px;
+            font-size: 13px;
+            border-bottom: 1px solid #F1F5F9;
+            vertical-align: middle;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        tbody tr:hover {
+            background: #FAFBFE;
+        }
+
+        .badge-entrada {
+            background: #E8F5E9;
+            color: #2E7D32;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .badge-salida {
+            background: #FFEBEE;
+            color: #C62828;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .badge-ajuste {
+            background: #EDE7F6;
+            color: #6A1B9A;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            display: inline-block;
+        }
 
         .empty-state {
             text-align: center;
-            padding: 48px 24px;
+            padding: 60px 20px;
             color: #94A3B8;
         }
 
             .empty-state i {
-                font-size: 40px;
-                display: block;
+                font-size: 48px;
                 margin-bottom: 12px;
+                display: block;
             }
 
             .empty-state p {
-                font-size: 14px;
+                font-size: 13px;
             }
     </style>
 </head>
 <body>
 
     <!-- SIDEBAR -->
-    <div class="sidebar">
-        <div class="sidebar-logo">
-            <h2>LOGÍSTICA</h2>
-            <span>Sistema de Control Interno</span>
-        </div>
-        <div class="sidebar-user">
-            <div class="user-name" id="sidebar-nombre">Cargando...</div>
-            <div class="user-role" id="sidebar-rol"></div>
+    <div id="sidebar">
+        <div class="sidebar-brand">
+            <div class="brand-icon">LG</div>
+            <div class="brand-name">LOGÍSTICA</div>
+            <div class="brand-sub">Sistema de Control Interno</div>
         </div>
         <nav class="sidebar-nav">
-            <a href="/dashboard.html" class="nav-item"><i class="bi bi-speedometer2"></i> Dashboard</a>
-            <a href="/productos.html" class="nav-item"><i class="bi bi-box-seam"></i> Productos</a>
-            <a href="/solicitudes.html" class="nav-item"><i class="bi bi-clipboard-check"></i> Solicitudes</a>
-            <a href="/kardex.html" class="nav-item active"><i class="bi bi-journal-text"></i> Kardex</a>
+            <div class="nav-section-label">Principal</div>
+            <a href="/dashboard.html" class="nav-link"><i class="bi bi-speedometer2"></i> Dashboard</a>
+            <div class="nav-section-label">Inventario</div>
+            <a href="/productos.html" class="nav-link"><i class="bi bi-box-seam"></i> Productos</a>
+            <a href="/kardex.html" class="nav-link active"><i class="bi bi-journal-text"></i> Kardex</a>
+            <div class="nav-section-label">Operaciones</div>
+            <a href="/solicitudes.html" class="nav-link"><i class="bi bi-clipboard-check"></i> Solicitudes</a>
+            <div class="nav-section-label">Reportes</div>
+            <a href="/reportes.html" class="nav-link"><i class="bi bi-bar-chart-line"></i> Reportes</a>
+            <div class="nav-section-label" id="label-admin" style="display:none;">Administración</div>
+            <a href="/usuarios.html" class="nav-link" id="link-usuarios" style="display:none;"><i class="bi bi-people"></i> Usuarios</a>
+            <a href="/bodegas.html" class="nav-link" id="link-bodegas" style="display:none;"><i class="bi bi-building"></i> Bodegas</a>
         </nav>
         <div class="sidebar-footer">
-            <button class="btn-logout" onclick="auth.logout()">
-                <i class="bi bi-box-arrow-left"></i> Cerrar Sesión
-            </button>
+            <button class="btn-logout" onclick="auth.logout()"><i class="bi bi-box-arrow-left"></i> Cerrar Sesión</button>
         </div>
     </div>
 
-    <!-- CONTENIDO PRINCIPAL -->
-    <div class="main-content">
+    <!-- MAIN -->
+    <div id="main">
         <div class="topbar">
             <div>
                 <div class="topbar-title">Kardex de Inventario</div>
-                <div class="topbar-breadcrumb">Historial de movimientos por producto</div>
+                <div class="topbar-sub">Inventario → Kardex</div>
             </div>
-            <button class="btn btn-secondary" id="btn-exportar"
-                    onclick="exportarCSV()" style="display:none;">
-                <i class="bi bi-download"></i> Exportar CSV
-            </button>
+            <div class="topbar-right">
+                <i class="bi bi-person-circle" style="font-size:20px;color:#9CA3AF;"></i>
+                <span id="topbar-nombre"></span>
+            </div>
         </div>
 
         <div class="page-body">
 
             <!-- FILTROS -->
-            <div class="filters-bar">
-                <div style="display:flex;align-items:center;gap:6px;">
-                    <i class="bi bi-box-seam" style="color:#94A3B8;font-size:15px;"></i>
-                    <select class="form-control" id="filtro-producto"
-                            style="min-width:240px;">
-                        <option value="">— Todos los productos —</option>
-                    </select>
-                </div>
-
-                <div style="display:flex;align-items:center;gap:6px;">
-                    <i class="bi bi-building" style="color:#94A3B8;font-size:15px;"></i>
-                    <select class="form-control" id="filtro-bodega"
-                            style="min-width:180px;">
-                        <option value="">— Todas las bodegas —</option>
-                    </select>
-                </div>
-
-                <div style="display:flex;align-items:center;gap:6px;">
-                    <i class="bi bi-calendar-range" style="color:#94A3B8;font-size:15px;"></i>
-                    <input type="date" class="form-control" id="filtro-desde"
-                           style="width:150px;" title="Fecha desde">
-                    <span style="color:#94A3B8;font-size:12px;">hasta</span>
-                    <input type="date" class="form-control" id="filtro-hasta"
-                           style="width:150px;" title="Fecha hasta">
-                </div>
-
-                <button class="btn btn-primary" onclick="buscarKardex()">
-                    <i class="bi bi-search"></i> Consultar
-                </button>
-                <button class="btn btn-secondary" onclick="limpiarFiltros()">
-                    <i class="bi bi-x-lg"></i> Limpiar
-                </button>
-            </div>
-
-            <!-- KPIs de resumen (se muestran tras la consulta) -->
-            <div class="kpi-kardex" id="kpi-kardex" style="display:none;">
-                <div class="kpi-card success">
-                    <div class="kpi-icon" style="color:#10B981;">
-                        <i class="bi bi-arrow-down-circle"></i>
+            <div class="filter-card">
+                <div class="filter-row">
+                    <div class="filter-group">
+                        <label>Producto</label>
+                        <select id="fil-producto"><option value="">— Selecciona un producto —</option></select>
                     </div>
-                    <div class="kpi-label">Total Entradas</div>
-                    <div class="kpi-value" id="kpi-entradas">0</div>
-                </div>
-                <div class="kpi-card danger">
-                    <div class="kpi-icon" style="color:#EF4444;">
-                        <i class="bi bi-arrow-up-circle"></i>
+                    <div class="filter-group">
+                        <label>Bodega</label>
+                        <select id="fil-bodega"><option value="">Todas las bodegas</option></select>
                     </div>
-                    <div class="kpi-label">Total Salidas</div>
-                    <div class="kpi-value" id="kpi-salidas">0</div>
-                </div>
-                <div class="kpi-card warning">
-                    <div class="kpi-icon" style="color:#F59E0B;">
-                        <i class="bi bi-arrow-left-right"></i>
+                    <div class="filter-group">
+                        <label>Fecha Inicio</label>
+                        <input type="date" id="fil-desde">
                     </div>
-                    <div class="kpi-label">Ajustes</div>
-                    <div class="kpi-value" id="kpi-ajustes">0</div>
-                </div>
-                <div class="kpi-card">
-                    <div class="kpi-icon">
-                        <i class="bi bi-list-ol"></i>
+                    <div class="filter-group">
+                        <label>Fecha Fin</label>
+                        <input type="date" id="fil-hasta">
                     </div>
-                    <div class="kpi-label">Total Registros</div>
-                    <div class="kpi-value" id="kpi-total">0</div>
+                    <div class="filter-group" style="display:flex;gap:8px;">
+                        <button class="btn-primary-sm" onclick="buscar()"><i class="bi bi-search"></i> Buscar</button>
+                        <button class="btn-secondary-sm" onclick="exportar()"><i class="bi bi-download"></i> CSV</button>
+                    </div>
                 </div>
             </div>
 
-            <!-- TABLA KARDEX -->
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-title">
-                        <i class="bi bi-journal-text"></i>
-                        Movimientos de Inventario
-                    </div>
-                    <span class="text-muted" id="lbl-resultado"></span>
+            <!-- STATS -->
+            <div class="stat-grid" id="stats-kardex" style="display:none;">
+                <div class="stat-card"><div class="stat-icon blue"><i class="bi bi-arrow-left-right"></i></div><div><div class="stat-label">Total Movimientos</div><div class="stat-value" id="sk-total">-</div></div></div>
+                <div class="stat-card"><div class="stat-icon green"><i class="bi bi-arrow-down-circle"></i></div><div><div class="stat-label">Total Entradas</div><div class="stat-value" id="sk-entradas">-</div></div></div>
+                <div class="stat-card"><div class="stat-icon red"><i class="bi bi-arrow-up-circle"></i></div><div><div class="stat-label">Total Salidas</div><div class="stat-value" id="sk-salidas">-</div></div></div>
+                <div class="stat-card"><div class="stat-icon purple"><i class="bi bi-box-seam"></i></div><div><div class="stat-label">Stock Actual</div><div class="stat-value" id="sk-stock">-</div></div></div>
+            </div>
+
+            <!-- TABLA -->
+            <div class="dash-card">
+                <div class="dash-card-header">
+                    <div class="dash-card-title"><i class="bi bi-journal-text" style="color:var(--blue);"></i> Movimientos</div>
+                    <span id="lbl-conteo" style="font-size:12px;color:#64748B;"></span>
                 </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Fecha</th>
-                                    <th>Tipo</th>
-                                    <th style="text-align:center;">Cantidad</th>
-                                    <th style="text-align:center;">Stock Anterior</th>
-                                    <th style="text-align:center;">Stock Nuevo</th>
-                                    <th>Referencia</th>
-                                    <th>Usuario</th>
-                                    <th>Bodega</th>
-                                </tr>
-                            </thead>
-                            <tbody id="tabla-kardex">
-                                <tr>
-                                    <td colspan="8">
-                                        <div class="empty-state">
-                                            <i class="bi bi-funnel"></i>
-                                            <p>Seleccione los filtros y haga clic en <strong>Consultar</strong></p>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Tipo</th>
+                                <th>Producto</th>
+                                <th>Bodega</th>
+                                <th style="text-align:right;">Cantidad</th>
+                                <th style="text-align:right;">Stock Antes</th>
+                                <th style="text-align:right;">Stock Después</th>
+                                <th>Referencia</th>
+                                <th>Usuario</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody-kardex">
+                            <tr><td colspan="9"><div class="empty-state"><i class="bi bi-journal-text"></i><p>Selecciona un producto y presiona Buscar</p></div></td></tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
 
@@ -212,271 +566,124 @@
     </div>
 
     <script src="/js/utils.js"></script>
+    <script src="/js/router.js"></script>
     <script>
+        auth.checkAuth();
 
-    // ── INIT ─────────────────────────────────────────────────────────────────────
-    auth.checkAuth();
+        const user = auth.getUser();
+        $('#sidebar-nombre').text(user.nombre);
+        $('#sidebar-rol').text(user.rol);
+        const elTopbar = document.getElementById('topbar-nombre');
+        if (elTopbar) elTopbar.textContent = user.nombre;
 
-    const user = auth.getUser();
-    document.getElementById('sidebar-nombre').textContent = user.nombre;
-    document.getElementById('sidebar-rol').textContent    = user.rol;
-
-    // Fechas por defecto: primer día del mes actual → hoy
-    const hoy        = new Date();
-    const primerDia  = new Date(hoy.getFullYear(), hoy.getMonth(), 1);
-    document.getElementById('filtro-desde').value = primerDia.toISOString().split('T')[0];
-    document.getElementById('filtro-hasta').value = hoy.toISOString().split('T')[0];
-
-    let kardexData = [];  // resultado actual, usado para calcular KPIs y exportar
-
-    // ── CARGAR SELECTS ───────────────────────────────────────────────────────────
-    async function cargarSelects() {
-        const [resProds, resBodegas] = await Promise.all([
-            apiCall('GET', '/productos'),
-            apiCall('GET', '/bodegas')
-        ]);
-
-        if (resProds && resProds.success) {
-            const selProd = document.getElementById('filtro-producto');
-            selProd.innerHTML =
-                '<option value="">— Todos los productos —</option>' +
-                (resProds.data || []).map(p =>
-                    `<option value="${p.productoID}">[${p.codigo}] ${p.nombre}</option>`
-                ).join('');
+        if (auth.hasRole('Admin')) {
+            document.getElementById('label-admin').style.display = 'block';
+            document.getElementById('link-usuarios').style.display = 'flex';
+            document.getElementById('link-bodegas').style.display = 'flex';
         }
 
-        if (resBodegas && resBodegas.success) {
-            const selBod = document.getElementById('filtro-bodega');
-            selBod.innerHTML =
-                '<option value="">— Todas las bodegas —</option>' +
-                (resBodegas.data || []).map(b =>
-                    `<option value="${b.bodegaID}">${b.nombre}</option>`
-                ).join('');
+        let movimientos = [];
+
+        async function init() {
+            const hoy = new Date();
+            const hace30 = new Date(); hace30.setDate(hoy.getDate() - 30);
+            $('#fil-hasta').val(hoy.toISOString().split('T')[0]);
+            $('#fil-desde').val(hace30.toISOString().split('T')[0]);
+
+            const [rp, rb] = await Promise.all([apiCall('GET', '/productos'), apiCall('GET', '/bodegas')]);
+            if (rp?.success) $('#fil-producto').append(rp.data.map(p => `<option value="${p.productoID}">${p.nombre} (${p.codigo})</option>`).join(''));
+            if (rb?.success) $('#fil-bodega').append(rb.data.map(b => `<option value="${b.bodegaID}">${b.nombre}</option>`).join(''));
         }
-    }
 
-    // ── CONSULTAR KARDEX ─────────────────────────────────────────────────────────
-    async function buscarKardex() {
-        const productoID = document.getElementById('filtro-producto').value;
-        const bodegaID   = document.getElementById('filtro-bodega').value;
-        const desde      = document.getElementById('filtro-desde').value;
-        const hasta      = document.getElementById('filtro-hasta').value;
+        async function buscar() {
+            const pid = $('#fil-producto').val();
+            const bid = $('#fil-bodega').val();
+            const desde = $('#fil-desde').val();
+            const hasta = $('#fil-hasta').val();
 
-        // Construir query string solo con parámetros con valor
-        const params = new URLSearchParams();
-        if (productoID) params.append('productoID', productoID);
-        if (bodegaID)   params.append('bodegaID',   bodegaID);
-        if (desde)      params.append('fechaDesde', desde);
-        if (hasta)      params.append('fechaHasta', hasta);
+            if (!pid) { alert('Selecciona un producto'); return; }
 
-        // Estado de carga
-        const tbody = document.getElementById('tabla-kardex');
-        tbody.innerHTML = `
-            <tr>
-                <td colspan="8" style="text-align:center;color:#94A3B8;padding:32px;">
-                    <span class="spinner" style="border-color:rgba(37,99,235,0.3);
-                          border-top-color:#2563EB;width:20px;height:20px;"></span>
-                </td>
-            </tr>`;
-        document.getElementById('lbl-resultado').textContent = '';
-        document.getElementById('kpi-kardex').style.display  = 'none';
-        document.getElementById('btn-exportar').style.display = 'none';
+            // ✅ Nombres correctos que espera el controller
+            let url = `/dashboard/kardex?productoId=${pid}`;
+            if (bid) url += `&bodegaId=${bid}`;
+            if (desde) url += `&fechaDesde=${desde}`;
+            if (hasta) url += `&fechaHasta=${hasta}`;
 
-        const qs  = params.toString() ? `?${params.toString()}` : '';
-        const res = await apiCall('GET', `/dashboard/kardex${qs}`);
+            $('#tbody-kardex').html('<tr><td colspan="9" style="text-align:center;color:#94A3B8;padding:28px;">Cargando...</td></tr>');
 
-        if (res && res.success) {
-            kardexData = res.data || [];
-            renderTablaKardex(kardexData);
-            renderKPIs(kardexData);
-            if (kardexData.length > 0) {
-                document.getElementById('btn-exportar').style.display = 'inline-flex';
+            const res = await apiCall('GET', url);
+            if (res?.success) {
+                movimientos = res.data;
+                renderTabla(movimientos);
+                renderStats(movimientos);
             }
-        } else {
-            tbody.innerHTML = `
-                <tr>
-                    <td colspan="8">
-                        <div class="empty-state">
-                            <i class="bi bi-exclamation-circle" style="color:#EF4444;"></i>
-                            <p>Error al cargar los movimientos. Intente nuevamente.</p>
-                        </div>
-                    </td>
-                </tr>`;
-        }
-    }
-
-    // ── RENDER TABLA ─────────────────────────────────────────────────────────────
-    function renderTablaKardex(data) {
-        const tbody  = document.getElementById('tabla-kardex');
-        const lbl    = document.getElementById('lbl-resultado');
-
-        lbl.textContent = `${data.length} registro${data.length !== 1 ? 's' : ''} encontrado${data.length !== 1 ? 's' : ''}`;
-
-        if (!data || data.length === 0) {
-            tbody.innerHTML = `
-                <tr>
-                    <td colspan="8">
-                        <div class="empty-state">
-                            <i class="bi bi-inbox"></i>
-                            <p>No se encontraron movimientos con los filtros seleccionados</p>
-                        </div>
-                    </td>
-                </tr>`;
-            return;
         }
 
-        tbody.innerHTML = data.map(m => {
-            const tipoBadge = renderTipo(m.tipo);
-
-            // Colorear cantidad según tipo
-            const esEntrada = estipoEntrada(m.tipo);
-            const esSalida  = estipoSalida(m.tipo);
-            const colorCant = esEntrada ? '#10B981' : esSalida ? '#EF4444' : '#2563EB';
-            const signoCant = esEntrada ? '+' : esSalida ? '−' : '±';
-
-            return `
-            <tr>
-                <td style="white-space:nowrap;">${formatDate(m.fecha)}</td>
-                <td>${tipoBadge}</td>
-                <td style="text-align:center;font-weight:700;color:${colorCant};">
-                    ${signoCant}${Math.abs(m.cantidad)}
-                </td>
-                <td style="text-align:center;color:#64748B;">${m.stockAnterior}</td>
-                <td style="text-align:center;font-weight:600;color:#1B3A5C;">${m.stockNuevo}</td>
-                <td>
-                    ${m.referencia
-                        ? `<code style="background:#F1F5F9;padding:2px 7px;border-radius:4px;
-                                        font-size:11px;color:#1B3A5C;">${m.referencia}</code>`
-                        : `<span style="color:#CBD5E1;">—</span>`}
-                </td>
-                <td>${m.usuario || '<span style="color:#CBD5E1;">—</span>'}</td>
-                <td>${m.bodega  || '<span style="color:#CBD5E1;">—</span>'}</td>
-            </tr>`;
-        }).join('');
-    }
-
-    // ── RENDER KPIs ──────────────────────────────────────────────────────────────
-    function renderKPIs(data) {
-        const entradas = data.filter(m => estipoEntrada(m.tipo))
-                             .reduce((s, m) => s + Math.abs(m.cantidad), 0);
-        const salidas  = data.filter(m => estipoSalida(m.tipo))
-                             .reduce((s, m) => s + Math.abs(m.cantidad), 0);
-        const ajustes  = data.filter(m => !estipoEntrada(m.tipo) && !estipoSalida(m.tipo)).length;
-
-        document.getElementById('kpi-entradas').textContent = entradas;
-        document.getElementById('kpi-salidas').textContent  = salidas;
-        document.getElementById('kpi-ajustes').textContent  = ajustes;
-        document.getElementById('kpi-total').textContent    = data.length;
-        document.getElementById('kpi-kardex').style.display = 'grid';
-    }
-
-    // ── TIPOS DE MOVIMIENTO ───────────────────────────────────────────────────────
-    function estipoEntrada(tipo) {
-        if (!tipo) return false;
-        const t = tipo.toLowerCase();
-        return t.includes('entrada') || t.includes('ingreso') || t.includes('compra');
-    }
-
-    function estipoSalida(tipo) {
-        if (!tipo) return false;
-        const t = tipo.toLowerCase();
-        return t.includes('salida') || t.includes('despacho') || t.includes('egreso');
-    }
-
-    function renderTipo(tipo) {
-        if (!tipo) return `<span style="color:#CBD5E1;">—</span>`;
-        if (estipoEntrada(tipo)) {
-            return `<span class="tipo-entrada">
-                        <i class="bi bi-arrow-down-circle-fill"></i> ${tipo}
-                    </span>`;
-        }
-        if (estipoSalida(tipo)) {
-            return `<span class="tipo-salida">
-                        <i class="bi bi-arrow-up-circle-fill"></i> ${tipo}
-                    </span>`;
-        }
-        return `<span class="tipo-ajuste">
-                    <i class="bi bi-arrow-left-right"></i> ${tipo}
-                </span>`;
-    }
-
-    // ── EXPORTAR CSV ─────────────────────────────────────────────────────────────
-    async function exportarCSV() {
-        const productoID = document.getElementById('filtro-producto').value;
-        const bodegaID   = document.getElementById('filtro-bodega').value;
-        const desde      = document.getElementById('filtro-desde').value;
-        const hasta      = document.getElementById('filtro-hasta').value;
-
-        const params = new URLSearchParams();
-        if (productoID) params.append('productoID', productoID);
-        if (bodegaID)   params.append('bodegaID',   bodegaID);
-        if (desde)      params.append('fechaDesde', desde);
-        if (hasta)      params.append('fechaHasta', hasta);
-
-        const btn = document.getElementById('btn-exportar');
-        btn.disabled = true;
-        btn.innerHTML = '<span class="spinner"></span> Exportando...';
-
-        try {
-            const token = sessionStorage.getItem('jwt_token');
-            const qs    = params.toString() ? `?${params.toString()}` : '';
-            const url   = `${API_BASE}/dashboard/exportar-kardex${qs}`;
-
-            const response = await fetch(url, {
-                headers: { 'Authorization': `Bearer ${token}` }
+        function renderStats(d) {
+            if (!d.length) { $('#stats-kardex').hide(); return; }
+            $('#stats-kardex').show();
+            $('#sk-total').text(d.length);
+            $('#sk-entradas').text(
+                d.filter(m => m.tipoMovimiento === 'Entrada').reduce((s, m) => s + m.cantidad, 0)
+            );
+            $('#sk-salidas').text(
+                d.filter(m => m.tipoMovimiento === 'Salida').reduce((s, m) => s + m.cantidad, 0)
+            );
+            // ✅ Stock actual real desde el API de productos
+            const pid = $('#fil-producto').val();
+            apiCall('GET', '/productos').then(res => {
+                if (res?.success) {
+                    const prod = res.data.find(p => p.productoID == pid);
+                    $('#sk-stock').text(prod ? prod.stockActual : '-');
+                }
             });
-
-            if (!response.ok) throw new Error('Error en la respuesta del servidor');
-
-            // Obtener nombre de archivo desde Content-Disposition o generar uno
-            const disposition = response.headers.get('Content-Disposition') || '';
-            const match        = disposition.match(/filename[^;=\n]*=(['"]?)([^'";\n]*)\1/);
-            const filename     = match ? match[2] : `kardex_${desde || 'todo'}_${hasta || 'todo'}.csv`;
-
-            const blob = await response.blob();
-            const link = document.createElement('a');
-            link.href  = URL.createObjectURL(blob);
-            link.download = filename;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            URL.revokeObjectURL(link.href);
-
-            showAlert('Archivo CSV descargado correctamente.', 'success');
-
-        } catch (err) {
-            showAlert('Error al exportar el archivo. Intente nuevamente.', 'danger');
-        } finally {
-            btn.disabled = false;
-            btn.innerHTML = '<i class="bi bi-download"></i> Exportar CSV';
         }
-    }
 
-    // ── LIMPIAR FILTROS ───────────────────────────────────────────────────────────
-    function limpiarFiltros() {
-        document.getElementById('filtro-producto').value = '';
-        document.getElementById('filtro-bodega').value   = '';
-        document.getElementById('filtro-desde').value    = primerDia.toISOString().split('T')[0];
-        document.getElementById('filtro-hasta').value    = hoy.toISOString().split('T')[0];
+        function renderTabla(d) {
+            $('#lbl-conteo').text(d.length + ' movimientos');
+            if (!d.length) {
+                $('#tbody-kardex').html('<tr><td colspan="9"><div class="empty-state"><i class="bi bi-journal-text"></i><p>Sin movimientos en el período seleccionado</p></div></td></tr>');
+                return;
+            }
+            // ✅ Usa los nombres correctos del DTO: fechaMovimiento, stockAnterior, stockNuevo, documentoReferencia
+            $('#tbody-kardex').html(d.map(m => `
+                        <tr>
+                            <td style="color:#64748B;white-space:nowrap;">${formatDate(m.fechaMovimiento)}</td>
+                            <td>${badgeTipo(m.tipoMovimiento)}</td>
+                            <td><strong>${m.producto || '-'}</strong></td>
+                            <td style="color:#64748B;">${m.bodega || '-'}</td>
+                            <td style="text-align:right;font-weight:700;color:${m.tipoMovimiento === 'Entrada' ? '#2E7D32' : '#C62828'};">
+                                ${m.tipoMovimiento === 'Entrada' ? '+' : '-'}${m.cantidad}
+                            </td>
+                            <td style="text-align:right;color:#64748B;">${m.stockAnterior}</td>
+                            <td style="text-align:right;font-weight:600;">${m.stockNuevo}</td>
+                            <td style="color:#64748B;font-size:12px;">${m.documentoReferencia || '-'}</td>
+                            <td style="color:#64748B;">${m.usuario}</td>
+                        </tr>
+                    `).join(''));
+        }
 
-        kardexData = [];
-        document.getElementById('tabla-kardex').innerHTML = `
-            <tr>
-                <td colspan="8">
-                    <div class="empty-state">
-                        <i class="bi bi-funnel"></i>
-                        <p>Seleccione los filtros y haga clic en <strong>Consultar</strong></p>
-                    </div>
-                </td>
-            </tr>`;
-        document.getElementById('lbl-resultado').textContent   = '';
-        document.getElementById('kpi-kardex').style.display    = 'none';
-        document.getElementById('btn-exportar').style.display  = 'none';
-    }
+        function badgeTipo(t) {
+            if (t === 'Entrada') return '<span class="badge-entrada"><i class="bi bi-arrow-down-circle"></i> Entrada</span>';
+            if (t === 'Salida') return '<span class="badge-salida"><i class="bi bi-arrow-up-circle"></i> Salida</span>';
+            return '<span class="badge-ajuste">Ajuste</span>';
+        }
 
-    // ── ARRANQUE ─────────────────────────────────────────────────────────────────
-    cargarSelects();
+        function exportar() {
+            if (!movimientos.length) { alert('No hay datos para exportar'); return; }
+            const headers = ['Fecha', 'Tipo', 'Producto', 'Bodega', 'Cantidad', 'Stock Antes', 'Stock Después', 'Referencia', 'Usuario'];
+            const rows = movimientos.map(m => [
+                formatDate(m.fechaMovimiento), m.tipoMovimiento, m.producto, m.bodega,
+                m.cantidad, m.stockAnterior, m.stockNuevo, m.documentoReferencia || '', m.usuario
+            ]);
+            const csv = [headers, ...rows].map(r => r.join(',')).join('\n');
+            const a = document.createElement('a');
+            a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
+            a.download = `kardex_${new Date().toISOString().split('T')[0]}.csv`;
+            a.click();
+        }
 
+        init();
     </script>
 </body>
 </html>

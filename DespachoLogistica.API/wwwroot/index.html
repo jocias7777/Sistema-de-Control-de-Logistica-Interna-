@@ -6,18 +6,387 @@
     <title>Login — Despacho Logística</title>
     <link rel="stylesheet" href="/css/app.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <style>
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #EFF6FF;
+            background-image: radial-gradient(circle at 10% 20%, rgba(37,99,235,0.08) 0%, transparent 50%), radial-gradient(circle at 90% 80%, rgba(59,130,246,0.10) 0%, transparent 50%);
+        }
+
+        /* ══ TARJETA SPLIT-SCREEN ══ */
+        .split-card {
+            display: flex;
+            width: 820px;
+            height: 500px;
+            border-radius: 8px; /* ← antes 20px */
+            overflow: hidden;
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.14);
+        }
+
+        /* ─── PANEL IZQUIERDO ─── */
+        .panel-left {
+            width: 45%;
+            background: linear-gradient(160deg, #1D4ED8 0%, #2563EB 50%, #3B82F6 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 32px;
+            position: relative;
+            overflow: hidden;
+            gap: 18px;
+        }
+
+            .panel-left::before {
+                content: '';
+                position: absolute;
+                width: 300px;
+                height: 300px;
+                border-radius: 50%;
+                background: rgba(255,255,255,0.06);
+                top: -100px;
+                left: -100px;
+            }
+
+            .panel-left::after {
+                content: '';
+                position: absolute;
+                width: 200px;
+                height: 200px;
+                border-radius: 50%;
+                background: rgba(255,255,255,0.06);
+                bottom: -60px;
+                right: -60px;
+            }
+
+        .illus-circle {
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.15);
+            border: 2px solid rgba(255,255,255,0.25);
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 56px;
+            color: #fff;
+            z-index: 1;
+            flex-shrink: 0;
+        }
+
+        .panel-left-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #fff;
+            text-align: center;
+            letter-spacing: 0.5px;
+            line-height: 1.4;
+            z-index: 1;
+        }
+
+        .panel-left-desc {
+            font-size: 12.5px;
+            font-weight: 300;
+            color: rgba(255,255,255,0.72);
+            text-align: center;
+            line-height: 1.6;
+            z-index: 1;
+            max-width: 220px;
+        }
+
+        .dots {
+            display: flex;
+            gap: 6px;
+            z-index: 1;
+            margin-top: 4px;
+        }
+
+            .dots span {
+                width: 7px;
+                height: 7px;
+                border-radius: 50%;
+                background: rgba(255,255,255,0.35);
+            }
+
+                .dots span.active {
+                    background: #fff;
+                    width: 20px;
+                    border-radius: 4px;
+                }
+
+        /* ─── PANEL DERECHO ─── */
+        .panel-right {
+            width: 55%;
+            background: #fff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 44px 48px;
+            position: relative;
+        }
+
+        .btn-close-deco {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: none;
+            border: none;
+            font-size: 18px;
+            color: #CBD5E1;
+            cursor: default;
+        }
+
+        .brand-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: #2563EB;
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+        }
+
+        .form-title {
+            font-size: 26px;
+            font-weight: 700;
+            color: #1E293B;
+            margin-bottom: 6px;
+        }
+
+        .form-subtitle {
+            font-size: 12.5px;
+            color: #94A3B8;
+            line-height: 1.5;
+            margin-bottom: 26px;
+        }
+
+        /* ── Alerta ── */
+        #alert-container {
+            display: none;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 14px;
+            border-radius: 5px; /* ← antes 8px */
+            font-size: 12.5px;
+            font-weight: 500;
+            margin-bottom: 16px;
+        }
+
+            #alert-container.show {
+                display: flex;
+            }
+
+            #alert-container.danger {
+                background: #FEF2F2;
+                color: #DC2626;
+                border: 1px solid #FECACA;
+            }
+
+            #alert-container.success {
+                background: #F0FDF4;
+                color: #16A34A;
+                border: 1px solid #BBF7D0;
+            }
+
+        /* ── Grupos de formulario ── */
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 12.5px;
+            font-weight: 500;
+            color: #475569;
+            margin-bottom: 6px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 11px 14px;
+            border: 1.5px solid #E2E8F0;
+            border-radius: 6px; /* ← antes 10px */
+            font-size: 13.5px;
+            font-family: 'Poppins', sans-serif;
+            color: #1E293B;
+            background: #F8FAFC;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+            .form-control:focus {
+                border-color: #2563EB;
+                box-shadow: 0 0 0 3px rgba(37,99,235,0.10);
+                background: #fff;
+            }
+
+            .form-control::placeholder {
+                color: #CBD5E1;
+            }
+
+        /* ── Password ── */
+        .pw-wrap {
+            position: relative;
+        }
+
+            .pw-wrap .form-control {
+                padding-right: 32px;
+            }
+
+        .btn-eye {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #94A3B8;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+            .btn-eye:hover {
+                color: #2563EB;
+            }
+
+        /* ── Botón login ── */
+        .btn-login {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #2563EB, #1D4ED8);
+            color: #fff;
+            font-size: 14px;
+            font-weight: 600;
+            font-family: 'Poppins', sans-serif;
+            border: none;
+            border-radius: 6px; /* ← antes 10px */
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 4px;
+            transition: opacity 0.2s, transform 0.1s, box-shadow 0.2s;
+            box-shadow: 0 4px 14px rgba(37,99,235,0.35);
+        }
+
+            .btn-login:hover:not(:disabled) {
+                opacity: 0.92;
+                transform: translateY(-1px);
+                box-shadow: 0 6px 20px rgba(37,99,235,0.40);
+            }
+
+            .btn-login:disabled {
+                opacity: 0.6;
+                cursor: not-allowed;
+            }
+
+        /* ── Spinner ── */
+        .spinner {
+            width: 15px;
+            height: 15px;
+            border: 2px solid rgba(255,255,255,0.35);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+            display: inline-block;
+        }
+        .panel-icon {
+            font-size: 100px;
+            color: white;
+            margin-bottom: 10px;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* ══ RESPONSIVE ══ */
+        @media (max-width: 660px) {
+            .split-card {
+                flex-direction: column;
+                width: 92vw;
+                height: auto;
+                border-radius: 6px;
+            }
+
+            .panel-left {
+                width: 100%;
+                flex-direction: row;
+                padding: 24px 20px;
+                gap: 14px;
+                justify-content: center;
+            }
+
+            .illus-circle {
+                width: 60px;
+                height: 60px;
+                font-size: 28px;
+            }
+
+            .panel-left-title {
+                font-size: 15px;
+                text-align: left;
+            }
+
+            .panel-left-desc, .dots {
+                display: none;
+            }
+
+            .panel-right {
+                width: 100%;
+                padding: 32px 24px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <div class="login-page">
-        <div class="login-card">
 
-            <div class="login-logo">
-                <i class="bi bi-box-seam" style="font-size:36px; color:#2563EB;"></i>
-                <h1>DESPACHO &<br>LOGÍSTICA</h1>
-                <p>Sistema de Control Interno</p>
+    <div class="split-card">
+
+        <!-- ════ PANEL IZQUIERDO ════ -->
+        <div class="panel-left">
+
+            <div class="panel-icon">
+                <i class="bi bi-truck"></i>
             </div>
 
-            <div id="alert-container" class="alert"></div>
+            <h2 class="panel-left-title">Despacho &amp;<br>Logística</h2>
+
+            
+
+        </div>
+
+        <!-- ════ PANEL DERECHO ════ -->
+        <div class="panel-right">
+
+            <button class="btn-close-deco">✕</button>
+
+            <p class="brand-name">Sistema de Control Interno</p>
+            <h1 class="form-title">Iniciar Sesión</h1>
+            <p class="form-subtitle">
+                Ingresa tus credenciales para acceder a tu cuenta,<br>
+                gestionar órdenes y revisar reportes.
+            </p>
+
+            <div id="alert-container"></div>
 
             <div class="form-group">
                 <label class="form-label">Correo electrónico</label>
@@ -27,18 +396,16 @@
 
             <div class="form-group">
                 <label class="form-label">Contraseña</label>
-                <div style="position:relative;">
+                <div class="pw-wrap">
                     <input type="password" id="password" class="form-control"
-                           placeholder="••••••••" style="padding-right:40px;">
-                    <button onclick="togglePassword()" id="btn-eye"
-                            style="position:absolute;right:10px;top:50%;transform:translateY(-50%);
-                               background:none;border:none;cursor:pointer;color:#94A3B8;font-size:16px;">
+                           placeholder="••••••••">
+                    <button onclick="togglePassword()" class="btn-eye">
                         <i class="bi bi-eye" id="eye-icon"></i>
                     </button>
                 </div>
             </div>
 
-            <button class="btn btn-primary w-100" id="btn-login" onclick="doLogin()">
+            <button class="btn-login" id="btn-login" onclick="doLogin()">
                 <i class="bi bi-box-arrow-in-right"></i> Iniciar Sesión
             </button>
 
@@ -47,14 +414,20 @@
 
     <script src="/js/utils.js"></script>
     <script>
-        // Si ya está autenticado redirigir directo
         if (auth.isAuthenticated()) {
             window.location.href = '/dashboard.html';
         }
 
+        function showAlert(msg, type) {
+            const el = document.getElementById('alert-container');
+            el.className = `show ${type}`;
+            el.innerHTML = `<i class="bi bi-exclamation-circle-fill"></i> ${msg}`;
+            el.style.display = 'flex';
+        }
+
         function togglePassword() {
             const input = document.getElementById('password');
-            const icon  = document.getElementById('eye-icon');
+            const icon = document.getElementById('eye-icon');
             if (input.type === 'password') {
                 input.type = 'text';
                 icon.className = 'bi bi-eye-slash';
@@ -64,22 +437,20 @@
             }
         }
 
-        // Permitir Enter en el campo password
-        document.getElementById('password').addEventListener('keydown', function(e) {
+        document.getElementById('password').addEventListener('keydown', e => {
             if (e.key === 'Enter') doLogin();
         });
 
         async function doLogin() {
-            const email    = document.getElementById('email').value.trim();
+            const email = document.getElementById('email').value.trim();
             const password = document.getElementById('password').value;
-            const btn      = document.getElementById('btn-login');
+            const btn = document.getElementById('btn-login');
 
             if (!email || !password) {
                 showAlert('Ingresa tu correo y contraseña.', 'danger');
                 return;
             }
 
-            // Deshabilitar botón y mostrar spinner
             btn.disabled = true;
             btn.innerHTML = '<span class="spinner"></span> Verificando...';
 
@@ -88,14 +459,10 @@
 
                 if (res && res.success) {
                     auth.login(res.data);
-
-                    // Redirigir según rol
                     const rol = res.data.rol;
-                    if (rol === 'Admin' || rol === 'Gerente') {
-                        window.location.href = '/dashboard.html';
-                    } else {
-                        window.location.href = '/solicitudes.html';
-                    }
+                    window.location.href = (rol === 'Admin' || rol === 'Gerente')
+                        ? '/dashboard.html'
+                        : '/solicitudes.html';
                 } else {
                     showAlert(res?.message || 'Credenciales incorrectas.', 'danger');
                     btn.disabled = false;
@@ -110,14 +477,3 @@
     </script>
 </body>
 </html>
-```
-
----
-
-## PASO 43 — Compilar y probar el Login
-
-1. Presiona **Ctrl + Shift + B**
-2. Presiona **F5**
-3. En el navegador cambia la URL a:
-```
-   https://localhost:7185/index.html

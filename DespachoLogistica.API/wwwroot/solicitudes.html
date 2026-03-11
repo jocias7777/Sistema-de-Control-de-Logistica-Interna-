@@ -4,17 +4,260 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Solicitudes — Despacho Logística</title>
-    <link rel="stylesheet" href="/css/app.css">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+
     <style>
+        :root {
+            --sidebar-bg: #1a237e;
+            --sidebar-hover: #283593;
+            --blue: #1976D2;
+            --border: #E3E8EF;
+            --bg: #F4F6FA;
+            --sidebar-w: 225px;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px;
+            background: var(--bg);
+            color: #212529;
+        }
+
+        /* SIDEBAR */
+        #sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: var(--sidebar-w);
+            height: 100vh;
+            background: var(--sidebar-bg);
+            display: flex;
+            flex-direction: column;
+            z-index: 200;
+            overflow-y: auto;
+        }
+
+        .sidebar-brand {
+            padding: 20px 20px 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            border-bottom: 1px solid rgba(255,255,255,.1);
+        }
+
+        .brand-icon {
+            width: 42px;
+            height: 42px;
+            background: var(--blue);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: 800;
+            color: #fff;
+        }
+
+        .brand-name {
+            font-size: 14px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .brand-sub {
+            font-size: 10px;
+            color: rgba(255,255,255,.45);
+            text-align: center;
+        }
+
+        .sidebar-nav {
+            flex: 1;
+            padding: 10px 0;
+        }
+
+        .nav-section-label {
+            padding: 10px 20px 4px;
+            font-size: 10px;
+            font-weight: 700;
+            color: rgba(255,255,255,.3);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 20px;
+            color: rgba(255,255,255,.72) !important;
+            font-size: 13.5px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: background .15s, color .15s;
+        }
+
+            .nav-link i {
+                font-size: 18px;
+                width: 20px;
+            }
+
+            .nav-link:hover {
+                background: var(--sidebar-hover);
+                color: #fff !important;
+            }
+
+            .nav-link.active {
+                background: rgba(255,255,255,.13);
+                color: #fff !important;
+                font-weight: 600;
+            }
+
+        .sidebar-footer {
+            padding: 10px 0;
+            border-top: 1px solid rgba(255,255,255,.1);
+        }
+
+        .btn-logout {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 20px;
+            background: transparent;
+            border: none;
+            color: rgba(255,255,255,.6);
+            font-size: 13.5px;
+            font-weight: 500;
+            cursor: pointer;
+            font-family: inherit;
+            transition: background .15s, color .15s;
+        }
+
+            .btn-logout:hover {
+                background: var(--sidebar-hover);
+                color: #fff;
+            }
+
+        /* MAIN */
+        #main {
+            margin-left: var(--sidebar-w);
+            min-height: 100vh;
+            background: var(--bg);
+        }
+
+        .page-body {
+            padding: 20px 28px 28px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        /* BUTTONS */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            transition: background .15s, box-shadow .15s, opacity .15s;
+            text-decoration: none;
+            font-family: inherit;
+        }
+
+            .btn:disabled {
+                opacity: .6;
+                cursor: not-allowed;
+            }
+
+        .btn-primary {
+            background: var(--blue);
+            color: #fff;
+        }
+
+            .btn-primary:hover:not(:disabled) {
+                background: #1565C0;
+                box-shadow: 0 2px 8px rgba(25,118,210,.3);
+            }
+
+        .btn-secondary {
+            background: #fff;
+            color: #374151;
+            border: 1px solid var(--border);
+        }
+
+            .btn-secondary:hover:not(:disabled) {
+                background: #F8FAFC;
+            }
+
+        .btn-success {
+            background: #16A34A;
+            color: #fff;
+        }
+
+            .btn-success:hover:not(:disabled) {
+                background: #15803D;
+            }
+
+        .btn-danger {
+            background: #DC2626;
+            color: #fff;
+        }
+
+            .btn-danger:hover:not(:disabled) {
+                background: #B91C1C;
+            }
+
+        .btn-sm {
+            padding: 5px 10px;
+            font-size: 12px;
+        }
+
+        .btn-new {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 9px 20px;
+            border-radius: 8px;
+            border: none;
+            background: var(--blue);
+            font-size: 13px;
+            font-weight: 600;
+            color: #fff;
+            cursor: pointer;
+            font-family: inherit;
+            transition: background .15s, box-shadow .15s;
+            white-space: nowrap;
+        }
+
+            .btn-new:hover {
+                background: #1565C0;
+                box-shadow: 0 2px 8px rgba(25,118,210,.3);
+            }
+
+        /* TABS */
         .tabs-bar {
             display: flex;
             gap: 4px;
-            background: #FFFFFF;
+            background: #fff;
             padding: 8px;
             border-radius: 10px;
-            margin-bottom: 16px;
-            box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+            border: 1px solid var(--border);
+            box-shadow: 0 1px 3px rgba(0,0,0,.06);
         }
 
         .tab-btn {
@@ -30,7 +273,7 @@
             font-weight: 500;
             cursor: pointer;
             font-family: inherit;
-            transition: all 0.2s;
+            transition: all .2s;
         }
 
             .tab-btn:hover {
@@ -39,8 +282,8 @@
             }
 
             .tab-btn.active {
-                background: #2563EB;
-                color: #FFFFFF;
+                background: var(--blue);
+                color: #fff;
             }
 
         .tab-count {
@@ -53,8 +296,8 @@
         }
 
         .tab-btn.active .tab-count {
-            background: rgba(255,255,255,0.25);
-            color: #FFFFFF;
+            background: rgba(255,255,255,.25);
+            color: #fff;
         }
 
         .tab-panel {
@@ -65,6 +308,296 @@
                 display: block;
             }
 
+        /* CARD */
+        .dash-card {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            box-shadow: 0 1px 3px rgba(0,0,0,.06);
+            overflow: hidden;
+        }
+
+        .dash-card-header {
+            padding: 13px 18px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .dash-card-title {
+            font-size: 13.5px;
+            font-weight: 700;
+            color: #0F172A;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+
+        /* TABLE */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead tr {
+            background: #F8FAFC;
+        }
+
+        th {
+            padding: 10px 16px;
+            font-size: 11px;
+            font-weight: 600;
+            color: #64748B;
+            text-transform: uppercase;
+            letter-spacing: .4px;
+            border-bottom: 1px solid var(--border);
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 12px 16px;
+            font-size: 13px;
+            border-bottom: 1px solid #F1F5F9;
+            vertical-align: middle;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        tbody tr:hover {
+            background: #FAFBFE;
+        }
+
+        /* BADGES */
+        .badge-estado {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .badge-pendiente {
+            background: #FEF9C3;
+            color: #854D0E;
+        }
+
+        .badge-aprobada {
+            background: #DCFCE7;
+            color: #166534;
+        }
+
+        .badge-rechazada {
+            background: #FEE2E2;
+            color: #991B1B;
+        }
+
+        .badge-despachada {
+            background: #DBEAFE;
+            color: #1E40AF;
+        }
+
+        .badge-borrador {
+            background: #F1F5F9;
+            color: #475569;
+        }
+
+        /* FORM */
+        .form-control {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 13px;
+            font-family: inherit;
+            color: #0F172A;
+            background: #fff;
+            outline: none;
+            transition: border-color .15s, box-shadow .15s;
+        }
+
+            .form-control:focus {
+                border-color: var(--blue);
+                box-shadow: 0 0 0 3px rgba(25,118,210,.12);
+            }
+
+            .form-control::placeholder {
+                color: #94A3B8;
+            }
+
+        .form-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 500;
+            color: #0F172A;
+            margin-bottom: 6px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        select.form-control {
+            cursor: pointer;
+        }
+
+        textarea.form-control {
+            resize: vertical;
+        }
+
+        /* ALERT */
+        .alert-inline {
+            display: none;
+            padding: 10px 14px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 16px;
+        }
+
+            .alert-inline.show {
+                display: block;
+            }
+
+            .alert-inline.danger {
+                background: #FEE2E2;
+                color: #991B1B;
+                border: 1px solid #FECACA;
+            }
+
+            .alert-inline.success {
+                background: #DCFCE7;
+                color: #166534;
+                border: 1px solid #A7F3D0;
+            }
+
+            .alert-inline.warning {
+                background: #FEF9C3;
+                color: #854D0E;
+                border: 1px solid #FDE68A;
+            }
+
+        /* TOAST */
+        #global-toast {
+            position: fixed;
+            top: 20px;
+            right: 24px;
+            z-index: 9999;
+            min-width: 280px;
+            padding: 12px 18px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            box-shadow: 0 4px 12px rgba(0,0,0,.12);
+            display: none;
+            align-items: center;
+            gap: 8px;
+        }
+
+            #global-toast.show {
+                display: flex;
+            }
+
+            #global-toast.success {
+                background: #DCFCE7;
+                color: #166534;
+                border: 1px solid #A7F3D0;
+            }
+
+            #global-toast.danger {
+                background: #FEE2E2;
+                color: #991B1B;
+                border: 1px solid #FECACA;
+            }
+
+        /* MODAL */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(15,23,42,.45);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+
+            .modal-overlay.show {
+                display: flex;
+            }
+
+        .modal-box {
+            background: #fff;
+            border-radius: 10px;
+            width: 100%;
+            max-width: 520px;
+            box-shadow: 0 20px 60px rgba(0,0,0,.18);
+            animation: modalIn .2s ease;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        @keyframes modalIn {
+            from {
+                transform: translateY(-10px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            background: #fff;
+            z-index: 1;
+        }
+
+        .modal-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: #0F172A;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 22px;
+            color: #94A3B8;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+            .modal-close:hover {
+                color: #0F172A;
+            }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .modal-footer {
+            padding: 14px 20px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            position: sticky;
+            bottom: 0;
+            background: #fff;
+        }
+
+        /* DETALLE */
         .detalle-fila {
             display: flex;
             justify-content: space-between;
@@ -83,14 +616,15 @@
             font-weight: 700;
             color: #94A3B8;
             text-transform: uppercase;
-            letter-spacing: 0.4px;
+            letter-spacing: .4px;
         }
 
         .detalle-val {
             font-weight: 600;
-            color: #1B3A5C;
+            color: #0F172A;
         }
 
+        /* FILA PRODUCTO */
         .fila-producto {
             display: grid;
             grid-template-columns: 1fr 90px 36px;
@@ -98,25 +632,67 @@
             align-items: center;
             margin-bottom: 8px;
         }
+
+        /* SPINNER */
+        .spinner {
+            display: inline-block;
+            width: 13px;
+            height: 13px;
+            border: 2px solid rgba(255,255,255,.35);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin .6s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .d-flex {
+            display: flex;
+        }
+
+        .gap-2 {
+            gap: 8px;
+        }
+
+        .align-center {
+            align-items: center;
+        }
+
+        .text-muted {
+            color: #94A3B8;
+        }
     </style>
 </head>
 <body>
 
     <!-- SIDEBAR -->
-    <div class="sidebar">
-        <div class="sidebar-logo">
-            <h2>LOGÍSTICA</h2>
-            <span>Sistema de Control Interno</span>
-        </div>
-        <div class="sidebar-user">
-            <div class="user-name" id="sidebar-nombre">Cargando...</div>
-            <div class="user-role" id="sidebar-rol"></div>
+    <div id="sidebar">
+        <div class="sidebar-brand">
+            <div class="brand-icon">LG</div>
+            <div class="brand-name">LOGÍSTICA</div>
+            <div class="brand-sub">Sistema de Control Interno</div>
         </div>
         <nav class="sidebar-nav">
-            <a href="/dashboard.html" class="nav-item"><i class="bi bi-speedometer2"></i> Dashboard</a>
-            <a href="/productos.html" class="nav-item"><i class="bi bi-box-seam"></i> Productos</a>
-            <a href="/solicitudes.html" class="nav-item active"><i class="bi bi-clipboard-check"></i> Solicitudes</a>
-            <a href="/kardex.html" class="nav-item"><i class="bi bi-journal-text"></i> Kardex</a>
+            <div class="nav-section-label">Principal</div>
+            <a href="/dashboard.html" class="nav-link"><i class="bi bi-speedometer2"></i> Dashboard</a>
+
+            <div class="nav-section-label">Inventario</div>
+            <a href="/productos.html" class="nav-link"><i class="bi bi-box-seam"></i> Productos</a>
+            <a href="/kardex.html" class="nav-link"><i class="bi bi-journal-text"></i> Kardex</a>
+
+            <div class="nav-section-label">Operaciones</div>
+            <a href="/solicitudes.html" class="nav-link active"><i class="bi bi-clipboard-check"></i> Solicitudes</a>
+
+            <div class="nav-section-label">Reportes</div>
+            <a href="/reportes.html" class="nav-link"><i class="bi bi-bar-chart-line"></i> Reportes</a>
+
+            <div class="nav-section-label" id="label-admin" style="display:none;">Administración</div>
+            <a href="/usuarios.html" class="nav-link" id="link-usuarios" style="display:none;"><i class="bi bi-people"></i> Usuarios</a>
+            <a href="/bodegas.html" class="nav-link" id="link-bodegas" style="display:none;"><i class="bi bi-building"></i> Bodegas</a>
         </nav>
         <div class="sidebar-footer">
             <button class="btn-logout" onclick="auth.logout()">
@@ -125,19 +701,31 @@
         </div>
     </div>
 
-    <!-- CONTENIDO PRINCIPAL -->
-    <div class="main-content">
-        <div class="topbar">
-            <div>
-                <div class="topbar-title">Solicitudes de Despacho</div>
-                <div class="topbar-breadcrumb">Control y seguimiento de solicitudes</div>
+    <!-- MAIN -->
+    <div id="main">
+
+        <div style="background:#fff;border-bottom:1px solid var(--border);height:48px;display:flex;align-items:center;justify-content:space-between;padding:0 28px;">
+            <button style="background:none;border:none;font-size:20px;color:#64748B;cursor:pointer;padding:0;">
+                <i class="bi bi-list"></i>
+            </button>
+            <div style="display:flex;align-items:center;gap:10px;font-size:13px;font-weight:500;color:#374151;">
+                <i class="bi bi-person-circle" style="font-size:20px;color:#9CA3AF;"></i>
+                <span id="topbar-nombre"></span>
             </div>
-            <button class="btn btn-primary" onclick="abrirModalNueva()">
+        </div>
+
+        <div style="padding:24px 28px 0;display:flex;align-items:center;justify-content:space-between;">
+            <div>
+                <div style="font-size:26px;font-weight:700;color:#0F172A;letter-spacing:-.3px;">Solicitudes de Despacho</div>
+                <div style="font-size:13px;color:#94A3B8;margin-top:3px;">Control y seguimiento de solicitudes</div>
+            </div>
+            <button class="btn-new" onclick="abrirModalNueva()">
                 <i class="bi bi-plus-lg"></i> Nueva Solicitud
             </button>
         </div>
 
         <div class="page-body">
+
 
             <!-- TABS -->
             <div class="tabs-bar">
@@ -146,14 +734,12 @@
                     Mis Solicitudes
                     <span class="tab-count" id="cnt-mis">0</span>
                 </button>
-                <button class="tab-btn" id="tab-bandeja" onclick="switchTab('bandeja')"
-                        style="display:none;">
+                <button class="tab-btn" id="tab-bandeja" onclick="switchTab('bandeja')" style="display:none;">
                     <i class="bi bi-inbox-fill"></i>
                     Bandeja de Aprobación
                     <span class="tab-count" id="cnt-bandeja">0</span>
                 </button>
-                <button class="tab-btn" id="tab-historial" onclick="switchTab('historial')"
-                        style="display:none;">
+                <button class="tab-btn" id="tab-historial" onclick="switchTab('historial')" style="display:none;">
                     <i class="bi bi-clock-history"></i>
                     Historial Completo
                     <span class="tab-count" id="cnt-historial">0</span>
@@ -162,76 +748,64 @@
 
             <!-- PANEL: MIS SOLICITUDES -->
             <div class="tab-panel active" id="panel-mis">
-                <div class="card">
-                    <div class="card-header">
-                        <div class="card-title">
-                            <i class="bi bi-person-lines-fill"></i> Mis Solicitudes
-                        </div>
+                <div class="dash-card">
+                    <div class="dash-card-header">
+                        <div class="dash-card-title"><i class="bi bi-person-lines-fill" style="color:#1976D2;"></i> Mis Solicitudes</div>
                     </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>Número</th>
-                                        <th>Bodega</th>
-                                        <th>Fecha</th>
-                                        <th style="text-align:center;">Líneas</th>
-                                        <th>Estado</th>
-                                        <th>Acciones</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="tbody-mis">
-                                    <tr><td colspan="6" style="text-align:center;color:#94A3B8;padding:32px;">Cargando...</td></tr>
-                                </tbody>
-                            </table>
-                        </div>
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Número</th>
+                                    <th>Bodega</th>
+                                    <th>Fecha</th>
+                                    <th style="text-align:center;">Líneas</th>
+                                    <th>Estado</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbody-mis">
+                                <tr><td colspan="6" style="text-align:center;color:#94A3B8;padding:32px;">Cargando...</td></tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
 
-            <!-- PANEL: BANDEJA DE APROBACIÓN -->
+            <!-- PANEL: BANDEJA -->
             <div class="tab-panel" id="panel-bandeja">
-                <div class="card">
-                    <div class="card-header">
-                        <div class="card-title">
-                            <i class="bi bi-inbox-fill"></i> Solicitudes Pendientes de Aprobación
-                        </div>
+                <div class="dash-card">
+                    <div class="dash-card-header">
+                        <div class="dash-card-title"><i class="bi bi-inbox-fill" style="color:#1976D2;"></i> Solicitudes Pendientes de Aprobación</div>
                     </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>Número</th>
-                                        <th>Solicitante</th>
-                                        <th>Bodega</th>
-                                        <th>Fecha</th>
-                                        <th style="text-align:center;">Líneas</th>
-                                        <th>Estado</th>
-                                        <th>Acciones</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="tbody-bandeja">
-                                    <tr><td colspan="7" style="text-align:center;color:#94A3B8;padding:32px;">Cargando...</td></tr>
-                                </tbody>
-                            </table>
-                        </div>
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Número</th>
+                                    <th>Solicitante</th>
+                                    <th>Bodega</th>
+                                    <th>Fecha</th>
+                                    <th style="text-align:center;">Líneas</th>
+                                    <th>Estado</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbody-bandeja">
+                                <tr><td colspan="7" style="text-align:center;color:#94A3B8;padding:32px;">Cargando...</td></tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
 
             <!-- PANEL: HISTORIAL -->
             <div class="tab-panel" id="panel-historial">
-                <div class="card">
-                    <div class="card-header">
-                        <div class="card-title">
-                            <i class="bi bi-clock-history"></i> Historial de Solicitudes
-                        </div>
+                <div class="dash-card">
+                    <div class="dash-card-header">
+                        <div class="dash-card-title"><i class="bi bi-clock-history" style="color:#1976D2;"></i> Historial de Solicitudes</div>
                         <div class="d-flex gap-2 align-center">
-                            <select class="form-control" id="filtro-estado-historial"
-                                    onchange="renderHistorial()"
-                                    style="width:auto;font-size:12px;padding:5px 10px;">
+                            <select class="form-control" id="filtro-estado-historial" onchange="renderHistorial()" style="width:auto;font-size:12px;padding:5px 10px;">
                                 <option value="">Todos los estados</option>
                                 <option value="Borrador">Borrador</option>
                                 <option value="Pendiente">Pendiente</option>
@@ -241,25 +815,23 @@
                             </select>
                         </div>
                     </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>Número</th>
-                                        <th>Solicitante</th>
-                                        <th>Bodega</th>
-                                        <th>Fecha</th>
-                                        <th style="text-align:center;">Líneas</th>
-                                        <th>Estado</th>
-                                        <th>Acciones</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="tbody-historial">
-                                    <tr><td colspan="7" style="text-align:center;color:#94A3B8;padding:32px;">Cargando...</td></tr>
-                                </tbody>
-                            </table>
-                        </div>
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Número</th>
+                                    <th>Solicitante</th>
+                                    <th>Bodega</th>
+                                    <th>Fecha</th>
+                                    <th style="text-align:center;">Líneas</th>
+                                    <th>Estado</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbody-historial">
+                                <tr><td colspan="7" style="text-align:center;color:#94A3B8;padding:32px;">Cargando...</td></tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -267,9 +839,10 @@
         </div>
     </div>
 
-    <!-- ════════════════════════════════════════════════
-         MODAL — NUEVA SOLICITUD
-    ════════════════════════════════════════════════ -->
+    <!-- GLOBAL TOAST -->
+    <div id="global-toast"></div>
+
+    <!-- MODAL NUEVA SOLICITUD -->
     <div class="modal-overlay" id="modal-nueva">
         <div class="modal-box" style="max-width:700px;">
             <div class="modal-header">
@@ -277,42 +850,27 @@
                 <button class="modal-close" onclick="cerrarModalNueva()">&times;</button>
             </div>
             <div class="modal-body">
-                <div id="alert-nueva" class="alert"></div>
-
+                <div id="alert-nueva" class="alert-inline"></div>
                 <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
                     <div class="form-group">
                         <label class="form-label">Bodega de Destino <span style="color:#EF4444;">*</span></label>
-                        <select class="form-control" id="sol-bodega-id">
-                            <option value="">— Seleccione bodega —</option>
-                        </select>
+                        <select class="form-control" id="sol-bodega-id"><option value="">— Seleccione bodega —</option></select>
                     </div>
                     <div class="form-group">
                         <label class="form-label">Observaciones</label>
-                        <input type="text" class="form-control" id="sol-observaciones"
-                               placeholder="Notas adicionales (opcional)">
+                        <input type="text" class="form-control" id="sol-observaciones" placeholder="Notas adicionales (opcional)">
                     </div>
                 </div>
-
-                <!-- ENCABEZADO PRODUCTOS -->
-                <div style="display:flex;align-items:center;justify-content:space-between;
-                            padding:10px 0;margin-top:4px;border-top:1px solid #F1F5F9;
-                            border-bottom:1px solid #F1F5F9;margin-bottom:12px;">
-                    <div style="font-size:13px;font-weight:700;color:#1B3A5C;">
-                        <i class="bi bi-list-ul"></i> Productos solicitados
-                    </div>
-                    <button class="btn btn-secondary btn-sm" onclick="agregarFilaProducto()">
-                        <i class="bi bi-plus"></i> Agregar producto
-                    </button>
+                <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;margin-top:4px;border-top:1px solid #F1F5F9;border-bottom:1px solid #F1F5F9;margin-bottom:12px;">
+                    <div style="font-size:13px;font-weight:700;color:#0F172A;"><i class="bi bi-list-ul"></i> Productos solicitados</div>
+                    <button class="btn btn-secondary btn-sm" onclick="agregarFilaProducto()"><i class="bi bi-plus"></i> Agregar producto</button>
                 </div>
-
-                <!-- FILAS DINÁMICAS -->
                 <div id="filas-productos">
                     <div style="text-align:center;color:#94A3B8;padding:20px;font-size:13px;">
                         <i class="bi bi-arrow-up" style="font-size:20px;display:block;margin-bottom:6px;"></i>
                         Haga clic en "Agregar producto" para comenzar
                     </div>
                 </div>
-
             </div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" onclick="cerrarModalNueva()">Cancelar</button>
@@ -323,9 +881,7 @@
         </div>
     </div>
 
-    <!-- ════════════════════════════════════════════════
-         MODAL — DETALLE Y ACCIONES
-    ════════════════════════════════════════════════ -->
+    <!-- MODAL DETALLE -->
     <div class="modal-overlay" id="modal-detalle">
         <div class="modal-box" style="max-width:480px;">
             <div class="modal-header">
@@ -333,42 +889,17 @@
                 <button class="modal-close" onclick="cerrarModalDetalle()">&times;</button>
             </div>
             <div class="modal-body">
-                <div id="alert-detalle" class="alert"></div>
-
-                <div class="detalle-fila">
-                    <span class="detalle-lbl">Número</span>
-                    <span class="detalle-val" id="det-numero">—</span>
-                </div>
-                <div class="detalle-fila">
-                    <span class="detalle-lbl">Solicitante</span>
-                    <span class="detalle-val" id="det-solicitante">—</span>
-                </div>
-                <div class="detalle-fila">
-                    <span class="detalle-lbl">Bodega</span>
-                    <span class="detalle-val" id="det-bodega">—</span>
-                </div>
-                <div class="detalle-fila">
-                    <span class="detalle-lbl">Fecha de Creación</span>
-                    <span class="detalle-val" id="det-fecha">—</span>
-                </div>
-                <div class="detalle-fila">
-                    <span class="detalle-lbl">Líneas de Producto</span>
-                    <span class="detalle-val" id="det-lineas">—</span>
-                </div>
-                <div class="detalle-fila">
-                    <span class="detalle-lbl">Estado Actual</span>
-                    <span id="det-estado">—</span>
-                </div>
-
-                <!-- Campo motivo rechazo: oculto hasta que el usuario haga clic en Rechazar -->
+                <div id="alert-detalle" class="alert-inline"></div>
+                <div class="detalle-fila"><span class="detalle-lbl">Número</span><span class="detalle-val" id="det-numero">—</span></div>
+                <div class="detalle-fila"><span class="detalle-lbl">Solicitante</span><span class="detalle-val" id="det-solicitante">—</span></div>
+                <div class="detalle-fila"><span class="detalle-lbl">Bodega</span><span class="detalle-val" id="det-bodega">—</span></div>
+                <div class="detalle-fila"><span class="detalle-lbl">Fecha de Creación</span><span class="detalle-val" id="det-fecha">—</span></div>
+                <div class="detalle-fila"><span class="detalle-lbl">Líneas de Producto</span><span class="detalle-val" id="det-lineas">—</span></div>
+                <div class="detalle-fila"><span class="detalle-lbl">Estado Actual</span><span id="det-estado">—</span></div>
                 <div id="bloque-rechazo" style="display:none;margin-top:16px;">
                     <div class="form-group" style="margin-bottom:0;">
-                        <label class="form-label">
-                            Motivo de rechazo <span style="color:#EF4444;">*</span>
-                        </label>
-                        <textarea class="form-control" id="motivo-rechazo" rows="3"
-                                  placeholder="Explique el motivo del rechazo"
-                                  style="resize:vertical;"></textarea>
+                        <label class="form-label">Motivo de rechazo <span style="color:#EF4444;">*</span></label>
+                        <textarea class="form-control" id="motivo-rechazo" rows="3" placeholder="Explique el motivo del rechazo"></textarea>
                     </div>
                 </div>
             </div>
@@ -378,443 +909,240 @@
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/js/utils.js"></script>
+    <script src="/js/router.js"></script>
     <script>
+        auth.checkAuth();
+        const user = auth.getUser();
+        $('#topbar-nombre') && $('#topbar-nombre').text(user.nombre);
 
-    // ── INIT ─────────────────────────────────────────────────────────────────────
-    auth.checkAuth();
+        // ✅ Mostrar sección Admin
+        if (auth.hasRole('Admin')) {
+            document.getElementById('label-admin').style.display = 'block';
+            document.getElementById('link-usuarios').style.display = 'flex';
+            document.getElementById('link-bodegas').style.display = 'flex';
+        }
 
-    const user = auth.getUser();
-    document.getElementById('sidebar-nombre').textContent = user.nombre;
-    document.getElementById('sidebar-rol').textContent    = user.rol;
+        const esAdminOBodeguero = auth.hasRole('Admin') || auth.hasRole('Bodeguero');
+        const esAdminOGerente = auth.hasRole('Admin') || auth.hasRole('Gerente');
 
-    const esAdminOBodeguero = auth.hasRole('Admin') || auth.hasRole('Bodeguero');
-    const esAdminOGerente   = auth.hasRole('Admin') || auth.hasRole('Gerente');
+        if (esAdminOBodeguero) document.getElementById('tab-bandeja').style.display = 'inline-flex';
+        if (esAdminOGerente) document.getElementById('tab-historial').style.display = 'inline-flex';
 
-    if (esAdminOBodeguero) document.getElementById('tab-bandeja').style.display  = 'inline-flex';
-    if (esAdminOGerente)   document.getElementById('tab-historial').style.display = 'inline-flex';
+        function showAlert(msg, tipo = 'success') {
+            const el = document.getElementById('global-toast');
+            el.className = `show ${tipo}`;
+            el.innerHTML = `<i class="bi bi-${tipo === 'success' ? 'check-circle' : 'exclamation-circle'}"></i> ${msg}`;
+            setTimeout(() => { el.className = ''; }, 3500);
+        }
 
-    // ── STATE ─────────────────────────────────────────────────────────────────────
-    let todasLasSolicitudes = [];
-    let productosCache      = [];
-    let bodegasCache        = [];
-    let solicitudActual     = null;
-    let filaIdx             = 0;
-    let filasProductos      = [];
-    let tabActivo           = 'mis';
+        function badgeEstado(estado) {
+            const map = { 'Pendiente': 'badge-pendiente', 'Aprobada': 'badge-aprobada', 'Rechazada': 'badge-rechazada', 'Despachada': 'badge-despachada', 'Borrador': 'badge-borrador' };
+            return `<span class="badge-estado ${map[estado] || 'badge-borrador'}">${estado}</span>`;
+        }
 
-    // ── TABS ─────────────────────────────────────────────────────────────────────
-    function switchTab(tab) {
-        tabActivo = tab;
-        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-        document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-        document.getElementById('tab-'   + tab).classList.add('active');
-        document.getElementById('panel-' + tab).classList.add('active');
-        renderTabActivo();
-    }
+        let todasLasSolicitudes = [], productosCache = [], bodegasCache = [];
+        let solicitudActual = null, filaIdx = 0, filasProductos = [], tabActivo = 'mis';
 
-    function renderTabActivo() {
-        if      (tabActivo === 'mis')      renderMisSolicitudes();
-        else if (tabActivo === 'bandeja')  renderBandeja();
-        else if (tabActivo === 'historial') renderHistorial();
-    }
-
-    // ── CARGA DATOS ───────────────────────────────────────────────────────────────
-    async function cargarSolicitudes() {
-        const res = await apiCall('GET', '/solicitudes');
-        if (res && res.success) {
-            todasLasSolicitudes = res.data || [];
-            actualizarContadores();
+        function switchTab(tab) {
+            tabActivo = tab;
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+            document.getElementById('tab-' + tab).classList.add('active');
+            document.getElementById('panel-' + tab).classList.add('active');
             renderTabActivo();
         }
-    }
 
-    function actualizarContadores() {
-        const mis      = todasLasSolicitudes.filter(s => s.solicitante === user.nombre);
-        const pendientes = todasLasSolicitudes.filter(s => s.estado === 'Pendiente');
-
-        document.getElementById('cnt-mis').textContent      = mis.length;
-        document.getElementById('cnt-bandeja').textContent  = pendientes.length;
-        document.getElementById('cnt-historial').textContent = todasLasSolicitudes.length;
-
-        // Resaltar bandeja si hay pendientes
-        const tabBandeja = document.getElementById('tab-bandeja');
-        if (tabBandeja && pendientes.length > 0 && tabActivo !== 'bandeja') {
-            document.getElementById('cnt-bandeja').style.background = '#FEF3C7';
-            document.getElementById('cnt-bandeja').style.color      = '#92400E';
-        }
-    }
-
-    // ── RENDERS DE CADA TAB ───────────────────────────────────────────────────────
-    function renderMisSolicitudes() {
-        const lista = todasLasSolicitudes.filter(s => s.solicitante === user.nombre);
-        renderTabla(lista, 'tbody-mis', false);
-    }
-
-    function renderBandeja() {
-        const lista = todasLasSolicitudes.filter(s => s.estado === 'Pendiente');
-        renderTabla(lista, 'tbody-bandeja', true);
-    }
-
-    function renderHistorial() {
-        const filtro = document.getElementById('filtro-estado-historial')?.value || '';
-        const lista  = filtro
-            ? todasLasSolicitudes.filter(s => s.estado === filtro)
-            : todasLasSolicitudes;
-        renderTabla(lista, 'tbody-historial', true);
-    }
-
-    function renderTabla(lista, tbodyId, mostrarSolicitante) {
-        const tbody = document.getElementById(tbodyId);
-        const cols  = mostrarSolicitante ? 7 : 6;
-
-        if (!lista || lista.length === 0) {
-            tbody.innerHTML = `
-                <tr>
-                    <td colspan="${cols}" style="text-align:center;color:#94A3B8;padding:32px;">
-                        No hay solicitudes para mostrar
-                    </td>
-                </tr>`;
-            return;
+        function renderTabActivo() {
+            if (tabActivo === 'mis') renderMisSolicitudes();
+            else if (tabActivo === 'bandeja') renderBandeja();
+            else if (tabActivo === 'historial') renderHistorial();
         }
 
-        tbody.innerHTML = lista.map(s => `
-            <tr>
-                <td><strong>${s.numeroSolicitud}</strong></td>
-                ${mostrarSolicitante ? `<td>${s.solicitante}</td>` : ''}
-                <td>${s.bodega}</td>
-                <td>${formatDate(s.fechaCreacion)}</td>
-                <td style="text-align:center;">${s.totalLineas}</td>
-                <td>${badgeEstado(s.estado)}</td>
-                <td>
-                    <button class="btn btn-secondary btn-sm"
-                            onclick="abrirModalDetalle(${s.solicitudID})"
-                            title="Ver detalle y acciones">
-                        <i class="bi bi-eye"></i> Ver
-                    </button>
-                </td>
-            </tr>
-        `).join('');
-    }
-
-    // ── MODAL NUEVA SOLICITUD ────────────────────────────────────────────────────
-    async function abrirModalNueva() {
-        limpiarAlerta('alert-nueva');
-        filasProductos = [];
-        filaIdx = 0;
-        document.getElementById('sol-observaciones').value = '';
-        renderFilasProductos();
-
-        // Cargar bodegas (cache)
-        if (bodegasCache.length === 0) {
-            const r = await apiCall('GET', '/bodegas');
-            if (r && r.success) bodegasCache = r.data || [];
-        }
-        document.getElementById('sol-bodega-id').innerHTML =
-            '<option value="">— Seleccione bodega —</option>' +
-            bodegasCache.map(b => `<option value="${b.bodegaID}">${b.nombre}</option>`).join('');
-
-        // Cargar productos (cache)
-        if (productosCache.length === 0) {
-            const r = await apiCall('GET', '/productos');
-            if (r && r.success) productosCache = r.data || [];
-        }
-
-        const btn = document.getElementById('btn-crear-solicitud');
-        btn.disabled = false;
-        btn.innerHTML = '<i class="bi bi-check-lg"></i> Crear Solicitud';
-
-        document.getElementById('modal-nueva').classList.add('show');
-    }
-
-    function cerrarModalNueva() {
-        document.getElementById('modal-nueva').classList.remove('show');
-    }
-
-    // ── FILAS DINÁMICAS DE PRODUCTOS ─────────────────────────────────────────────
-    function agregarFilaProducto() {
-        filasProductos.push({ idx: filaIdx++, productoID: '', cantidad: '' });
-        renderFilasProductos();
-    }
-
-    function eliminarFila(idx) {
-        filasProductos = filasProductos.filter(f => f.idx !== idx);
-        renderFilasProductos();
-    }
-
-    function renderFilasProductos() {
-        const container = document.getElementById('filas-productos');
-        if (filasProductos.length === 0) {
-            container.innerHTML = `
-                <div style="text-align:center;color:#94A3B8;padding:20px;font-size:13px;">
-                    <i class="bi bi-arrow-up" style="font-size:20px;display:block;margin-bottom:6px;"></i>
-                    Haga clic en "Agregar producto" para comenzar
-                </div>`;
-            return;
-        }
-
-        container.innerHTML = filasProductos.map(f => `
-            <div class="fila-producto" id="fila-${f.idx}">
-                <select class="form-control" id="sel-prod-${f.idx}">
-                    <option value="">— Seleccione producto —</option>
-                    ${productosCache.map(p => `
-                        <option value="${p.productoID}"
-                            ${f.productoID == p.productoID ? 'selected' : ''}
-                            ${p.stockActual === 0 ? 'style="color:#EF4444;"' : ''}>
-                            [${p.codigo}] ${p.nombre} — Stock: ${p.stockActual} ${p.unidadMedida}
-                        </option>
-                    `).join('')}
-                </select>
-                <input type="number" class="form-control" id="cant-${f.idx}"
-                       placeholder="Cant." min="1" value="${f.cantidad || ''}"
-                       style="text-align:center;">
-                <button class="btn btn-danger btn-sm" onclick="eliminarFila(${f.idx})"
-                        title="Eliminar" style="padding:6px 9px;">
-                    <i class="bi bi-trash"></i>
-                </button>
-            </div>
-        `).join('');
-    }
-
-    async function guardarSolicitud() {
-        limpiarAlerta('alert-nueva');
-
-        const bodegaID      = document.getElementById('sol-bodega-id').value;
-        const observaciones = document.getElementById('sol-observaciones').value.trim();
-
-        if (!bodegaID) {
-            mostrarAlerta('alert-nueva', 'Seleccione una bodega de destino.', 'danger');
-            return;
-        }
-        if (filasProductos.length === 0) {
-            mostrarAlerta('alert-nueva', 'Agregue al menos un producto a la solicitud.', 'danger');
-            return;
-        }
-
-        // Leer valores actuales del DOM (por si onchange no disparó)
-        filasProductos.forEach(f => {
-            const sel  = document.getElementById(`sel-prod-${f.idx}`);
-            const cant = document.getElementById(`cant-${f.idx}`);
-            if (sel)  f.productoID = sel.value;
-            if (cant) f.cantidad   = cant.value;
-        });
-
-        // Validar filas
-        for (const f of filasProductos) {
-            if (!f.productoID) {
-                mostrarAlerta('alert-nueva', 'Seleccione un producto en todas las filas.', 'danger');
-                return;
-            }
-            if (!f.cantidad || parseInt(f.cantidad) <= 0) {
-                mostrarAlerta('alert-nueva', 'Ingrese una cantidad mayor a 0 en todas las filas.', 'danger');
-                return;
+        async function cargarSolicitudes() {
+            const res = await apiCall('GET', '/solicitudes');
+            if (res && res.success) {
+                todasLasSolicitudes = res.data || [];
+                actualizarContadores();
+                renderTabActivo();
             }
         }
 
-        // Verificar duplicados
-        const ids = filasProductos.map(f => String(f.productoID));
-        if (new Set(ids).size !== ids.length) {
-            mostrarAlerta('alert-nueva', 'No puede repetir el mismo producto. Combine las cantidades en una sola fila.', 'warning');
-            return;
+        function actualizarContadores() {
+            const mis = todasLasSolicitudes.filter(s => s.solicitante === user.nombre);
+            const pendientes = todasLasSolicitudes.filter(s => s.estado === 'Pendiente');
+            document.getElementById('cnt-mis').textContent = mis.length;
+            document.getElementById('cnt-bandeja').textContent = pendientes.length;
+            document.getElementById('cnt-historial').textContent = todasLasSolicitudes.length;
+            if (pendientes.length > 0 && tabActivo !== 'bandeja') {
+                const cnt = document.getElementById('cnt-bandeja');
+                cnt.style.background = '#FEF3C7';
+                cnt.style.color = '#92400E';
+            }
         }
 
-        const btn = document.getElementById('btn-crear-solicitud');
-        btn.disabled = true;
-        btn.innerHTML = '<span class="spinner"></span> Creando...';
-
-        const res = await apiCall('POST', '/solicitudes', {
-            bodegaID: parseInt(bodegaID),
-            observaciones,
-            items: filasProductos.map(f => ({
-                productoID: parseInt(f.productoID),
-                cantidad:   parseInt(f.cantidad)
-            }))
-        });
-
-        btn.disabled = false;
-        btn.innerHTML = '<i class="bi bi-check-lg"></i> Crear Solicitud';
-
-        if (res && res.success) {
-            cerrarModalNueva();
-            const num = res.data?.numeroSolicitud ? ` ${res.data.numeroSolicitud}` : '';
-            showAlert(`Solicitud${num} creada en estado Borrador. Ábrala y envíela a aprobación.`, 'success');
-            await cargarSolicitudes();
-        } else {
-            mostrarAlerta('alert-nueva', res?.message || 'Error al crear la solicitud.', 'danger');
-        }
-    }
-
-    // ── MODAL DETALLE / ACCIONES ─────────────────────────────────────────────────
-    function abrirModalDetalle(solicitudID) {
-        solicitudActual = todasLasSolicitudes.find(s => s.solicitudID === solicitudID);
-        if (!solicitudActual) return;
-
-        limpiarAlerta('alert-detalle');
-        document.getElementById('bloque-rechazo').style.display = 'none';
-        document.getElementById('motivo-rechazo').value = '';
-
-        const s = solicitudActual;
-        document.getElementById('det-titulo').textContent     = `Solicitud — ${s.numeroSolicitud}`;
-        document.getElementById('det-numero').textContent      = s.numeroSolicitud;
-        document.getElementById('det-solicitante').textContent = s.solicitante;
-        document.getElementById('det-bodega').textContent      = s.bodega;
-        document.getElementById('det-fecha').textContent       = formatDate(s.fechaCreacion);
-        document.getElementById('det-lineas').textContent      = `${s.totalLineas} línea(s)`;
-        document.getElementById('det-estado').innerHTML        = badgeEstado(s.estado);
-
-        renderBotonesDetalle(s.estado);
-        document.getElementById('modal-detalle').classList.add('show');
-    }
-
-    function cerrarModalDetalle() {
-        document.getElementById('modal-detalle').classList.remove('show');
-        solicitudActual = null;
-    }
-
-    function renderBotonesDetalle(estado) {
-        const footer = document.getElementById('detalle-footer');
-        let html = `<button class="btn btn-secondary" onclick="cerrarModalDetalle()">Cerrar</button>`;
-
-        // Borrador → cualquier usuario puede enviarla a aprobación
-        if (estado === 'Borrador') {
-            html += `
-                <button class="btn btn-primary" id="btn-enviar" onclick="enviarAprobacion()">
-                    <i class="bi bi-send"></i> Enviar a Aprobación
-                </button>`;
+        function renderMisSolicitudes() { renderTabla(todasLasSolicitudes.filter(s => s.solicitante === user.nombre), 'tbody-mis', false); }
+        function renderBandeja() { renderTabla(todasLasSolicitudes.filter(s => s.estado === 'Pendiente'), 'tbody-bandeja', true); }
+        function renderHistorial() {
+            const filtro = document.getElementById('filtro-estado-historial')?.value || '';
+            const lista = filtro ? todasLasSolicitudes.filter(s => s.estado === filtro) : todasLasSolicitudes;
+            renderTabla(lista, 'tbody-historial', true);
         }
 
-        // Pendiente → Admin o Bodeguero pueden aprobar o rechazar
-        if (estado === 'Pendiente' && esAdminOBodeguero) {
-            html += `
-                <button class="btn btn-danger" id="btn-rechazar" onclick="iniciarRechazo()">
-                    <i class="bi bi-x-circle"></i> Rechazar
-                </button>
-                <button class="btn btn-success" id="btn-aprobar" onclick="aprobarSolicitud()">
-                    <i class="bi bi-check-circle"></i> Aprobar
-                </button>`;
+        function renderTabla(lista, tbodyId, mostrarSolicitante) {
+            const tbody = document.getElementById(tbodyId);
+            const cols = mostrarSolicitante ? 7 : 6;
+            if (!lista || lista.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="${cols}" style="text-align:center;color:#94A3B8;padding:32px;">No hay solicitudes para mostrar</td></tr>`;
+                return;
+            }
+            tbody.innerHTML = lista.map(s => `
+                        <tr>
+                            <td><strong>${s.numeroSolicitud}</strong></td>
+                            ${mostrarSolicitante ? `<td>${s.solicitante}</td>` : ''}
+                            <td>${s.bodega}</td>
+                            <td>${formatDate(s.fechaCreacion)}</td>
+                            <td style="text-align:center;">${s.totalLineas}</td>
+                            <td>${badgeEstado(s.estado)}</td>
+                            <td><button class="btn btn-secondary btn-sm" onclick="abrirModalDetalle(${s.solicitudID})"><i class="bi bi-eye"></i> Ver</button></td>
+                        </tr>`).join('');
         }
 
-        // Aprobada → Admin o Bodeguero pueden despachar
-        if (estado === 'Aprobada' && esAdminOBodeguero) {
-            html += `
-                <button class="btn btn-primary" id="btn-despachar" onclick="confirmarDespacho()">
-                    <i class="bi bi-truck"></i> Despachar
-                </button>`;
+        async function abrirModalNueva() {
+            limpiarAlerta('alert-nueva');
+            filasProductos = []; filaIdx = 0;
+            document.getElementById('sol-observaciones').value = '';
+            renderFilasProductos();
+            if (bodegasCache.length === 0) { const r = await apiCall('GET', '/bodegas'); if (r && r.success) bodegasCache = r.data || []; }
+            document.getElementById('sol-bodega-id').innerHTML = '<option value="">— Seleccione bodega —</option>' + bodegasCache.map(b => `<option value="${b.bodegaID}">${b.nombre}</option>`).join('');
+            if (productosCache.length === 0) { const r = await apiCall('GET', '/productos'); if (r && r.success) productosCache = r.data || []; }
+            const btn = document.getElementById('btn-crear-solicitud');
+            btn.disabled = false; btn.innerHTML = '<i class="bi bi-check-lg"></i> Crear Solicitud';
+            document.getElementById('modal-nueva').classList.add('show');
         }
 
-        footer.innerHTML = html;
-    }
+        function cerrarModalNueva() { document.getElementById('modal-nueva').classList.remove('show'); }
 
-    // ── FLUJO: ENVIAR A APROBACIÓN ───────────────────────────────────────────────
-    async function enviarAprobacion() {
-        await cambiarEstado(
-            'Pendiente', '',
-            'btn-enviar', 'Enviando...',
-            '<i class="bi bi-send"></i> Enviar a Aprobación',
-            'Solicitud enviada a aprobación correctamente.'
-        );
-    }
+        function agregarFilaProducto() { filasProductos.push({ idx: filaIdx++, productoID: '', cantidad: '' }); renderFilasProductos(); }
+        function eliminarFila(idx) { filasProductos = filasProductos.filter(f => f.idx !== idx); renderFilasProductos(); }
 
-    // ── FLUJO: APROBAR ───────────────────────────────────────────────────────────
-    async function aprobarSolicitud() {
-        await cambiarEstado(
-            'Aprobada', '',
-            'btn-aprobar', 'Aprobando...',
-            '<i class="bi bi-check-circle"></i> Aprobar',
-            'Solicitud aprobada correctamente.'
-        );
-    }
-
-    // ── FLUJO: RECHAZAR (2 pasos) ────────────────────────────────────────────────
-    function iniciarRechazo() {
-        document.getElementById('bloque-rechazo').style.display = 'block';
-        document.getElementById('detalle-footer').innerHTML = `
-            <button class="btn btn-secondary" onclick="cancelarRechazo()">Cancelar</button>
-            <button class="btn btn-danger" id="btn-confirmar-rechazo" onclick="rechazarSolicitud()">
-                <i class="bi bi-x-circle"></i> Confirmar Rechazo
-            </button>`;
-    }
-
-    function cancelarRechazo() {
-        document.getElementById('bloque-rechazo').style.display = 'none';
-        document.getElementById('motivo-rechazo').value = '';
-        renderBotonesDetalle('Pendiente');
-    }
-
-    async function rechazarSolicitud() {
-        const motivo = document.getElementById('motivo-rechazo').value.trim();
-        if (!motivo) {
-            mostrarAlerta('alert-detalle', 'Ingrese el motivo del rechazo.', 'danger');
-            return;
+        function renderFilasProductos() {
+            const container = document.getElementById('filas-productos');
+            if (filasProductos.length === 0) {
+                container.innerHTML = `<div style="text-align:center;color:#94A3B8;padding:20px;font-size:13px;"><i class="bi bi-arrow-up" style="font-size:20px;display:block;margin-bottom:6px;"></i>Haga clic en "Agregar producto" para comenzar</div>`;
+                return;
+            }
+            container.innerHTML = filasProductos.map(f => `
+                        <div class="fila-producto" id="fila-${f.idx}">
+                            <select class="form-control" id="sel-prod-${f.idx}">
+                                <option value="">— Seleccione producto —</option>
+                                ${productosCache.map(p => `<option value="${p.productoID}" ${f.productoID == p.productoID ? 'selected' : ''} ${p.stockActual === 0 ? 'style="color:#EF4444;"' : ''}>[${p.codigo}] ${p.nombre} — Stock: ${p.stockActual} ${p.unidadMedida}</option>`).join('')}
+                            </select>
+                            <input type="number" class="form-control" id="cant-${f.idx}" placeholder="Cant." min="1" value="${f.cantidad || ''}" style="text-align:center;">
+                            <button class="btn btn-danger btn-sm" onclick="eliminarFila(${f.idx})" style="padding:6px 9px;"><i class="bi bi-trash"></i></button>
+                        </div>`).join('');
         }
-        await cambiarEstado(
-            'Rechazada', motivo,
-            'btn-confirmar-rechazo', 'Rechazando...',
-            '<i class="bi bi-x-circle"></i> Confirmar Rechazo',
-            'Solicitud rechazada.'
-        );
-    }
 
-    // ── FLUJO: DESPACHAR (con confirm nativo) ────────────────────────────────────
-    function confirmarDespacho() {
-        const ok = confirm(
-            `¿Confirma el despacho de la solicitud ${solicitudActual.numeroSolicitud}?\n\nEsta acción descuenta el stock y no se puede deshacer.`
-        );
-        if (ok) despacharSolicitud();
-    }
-
-    async function despacharSolicitud() {
-        const btn = document.getElementById('btn-despachar');
-        if (btn) { btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> Despachando...'; }
-
-        const res = await apiCall('PUT', `/solicitudes/${solicitudActual.solicitudID}/despachar`, {});
-
-        if (res && res.success) {
-            cerrarModalDetalle();
-            showAlert('Solicitud despachada correctamente. Stock descontado.', 'success');
-            await cargarSolicitudes();
-        } else {
-            if (btn) { btn.disabled = false; btn.innerHTML = '<i class="bi bi-truck"></i> Despachar'; }
-            mostrarAlerta('alert-detalle', res?.message || 'Error al despachar la solicitud.', 'danger');
+        async function guardarSolicitud() {
+            limpiarAlerta('alert-nueva');
+            const bodegaID = document.getElementById('sol-bodega-id').value;
+            const observaciones = document.getElementById('sol-observaciones').value.trim();
+            if (!bodegaID) { mostrarAlerta('alert-nueva', 'Seleccione una bodega de destino.', 'danger'); return; }
+            if (filasProductos.length === 0) { mostrarAlerta('alert-nueva', 'Agregue al menos un producto a la solicitud.', 'danger'); return; }
+            filasProductos.forEach(f => {
+                const sel = document.getElementById(`sel-prod-${f.idx}`);
+                const cant = document.getElementById(`cant-${f.idx}`);
+                if (sel) f.productoID = sel.value;
+                if (cant) f.cantidad = cant.value;
+            });
+            for (const f of filasProductos) {
+                if (!f.productoID) { mostrarAlerta('alert-nueva', 'Seleccione un producto en todas las filas.', 'danger'); return; }
+                if (!f.cantidad || parseInt(f.cantidad) <= 0) { mostrarAlerta('alert-nueva', 'Ingrese una cantidad mayor a 0 en todas las filas.', 'danger'); return; }
+            }
+            const ids = filasProductos.map(f => String(f.productoID));
+            if (new Set(ids).size !== ids.length) { mostrarAlerta('alert-nueva', 'No puede repetir el mismo producto.', 'warning'); return; }
+            const btn = document.getElementById('btn-crear-solicitud');
+            btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> Creando...';
+            const res = await apiCall('POST', '/solicitudes', { bodegaID: parseInt(bodegaID), observaciones, items: filasProductos.map(f => ({ productoID: parseInt(f.productoID), cantidad: parseInt(f.cantidad) })) });
+            btn.disabled = false; btn.innerHTML = '<i class="bi bi-check-lg"></i> Crear Solicitud';
+            if (res && res.success) {
+                cerrarModalNueva();
+                const num = res.data?.numeroSolicitud ? ` ${res.data.numeroSolicitud}` : '';
+                showAlert(`Solicitud${num} creada en estado Borrador. Ábrala y envíela a aprobación.`, 'success');
+                await cargarSolicitudes();
+            } else { mostrarAlerta('alert-nueva', res?.message || 'Error al crear la solicitud.', 'danger'); }
         }
-    }
 
-    // ── HELPER GENÉRICO CAMBIAR ESTADO ───────────────────────────────────────────
-    async function cambiarEstado(nuevoEstado, motivo, btnId, txtLoading, txtOriginal, mensajeOk) {
-        const btn = document.getElementById(btnId);
-        if (btn) { btn.disabled = true; btn.innerHTML = `<span class="spinner"></span> ${txtLoading}`; }
-
-        const body = { estado: nuevoEstado };
-        if (motivo) body.motivo = motivo;
-
-        const res = await apiCall('PUT', `/solicitudes/${solicitudActual.solicitudID}/estado`, body);
-
-        if (res && res.success) {
-            cerrarModalDetalle();
-            showAlert(mensajeOk, 'success');
-            await cargarSolicitudes();
-        } else {
-            if (btn) { btn.disabled = false; btn.innerHTML = txtOriginal; }
-            mostrarAlerta('alert-detalle', res?.message || 'Error al cambiar el estado.', 'danger');
+        function abrirModalDetalle(solicitudID) {
+            solicitudActual = todasLasSolicitudes.find(s => s.solicitudID === solicitudID);
+            if (!solicitudActual) return;
+            limpiarAlerta('alert-detalle');
+            document.getElementById('bloque-rechazo').style.display = 'none';
+            document.getElementById('motivo-rechazo').value = '';
+            const s = solicitudActual;
+            document.getElementById('det-titulo').textContent = `Solicitud — ${s.numeroSolicitud}`;
+            document.getElementById('det-numero').textContent = s.numeroSolicitud;
+            document.getElementById('det-solicitante').textContent = s.solicitante;
+            document.getElementById('det-bodega').textContent = s.bodega;
+            document.getElementById('det-fecha').textContent = formatDate(s.fechaCreacion);
+            document.getElementById('det-lineas').textContent = `${s.totalLineas} línea(s)`;
+            document.getElementById('det-estado').innerHTML = badgeEstado(s.estado);
+            renderBotonesDetalle(s.estado);
+            document.getElementById('modal-detalle').classList.add('show');
         }
-    }
 
-    // ── HELPERS LOCALES ──────────────────────────────────────────────────────────
-    function mostrarAlerta(id, mensaje, tipo) {
-        const el = document.getElementById(id);
-        el.className = `alert alert-${tipo} show`;
-        el.textContent = mensaje;
-    }
+        function cerrarModalDetalle() { document.getElementById('modal-detalle').classList.remove('show'); solicitudActual = null; }
 
-    function limpiarAlerta(id) {
-        const el = document.getElementById(id);
-        el.className = 'alert';
-        el.textContent = '';
-    }
+        function renderBotonesDetalle(estado) {
+            const footer = document.getElementById('detalle-footer');
+            let html = `<button class="btn btn-secondary" onclick="cerrarModalDetalle()">Cerrar</button>`;
+            if (estado === 'Borrador') html += `<button class="btn btn-primary" id="btn-enviar" onclick="enviarAprobacion()"><i class="bi bi-send"></i> Enviar a Aprobación</button>`;
+            if (estado === 'Pendiente' && esAdminOBodeguero) html += `<button class="btn btn-danger" id="btn-rechazar" onclick="iniciarRechazo()"><i class="bi bi-x-circle"></i> Rechazar</button><button class="btn btn-success" id="btn-aprobar" onclick="aprobarSolicitud()"><i class="bi bi-check-circle"></i> Aprobar</button>`;
+            if (estado === 'Aprobada' && esAdminOBodeguero) html += `<button class="btn btn-primary" id="btn-despachar" onclick="confirmarDespacho()"><i class="bi bi-truck"></i> Despachar</button>`;
+            footer.innerHTML = html;
+        }
 
-    // ── ARRANQUE ─────────────────────────────────────────────────────────────────
-    cargarSolicitudes();
+        async function enviarAprobacion() { await cambiarEstado('Pendiente', '', 'btn-enviar', 'Enviando...', '<i class="bi bi-send"></i> Enviar a Aprobación', 'Solicitud enviada a aprobación correctamente.'); }
+        async function aprobarSolicitud() { await cambiarEstado('Aprobada', '', 'btn-aprobar', 'Aprobando...', '<i class="bi bi-check-circle"></i> Aprobar', 'Solicitud aprobada correctamente.'); }
 
+        function iniciarRechazo() {
+            document.getElementById('bloque-rechazo').style.display = 'block';
+            document.getElementById('detalle-footer').innerHTML = `<button class="btn btn-secondary" onclick="cancelarRechazo()">Cancelar</button><button class="btn btn-danger" id="btn-confirmar-rechazo" onclick="rechazarSolicitud()"><i class="bi bi-x-circle"></i> Confirmar Rechazo</button>`;
+        }
+
+        function cancelarRechazo() { document.getElementById('bloque-rechazo').style.display = 'none'; document.getElementById('motivo-rechazo').value = ''; renderBotonesDetalle('Pendiente'); }
+
+        async function rechazarSolicitud() {
+            const motivo = document.getElementById('motivo-rechazo').value.trim();
+            if (!motivo) { mostrarAlerta('alert-detalle', 'Ingrese el motivo del rechazo.', 'danger'); return; }
+            await cambiarEstado('Rechazada', motivo, 'btn-confirmar-rechazo', 'Rechazando...', '<i class="bi bi-x-circle"></i> Confirmar Rechazo', 'Solicitud rechazada.');
+        }
+
+        function confirmarDespacho() { if (confirm(`¿Confirma el despacho de la solicitud ${solicitudActual.numeroSolicitud}?\n\nEsta acción descuenta el stock y no se puede deshacer.`)) despacharSolicitud(); }
+
+        async function despacharSolicitud() {
+            const btn = document.getElementById('btn-despachar');
+            if (btn) { btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> Despachando...'; }
+            const res = await apiCall('PUT', `/solicitudes/${solicitudActual.solicitudID}/despachar`, {});
+            if (res && res.success) { cerrarModalDetalle(); showAlert('Solicitud despachada correctamente. Stock descontado.', 'success'); await cargarSolicitudes(); }
+            else { if (btn) { btn.disabled = false; btn.innerHTML = '<i class="bi bi-truck"></i> Despachar'; } mostrarAlerta('alert-detalle', res?.message || 'Error al despachar la solicitud.', 'danger'); }
+        }
+
+        async function cambiarEstado(nuevoEstado, motivo, btnId, txtLoading, txtOriginal, mensajeOk) {
+            const btn = document.getElementById(btnId);
+            if (btn) { btn.disabled = true; btn.innerHTML = `<span class="spinner"></span> ${txtLoading}`; }
+            const body = { nuevoEstado };
+            if (motivo) body.motivo = motivo;
+            const res = await apiCall('PUT', `/solicitudes/${solicitudActual.solicitudID}/estado`, body);
+            if (res && res.success) { cerrarModalDetalle(); showAlert(mensajeOk, 'success'); await cargarSolicitudes(); }
+            else { if (btn) { btn.disabled = false; btn.innerHTML = txtOriginal; } mostrarAlerta('alert-detalle', res?.message || 'Error al cambiar el estado.', 'danger'); }
+        }
+
+        function mostrarAlerta(id, mensaje, tipo) { const el = document.getElementById(id); el.className = `alert-inline ${tipo} show`; el.textContent = mensaje; }
+        function limpiarAlerta(id) { const el = document.getElementById(id); el.className = 'alert-inline'; el.textContent = ''; }
+
+        cargarSolicitudes();
     </script>
 </body>
 </html>

@@ -1,0 +1,13 @@
+wwwroot\Bodegas.html
+wwwroot\index.html
+wwwroot\dashboard.html
+wwwroot\css\app.css
+wwwroot\solicitudes.html
+wwwroot\js\utils.js
+wwwroot\Reportes.html
+wwwroot\productos.html
+wwwroot\kardex.html
+wwwroot\js\router.js
+wwwroot\images\logo.png
+wwwroot\usuarios.html
+wwwroot\images\logo1.png

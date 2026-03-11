@@ -4,27 +4,458 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard — Despacho Logística</title>
-    <link rel="stylesheet" href="/css/app.css">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        :root {
+            --sidebar-bg: #1a237e;
+            --sidebar-hover: #283593;
+            --blue: #1976D2;
+            --border: #E3E8EF;
+            --bg: #F4F6FA;
+            --sidebar-w: 225px;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px;
+            background: var(--bg);
+            color: #212529;
+        }
+
+        /* SIDEBAR */
+        #sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: var(--sidebar-w);
+            height: 100vh;
+            background: var(--sidebar-bg);
+            display: flex;
+            flex-direction: column;
+            z-index: 200;
+            overflow-y: auto;
+        }
+
+        .sidebar-brand {
+            padding: 20px 20px 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            border-bottom: 1px solid rgba(255,255,255,.1);
+        }
+
+        .brand-icon {
+            width: 42px;
+            height: 42px;
+            background: var(--blue);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: 800;
+            color: #fff;
+        }
+
+        .brand-name {
+            font-size: 14px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .brand-sub {
+            font-size: 10px;
+            color: rgba(255,255,255,.45);
+            text-align: center;
+        }
+
+        .sidebar-user {
+            padding: 12px 18px;
+            border-bottom: 1px solid rgba(255,255,255,.1);
+        }
+
+            .sidebar-user .user-name {
+                font-size: 14px;
+                font-weight: 600;
+                color: #fff;
+            }
+
+            .sidebar-user .user-role {
+                font-size: 11px;
+                color: rgba(255,255,255,.5);
+                margin-top: 2px;
+            }
+
+        .sidebar-nav {
+            flex: 1;
+            padding: 10px 0;
+        }
+
+        .nav-section-label {
+            padding: 10px 20px 4px;
+            font-size: 10px;
+            font-weight: 700;
+            color: rgba(255,255,255,.3);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 20px;
+            color: rgba(255,255,255,.72) !important;
+            font-size: 13.5px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: background .15s, color .15s;
+        }
+
+            .nav-link i {
+                font-size: 18px;
+                width: 20px;
+            }
+
+            .nav-link:hover {
+                background: var(--sidebar-hover);
+                color: #fff !important;
+            }
+
+            .nav-link.active {
+                background: rgba(255,255,255,.13);
+                color: #fff !important;
+                font-weight: 600;
+            }
+
+        .sidebar-footer {
+            padding: 10px 0;
+            border-top: 1px solid rgba(255,255,255,.1);
+        }
+
+        .btn-logout {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 20px;
+            background: transparent;
+            border: none;
+            color: rgba(255,255,255,.6);
+            font-size: 13.5px;
+            font-weight: 500;
+            cursor: pointer;
+            font-family: inherit;
+            transition: background .15s, color .15s;
+        }
+
+            .btn-logout:hover {
+                background: var(--sidebar-hover);
+                color: #fff;
+            }
+
+        /* MAIN */
+        #main {
+            margin-left: var(--sidebar-w);
+            min-height: 100vh;
+        }
+
+        /* TOPBAR */
+        .topbar {
+            height: 56px;
+            background: #fff;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .topbar-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .topbar-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: #0F172A;
+        }
+
+        .topbar-sub {
+            font-size: 11px;
+            color: #94A3B8;
+        }
+
+        .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 13px;
+            font-weight: 500;
+            color: #374151;
+        }
+
+        /* PAGE BODY */
+        .page-body {
+            padding: 22px 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        /* KPI */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(5,1fr);
+            gap: 16px;
+        }
+
+        .kpi-card {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 16px 18px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            box-shadow: 0 1px 3px rgba(0,0,0,.06);
+        }
+
+        .kpi-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 21px;
+            flex-shrink: 0;
+        }
+
+            .kpi-icon.red {
+                background: #FFEBEE;
+                color: #C62828;
+            }
+
+            .kpi-icon.amber {
+                background: #FFFDE7;
+                color: #F9A825;
+            }
+
+            .kpi-icon.green {
+                background: #E8F5E9;
+                color: #388E3C;
+            }
+
+            .kpi-icon.blue {
+                background: #E3F2FD;
+                color: var(--blue);
+            }
+
+            .kpi-icon.purple {
+                background: #EDE7F6;
+                color: #6A1B9A;
+            }
+
+        .kpi-label {
+            font-size: 11px;
+            color: #64748B;
+            font-weight: 500;
+        }
+
+        .kpi-value {
+            font-size: 26px;
+            font-weight: 700;
+            color: #0F172A;
+            line-height: 1.1;
+            margin-top: 2px;
+        }
+
+        /* CHARTS */
+        .charts-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .chart-card {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 16px 18px;
+            box-shadow: 0 1px 3px rgba(0,0,0,.06);
+        }
+
+        .chart-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: #0F172A;
+            margin-bottom: 14px;
+        }
+
+        /* DASH CARD */
+        .dash-card {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            box-shadow: 0 1px 3px rgba(0,0,0,.06);
+            overflow: hidden;
+        }
+
+        .dash-card-header {
+            padding: 13px 18px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .dash-card-title {
+            font-size: 13.5px;
+            font-weight: 700;
+            color: #0F172A;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+
+        .btn-outline-sm {
+            padding: 5px 12px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background: #fff;
+            font-size: 12px;
+            font-weight: 500;
+            color: #374151;
+            text-decoration: none;
+        }
+
+            .btn-outline-sm:hover {
+                background: #F8FAFC;
+            }
+        .chart-card canvas {
+            max-height: 440px;
+        }
+        /* TABLE */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead tr {
+            background: #F8FAFC;
+        }
+
+        th {
+            padding: 10px 16px;
+            font-size: 11px;
+            font-weight: 600;
+            color: #64748B;
+            text-transform: uppercase;
+            letter-spacing: .4px;
+            border-bottom: 1px solid var(--border);
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 12px 16px;
+            font-size: 13px;
+            border-bottom: 1px solid #F1F5F9;
+            vertical-align: middle;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        tbody tr:hover {
+            background: #FAFBFE;
+        }
+
+        /* BADGES */
+        .badge-estado {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .badge-pendiente {
+            background: #FEF9C3;
+            color: #854D0E;
+        }
+
+        .badge-aprobada {
+            background: #DCFCE7;
+            color: #166534;
+        }
+
+        .badge-rechazada {
+            background: #FEE2E2;
+            color: #991B1B;
+        }
+
+        .badge-despachada {
+            background: #DBEAFE;
+            color: #1E40AF;
+        }
+
+        .badge-borrador {
+            background: #F1F5F9;
+            color: #475569;
+        }
+
+        .last-update {
+            font-size: 12px;
+            color: #94A3B8;
+        }
+    </style>
 </head>
 <body>
 
     <!-- SIDEBAR -->
-    <div class="sidebar">
-        <div class="sidebar-logo">
-            <h2>LOGÍSTICA</h2>
-            <span>Sistema de Control Interno</span>
-        </div>
-        <div class="sidebar-user">
-            <div class="user-name" id="sidebar-nombre">Cargando...</div>
-            <div class="user-role" id="sidebar-rol"></div>
+    <div id="sidebar">
+        <div class="sidebar-brand">
+            <div class="brand-icon">LG</div>
+            <div class="brand-name">LOGÍSTICA</div>
+            <div class="brand-sub">Sistema de Control Interno</div>
         </div>
         <nav class="sidebar-nav">
-            <a href="/dashboard.html" class="nav-item active"><i class="bi bi-speedometer2"></i> Dashboard</a>
-            <a href="/productos.html" class="nav-item"><i class="bi bi-box-seam"></i> Productos</a>
-            <a href="/solicitudes.html" class="nav-item"><i class="bi bi-clipboard-check"></i> Solicitudes</a>
-            <a href="/kardex.html" class="nav-item"><i class="bi bi-journal-text"></i> Kardex</a>
+            <div class="nav-section-label">Principal</div>
+            <a href="/dashboard.html" class="nav-link active"><i class="bi bi-speedometer2"></i> Dashboard</a>
+
+            <div class="nav-section-label">Inventario</div>
+            <a href="/productos.html" class="nav-link"><i class="bi bi-box-seam"></i> Productos</a>
+            <a href="/kardex.html" class="nav-link"><i class="bi bi-journal-text"></i> Kardex</a>
+
+            <div class="nav-section-label">Operaciones</div>
+            <a href="/solicitudes.html" class="nav-link"><i class="bi bi-clipboard-check"></i> Solicitudes</a>
+
+            <div class="nav-section-label">Reportes</div>
+            <a href="/reportes.html" class="nav-link"><i class="bi bi-bar-chart-line"></i> Reportes</a>
+
+            <div class="nav-section-label" id="label-admin" style="display:none;">Administración</div>
+            <a href="/usuarios.html" class="nav-link" id="link-usuarios" style="display:none;"><i class="bi bi-people"></i> Usuarios</a>
+            <a href="/bodegas.html" class="nav-link" id="link-bodegas" style="display:none;"><i class="bi bi-building"></i> Bodegas</a>
         </nav>
         <div class="sidebar-footer">
             <button class="btn-logout" onclick="auth.logout()">
@@ -33,44 +464,45 @@
         </div>
     </div>
 
-    <!-- CONTENIDO -->
-    <div class="main-content">
+    <!-- MAIN -->
+    <div id="main">
         <div class="topbar">
-            <div>
-                <div class="topbar-title">Dashboard</div>
-                <div class="topbar-breadcrumb">Resumen general del sistema</div>
+            <div class="topbar-left">
+                <div>
+                    <div class="topbar-title">Dashboard</div>
+                    <div class="topbar-sub">Resumen general del sistema</div>
+                </div>
             </div>
-            <div id="last-update" class="text-muted"></div>
+            <div class="topbar-right">
+                <i class="bi bi-person-circle" style="font-size:20px;color:#9CA3AF;"></i>
+                <span id="topbar-nombre">Administrador</span>
+                <span id="last-update" class="last-update ms-2"></span>
+            </div>
         </div>
 
         <div class="page-body">
 
             <!-- KPIs -->
             <div class="kpi-grid">
-                <div class="kpi-card danger">
-                    <div class="kpi-icon"><i class="bi bi-exclamation-triangle"></i></div>
-                    <div class="kpi-label">Bajo Mínimo</div>
-                    <div class="kpi-value" id="kpi-bajo">-</div>
-                </div>
-                <div class="kpi-card warning">
-                    <div class="kpi-icon"><i class="bi bi-hourglass-split"></i></div>
-                    <div class="kpi-label">Pendientes</div>
-                    <div class="kpi-value" id="kpi-pendientes">-</div>
-                </div>
-                <div class="kpi-card success">
-                    <div class="kpi-icon"><i class="bi bi-truck"></i></div>
-                    <div class="kpi-label">Despachos Hoy</div>
-                    <div class="kpi-value" id="kpi-despachos">-</div>
+                <div class="kpi-card">
+                    <div class="kpi-icon red"><i class="bi bi-exclamation-triangle-fill"></i></div>
+                    <div><div class="kpi-label">Bajo Mínimo</div><div class="kpi-value" id="kpi-bajo">-</div></div>
                 </div>
                 <div class="kpi-card">
-                    <div class="kpi-icon"><i class="bi bi-arrow-left-right"></i></div>
-                    <div class="kpi-label">Movimientos Mes</div>
-                    <div class="kpi-value" id="kpi-movimientos">-</div>
+                    <div class="kpi-icon amber"><i class="bi bi-hourglass-split"></i></div>
+                    <div><div class="kpi-label">Pendientes</div><div class="kpi-value" id="kpi-pendientes">-</div></div>
                 </div>
-                <div class="kpi-card success">
-                    <div class="kpi-icon"><i class="bi bi-box-seam"></i></div>
-                    <div class="kpi-label">Productos Activos</div>
-                    <div class="kpi-value" id="kpi-productos">-</div>
+                <div class="kpi-card">
+                    <div class="kpi-icon green"><i class="bi bi-truck"></i></div>
+                    <div><div class="kpi-label">Despachos Hoy</div><div class="kpi-value" id="kpi-despachos">-</div></div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon blue"><i class="bi bi-arrow-left-right"></i></div>
+                    <div><div class="kpi-label">Movimientos Mes</div><div class="kpi-value" id="kpi-movimientos">-</div></div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon purple"><i class="bi bi-box-seam"></i></div>
+                    <div><div class="kpi-label">Productos Activos</div><div class="kpi-value" id="kpi-productos">-</div></div>
                 </div>
             </div>
 
@@ -87,186 +519,151 @@
             </div>
 
             <!-- TABLA SOLICITUDES PENDIENTES -->
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-title"><i class="bi bi-hourglass-split"></i> Solicitudes Pendientes de Aprobación</div>
-                    <a href="/solicitudes.html" class="btn btn-secondary btn-sm">Ver todas</a>
-                </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Número</th>
-                                    <th>Solicitante</th>
-                                    <th>Bodega</th>
-                                    <th>Fecha</th>
-                                    <th>Líneas</th>
-                                    <th>Estado</th>
-                                </tr>
-                            </thead>
-                            <tbody id="tabla-pendientes">
-                                <tr><td colspan="6" style="text-align:center;color:#94A3B8;">Cargando...</td></tr>
-                            </tbody>
-                        </table>
+            <div class="dash-card">
+                <div class="dash-card-header">
+                    <div class="dash-card-title">
+                        <i class="bi bi-hourglass-split" style="color:#1976D2;"></i>
+                        Solicitudes Pendientes de Aprobación
                     </div>
+                    <a href="/solicitudes.html" class="btn-outline-sm">Ver todas</a>
+                </div>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Número</th>
+                                <th>Solicitante</th>
+                                <th>Bodega</th>
+                                <th>Fecha</th>
+                                <th style="text-align:center;">Líneas</th>
+                                <th>Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabla-pendientes">
+                            <tr><td colspan="6" style="text-align:center;color:#94A3B8;padding:28px;">Cargando...</td></tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
 
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/js/utils.js"></script>
     <script>
-    // Verificar autenticación
-    auth.checkAuth();
+        auth.checkAuth();
 
-    // Mostrar usuario en sidebar
-    const user = auth.getUser();
-    document.getElementById('sidebar-nombre').textContent = user.nombre;
-    document.getElementById('sidebar-rol').textContent    = user.rol;
+        const user = auth.getUser();
+        $('#sidebar-nombre').text(user.nombre);
+        $('#sidebar-rol').text(user.rol);
+        $('#topbar-nombre').text(user.nombre);
 
-    let chartEstados  = null;
-    let chartRotacion = null;
-
-    async function cargarDashboard() {
-        // KPIs
-        const resKpis = await apiCall('GET', '/dashboard/kpis');
-        if (resKpis && resKpis.success) {
-            const d = resKpis.data;
-            animarNumero('kpi-bajo',        d.totalProductosBajoMinimo);
-            animarNumero('kpi-pendientes',   d.solicitudesPendientes);
-            animarNumero('kpi-despachos',    d.despachosDia);
-            animarNumero('kpi-movimientos',  d.totalMovimientosMes);
-            animarNumero('kpi-productos',    d.totalProductosActivos);
-
-            // Cambiar color si hay alertas
-            if (d.totalProductosBajoMinimo > 0)
-                document.querySelector('.kpi-card.danger .kpi-value').style.color = '#EF4444';
-            if (d.solicitudesPendientes > 0)
-                document.querySelector('.kpi-card.warning .kpi-value').style.color = '#F59E0B';
+        // Mostrar sección Admin solo si es Admin
+        if (auth.hasRole('Admin')) {
+            document.getElementById('label-admin').style.display = 'block';
+            document.getElementById('link-usuarios').style.display = 'flex';
+            document.getElementById('link-bodegas').style.display = 'flex';
         }
 
-        // Gráfico solicitudes por estado
-        const mes  = new Date().getMonth() + 1;
-        const anio = new Date().getFullYear();
+        let chartEstados = null;
+        let chartRotacion = null;
 
-        const resEstados = await apiCall('GET', `/dashboard/solicitudes-por-estado?mes=${mes}&anio=${anio}`);
-        if (resEstados && resEstados.success) {
-            renderChartEstados(resEstados.data);
-        }
-
-        // Gráfico rotación
-        const resRotacion = await apiCall('GET', `/dashboard/rotacion?mes=${mes}&anio=${anio}`);
-        if (resRotacion && resRotacion.success) {
-            renderChartRotacion(resRotacion.data);
-        }
-
-        // Tabla pendientes
-        const resSol = await apiCall('GET', '/solicitudes?estado=Pendiente');
-        if (resSol && resSol.success) {
-            renderTablaPendientes(resSol.data);
-        }
-
-        // Última actualización
-        document.getElementById('last-update').textContent =
-            'Actualizado: ' + new Date().toLocaleTimeString('es-GT');
-    }
-
-    function animarNumero(id, valor) {
-        const el  = document.getElementById(id);
-        let start = 0;
-        const step = Math.ceil(valor / 20);
-        const timer = setInterval(() => {
-            start += step;
-            if (start >= valor) { el.textContent = valor; clearInterval(timer); }
-            else el.textContent = start;
-        }, 40);
-    }
-
-    function renderChartEstados(data) {
-        const estados = ['Borrador','Pendiente','Aprobada','Rechazada','Despachada'];
-        const colores = ['#94A3B8','#F59E0B','#2563EB','#EF4444','#10B981'];
-        const totales = estados.map(e => {
-            const found = data.find(d => d.estado === e);
-            return found ? found.total : 0;
-        });
-
-        if (chartEstados) chartEstados.destroy();
-        chartEstados = new Chart(document.getElementById('chart-estados'), {
-            type: 'doughnut',
-            data: {
-                labels: estados,
-                datasets: [{ data: totales, backgroundColor: colores, borderWidth: 2 }]
-            },
-            options: {
-                responsive: true,
-                plugins: { legend: { position: 'bottom', labels: { font: { size: 11 } } } }
+        async function cargarDashboard() {
+            const resKpis = await apiCall('GET', '/dashboard/kpis');
+            if (resKpis?.success) {
+                const d = resKpis.data;
+                animarNumero('kpi-bajo', d.totalProductosBajoMinimo);
+                animarNumero('kpi-pendientes', d.solicitudesPendientes);
+                animarNumero('kpi-despachos', d.despachosDia);
+                animarNumero('kpi-movimientos', d.totalMovimientosMes);
+                animarNumero('kpi-productos', d.totalProductosActivos);
+                if (d.totalProductosBajoMinimo > 0) $('#kpi-bajo').css('color', '#EF4444');
+                if (d.solicitudesPendientes > 0) $('#kpi-pendientes').css('color', '#F59E0B');
             }
-        });
-    }
 
-    function renderChartRotacion(data) {
-        if (!data || data.length === 0) {
-            document.getElementById('chart-rotacion').parentElement.innerHTML =
-                '<div class="chart-title">Top Productos con Más Salidas</div>' +
-                '<p style="color:#94A3B8;font-size:13px;text-align:center;padding:40px 0;">Sin datos este mes</p>';
-            return;
+            const mes = new Date().getMonth() + 1;
+            const anio = new Date().getFullYear();
+
+            const resEstados = await apiCall('GET', `/dashboard/solicitudes-por-estado?mes=${mes}&anio=${anio}`);
+            if (resEstados?.success) renderChartEstados(resEstados.data);
+
+            const resRotacion = await apiCall('GET', `/dashboard/rotacion?mes=${mes}&anio=${anio}`);
+            if (resRotacion?.success) renderChartRotacion(resRotacion.data);
+
+            const resSol = await apiCall('GET', '/solicitudes?estado=Pendiente');
+            if (resSol?.success) renderTablaPendientes(resSol.data);
+
+            $('#last-update').text('Actualizado: ' + new Date().toLocaleTimeString('es-GT'));
         }
 
-        if (chartRotacion) chartRotacion.destroy();
-        chartRotacion = new Chart(document.getElementById('chart-rotacion'), {
-            type: 'bar',
-            data: {
-                labels: data.map(d => d.nombre.length > 20 ? d.nombre.substring(0,20)+'...' : d.nombre),
-                datasets: [{
-                    label: 'Unidades despachadas',
-                    data: data.map(d => d.totalSalidas),
-                    backgroundColor: '#2563EB',
-                    borderRadius: 4
-                }]
-            },
-            options: {
-                indexAxis: 'y',
-                responsive: true,
-                plugins: { legend: { display: false } },
-                scales: { x: { grid: { display: false } } }
+        function animarNumero(id, valor) {
+            const el = document.getElementById(id);
+            let n = 0;
+            const step = Math.max(1, Math.ceil(valor / 20));
+            const t = setInterval(() => {
+                n += step;
+                if (n >= valor) { el.textContent = valor; clearInterval(t); }
+                else el.textContent = n;
+            }, 40);
+        }
+
+        function renderChartEstados(data) {
+            const estados = ['Borrador', 'Pendiente', 'Aprobada', 'Rechazada', 'Despachada'];
+            const colores = ['#94A3B8', '#F59E0B', '#1976D2', '#EF4444', '#10B981'];
+            const totales = estados.map(e => { const f = data.find(d => d.estado === e); return f ? f.total : 0; });
+            if (chartEstados) chartEstados.destroy();
+            chartEstados = new Chart(document.getElementById('chart-estados'), {
+                type: 'doughnut',
+                data: { labels: estados, datasets: [{ data: totales, backgroundColor: colores, borderWidth: 2 }] },
+                options: { responsive: true, plugins: { legend: { position: 'bottom', labels: { font: { size: 11 } } } } }
+            });
+        }
+
+        function renderChartRotacion(data) {
+            if (!data || data.length === 0) {
+                $('#chart-rotacion').parent().html(
+                    '<div class="chart-title">Top Productos con Más Salidas</div>' +
+                    '<p style="color:#94A3B8;font-size:13px;text-align:center;padding:40px 0;">Sin datos este mes</p>'
+                );
+                return;
             }
-        });
-    }
-
-    function renderTablaPendientes(data) {
-        const tbody = document.getElementById('tabla-pendientes');
-        if (!data || data.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:#94A3B8;padding:24px;">No hay solicitudes pendientes</td></tr>';
-            return;
+            if (chartRotacion) chartRotacion.destroy();
+            chartRotacion = new Chart(document.getElementById('chart-rotacion'), {
+                type: 'bar',
+                data: {
+                    labels: data.map(d => d.nombre.length > 20 ? d.nombre.substring(0, 20) + '…' : d.nombre),
+                    datasets: [{ label: 'Unidades despachadas', data: data.map(d => d.totalSalidas), backgroundColor: '#1976D2', borderRadius: 4 }]
+                },
+                options: { indexAxis: 'y', responsive: true, plugins: { legend: { display: false } }, scales: { x: { grid: { display: false } } } }
+            });
         }
 
-        tbody.innerHTML = data.map(s => `
-            <tr>
-                <td><strong>${s.numeroSolicitud}</strong></td>
-                <td>${s.solicitante}</td>
-                <td>${s.bodega}</td>
-                <td>${formatDate(s.fechaCreacion)}</td>
-                <td style="text-align:center;">${s.totalLineas}</td>
-                <td>${badgeEstado(s.estado)}</td>
-            </tr>
-        `).join('');
-    }
+        function renderTablaPendientes(data) {
+            const tbody = $('#tabla-pendientes');
+            if (!data || data.length === 0) {
+                tbody.html('<tr><td colspan="6" style="text-align:center;color:#94A3B8;padding:24px;">No hay solicitudes pendientes</td></tr>');
+                return;
+            }
+            tbody.html(data.map(s => `
+                <tr>
+                    <td><strong>${s.numeroSolicitud}</strong></td>
+                    <td>${s.solicitante}</td>
+                    <td>${s.bodega}</td>
+                    <td>${formatDate(s.fechaCreacion)}</td>
+                    <td style="text-align:center;">${s.totalLineas}</td>
+                    <td>${badgeEstado(s.estado)}</td>
+                </tr>
+            `).join(''));
+        }
 
-    // Cargar al inicio
-    cargarDashboard();
+        function badgeEstado(estado) {
+            const map = { 'Pendiente': 'badge-pendiente', 'Aprobada': 'badge-aprobada', 'Rechazada': 'badge-rechazada', 'Despachada': 'badge-despachada', 'Borrador': 'badge-borrador' };
+            return `<span class="badge-estado ${map[estado] || 'badge-borrador'}">${estado}</span>`;
+        }
 
-    // Auto-refresh cada 60 segundos
-    setInterval(cargarDashboard, 60000);
+        cargarDashboard();
+        setInterval(cargarDashboard, 60000);
     </script>
-
 </body>
 </html>
-```
-
----
-
-Presiona **Ctrl + Shift + B** luego **F5** y abre:
-```
-https://localhost:7185/index.html
