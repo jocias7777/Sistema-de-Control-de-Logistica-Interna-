@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kardex — Despacho Logística</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
     <style>
         :root {
             --sidebar-bg: #1a237e;
@@ -18,19 +18,21 @@
             --sidebar-w: 225px;
         }
 
-        *, *::before, *::after {
+        * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
 
         body {
-            font-family: 'Poppins',sans-serif;
-            font-size: 14px;
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
             background: var(--bg);
             color: #212529;
+            -webkit-font-smoothing: antialiased;
         }
 
+        /* SIDEBAR */
         #sidebar {
             position: fixed;
             top: 0;
@@ -61,15 +63,17 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 16px;
-            font-weight: 800;
+            font-size: 15px;
+            font-weight: 700;
             color: #fff;
         }
 
+        /* Nombre sistema — 13px / 700 */
         .brand-name {
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 700;
             color: #fff;
+            letter-spacing: .5px;
         }
 
         .brand-sub {
@@ -78,60 +82,45 @@
             text-align: center;
         }
 
-        .sidebar-user {
-            padding: 12px 18px;
-            border-bottom: 1px solid rgba(255,255,255,.1);
-        }
-
-            .sidebar-user .user-name {
-                font-size: 14px;
-                font-weight: 600;
-                color: #fff;
-            }
-
-            .sidebar-user .user-role {
-                font-size: 11px;
-                color: rgba(255,255,255,.5);
-                margin-top: 2px;
-            }
-
         .sidebar-nav {
             flex: 1;
             padding: 10px 0;
         }
 
+        /* Etiquetas sección — 10px / 600 */
         .nav-section-label {
             padding: 10px 20px 4px;
             font-size: 10px;
-            font-weight: 700;
+            font-weight: 600;
             color: rgba(255,255,255,.3);
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 1.2px;
         }
 
-        .nav-link {
+        /* Links sidebar — 12.5px / 500 */
+        .sidebar-nav .nav-link {
             display: flex;
             align-items: center;
             gap: 10px;
-            padding: 10px 20px;
+            padding: 9px 20px;
             color: rgba(255,255,255,.72) !important;
-            font-size: 13.5px;
+            font-size: 12.5px;
             font-weight: 500;
             text-decoration: none;
             transition: background .15s;
         }
 
-            .nav-link i {
-                font-size: 18px;
+            .sidebar-nav .nav-link i {
+                font-size: 17px;
                 width: 20px;
             }
 
-            .nav-link:hover {
+            .sidebar-nav .nav-link:hover {
                 background: var(--sidebar-hover);
                 color: #fff !important;
             }
 
-            .nav-link.active {
+            .sidebar-nav .nav-link.active {
                 background: rgba(255,255,255,.13);
                 color: #fff !important;
                 font-weight: 600;
@@ -142,19 +131,20 @@
             border-top: 1px solid rgba(255,255,255,.1);
         }
 
+        /* Logout — 12.5px / 500 */
         .btn-logout {
             width: 100%;
             display: flex;
             align-items: center;
             gap: 10px;
-            padding: 10px 20px;
+            padding: 9px 20px;
             background: transparent;
             border: none;
             color: rgba(255,255,255,.6);
-            font-size: 13.5px;
+            font-size: 12.5px;
             font-weight: 500;
             cursor: pointer;
-            font-family: inherit;
+            font-family: 'Inter', sans-serif;
             transition: background .15s;
         }
 
@@ -163,157 +153,145 @@
                 color: #fff;
             }
 
+        /* MAIN */
         #main {
             margin-left: var(--sidebar-w);
             min-height: 100vh;
+            background: var(--bg);
         }
 
         .topbar {
-            height: 56px;
             background: #fff;
             border-bottom: 1px solid var(--border);
+            padding: 0 28px;
+            height: 48px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0 24px;
             position: sticky;
             top: 0;
             z-index: 100;
         }
 
-        .topbar-title {
-            font-size: 15px;
-            font-weight: 700;
-            color: #0F172A;
+        .topbar-hamburger {
+            background: none;
+            border: none;
+            font-size: 20px;
+            color: #64748B;
+            cursor: pointer;
         }
 
-        .topbar-sub {
-            font-size: 11px;
-            color: #94A3B8;
-        }
-
-        .topbar-right {
+        /* Usuario topbar — 12.5px / 500 */
+        .topbar-user {
             display: flex;
             align-items: center;
-            gap: 10px;
-            font-size: 13px;
+            gap: 6px;
+            font-size: 12.5px;
             font-weight: 500;
             color: #374151;
         }
 
         .page-body {
-            padding: 22px 24px;
-            display: flex;
-            flex-direction: column;
-            gap: 18px;
+            padding: 0 28px 28px;
         }
 
+        /* BOOTSTRAP SPACING FIX */
+        /* Botones — 12.5px / 500 */
+        .btn {
+            font-family: 'Inter', sans-serif;
+            font-size: 12.5px;
+            font-weight: 500;
+            padding: 6px 14px !important;
+        }
+
+            .btn + .btn {
+                margin-left: 8px !important;
+            }
+
+        .btn-group > .btn + .btn {
+            margin-left: 0 !important;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        /* FILTROS CARD */
         .filter-card {
             background: #fff;
             border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 16px 18px;
-            box-shadow: 0 1px 3px rgba(0,0,0,.06);
+            box-shadow: 0 1px 3px rgba(0,0,0,.05);
         }
 
-        .filter-row {
-            display: grid;
-            grid-template-columns: 2fr 1.5fr 1fr 1fr auto;
-            gap: 12px;
-            align-items: end;
+        /* Encabezado filtros — 13px / 600 */
+        .filter-card-header {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #0F172A;
         }
 
-        .filter-group label {
+            .filter-card-header i {
+                color: var(--blue);
+                font-size: 15px;
+            }
+
+        .filter-card-body {
+            padding: 16px;
+        }
+
+        /* Labels filtro — 10.5px / 600 uppercase */
+        .filter-label {
             display: block;
-            font-size: 11px;
+            font-size: 10.5px;
             font-weight: 600;
             color: #64748B;
             text-transform: uppercase;
-            letter-spacing: .4px;
+            letter-spacing: .5px;
             margin-bottom: 5px;
         }
 
-        .filter-group select, .filter-group input {
+        /* Controles filtro — 13px */
+        .filter-control {
             width: 100%;
-            padding: 8px 11px;
+            padding: 7px 10px;
             border: 1px solid var(--border);
-            border-radius: 6px;
             font-size: 13px;
-            font-family: inherit;
+            font-family: 'Inter', sans-serif;
             outline: none;
+            color: #0F172A;
+            background: #fff;
+            transition: border-color .15s;
         }
 
-            .filter-group select:focus, .filter-group input:focus {
+            .filter-control:focus {
                 border-color: var(--blue);
+                box-shadow: 0 0 0 3px rgba(25,118,210,.1);
             }
 
-        .btn-primary-sm {
-            padding: 8px 16px;
-            background: var(--blue);
-            color: #fff;
-            border: none;
-            border-radius: 6px;
-            font-size: 13px;
-            font-weight: 500;
-            cursor: pointer;
-            font-family: inherit;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            transition: background .15s;
-            white-space: nowrap;
-        }
-
-            .btn-primary-sm:hover {
-                background: #1565C0;
-            }
-
-        .btn-secondary-sm {
-            padding: 8px 16px;
-            background: #F1F5F9;
-            color: #374151;
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            font-size: 13px;
-            font-weight: 500;
-            cursor: pointer;
-            font-family: inherit;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            transition: background .15s;
-            white-space: nowrap;
-        }
-
-            .btn-secondary-sm:hover {
-                background: #E2E8F0;
-            }
-
-        .stat-grid {
-            display: grid;
-            grid-template-columns: repeat(4,1fr);
-            gap: 16px;
-        }
-
+        /* STATS */
         .stat-card {
             background: #fff;
             border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 14px 16px;
+            padding: 12px 14px;
             display: flex;
             align-items: center;
             gap: 12px;
-            box-shadow: 0 1px 3px rgba(0,0,0,.06);
+            box-shadow: 0 1px 3px rgba(0,0,0,.05);
         }
 
         .stat-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 18px;
+            font-size: 16px;
             flex-shrink: 0;
         }
 
@@ -337,83 +315,91 @@
                 color: #6A1B9A;
             }
 
+        /* Label stat — 10px / 600 uppercase */
         .stat-label {
-            font-size: 11px;
+            font-size: 10px;
             color: #64748B;
-            font-weight: 500;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: .3px;
         }
 
+        /* Valor stat — 19px / 700 */
         .stat-value {
-            font-size: 22px;
+            font-size: 19px;
             font-weight: 700;
             color: #0F172A;
             line-height: 1.1;
         }
 
-        .dash-card {
+        /* TABLE CARD */
+        .table-card {
             background: #fff;
             border: 1px solid var(--border);
-            border-radius: 10px;
-            box-shadow: 0 1px 3px rgba(0,0,0,.06);
             overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,.05);
         }
 
-        .dash-card-header {
-            padding: 13px 18px;
-            border-bottom: 1px solid var(--border);
+        .table-card-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
+            padding: 12px 18px;
+            border-bottom: 1px solid var(--border);
         }
 
-        .dash-card-title {
-            font-size: 13.5px;
-            font-weight: 700;
-            color: #0F172A;
+        /* Título tabla — 13px / 600 */
+        .table-card-title {
             display: flex;
             align-items: center;
-            gap: 7px;
+            gap: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #0F172A;
         }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
+            .table-card-title i {
+                color: var(--blue);
+                font-size: 15px;
+            }
+
+        /* Contador tabla — 12px / 400 */
+        .table-card-count {
+            font-size: 12px;
+            color: #94A3B8;
+            font-weight: 400;
         }
 
-        thead tr {
-            background: #F8FAFC;
-        }
-
-        th {
-            padding: 10px 16px;
-            font-size: 11px;
+        /* TH — 10.5px / 600 uppercase */
+        .table-bordered th {
+            font-size: 10.5px;
             font-weight: 600;
             color: #64748B;
             text-transform: uppercase;
-            letter-spacing: .4px;
-            border-bottom: 1px solid var(--border);
+            letter-spacing: .6px;
+            background: #F8FAFC;
             white-space: nowrap;
-        }
-
-        td {
-            padding: 11px 16px;
-            font-size: 13px;
-            border-bottom: 1px solid #F1F5F9;
             vertical-align: middle;
+            padding: 11px 14px;
         }
 
-        tbody tr:last-child td {
-            border-bottom: none;
+        /* TD — 12.5px / 400 */
+        .table-bordered td {
+            font-size: 12.5px;
+            vertical-align: middle;
+            padding: 11px 14px;
+            letter-spacing: -0.01em;
         }
 
-        tbody tr:hover {
-            background: #FAFBFE;
+        .table-hover tbody tr:hover {
+            background: #FAFBFF;
         }
 
+        /* BADGES TIPO — 11px / 600 */
         .badge-entrada {
             background: #E8F5E9;
             color: #2E7D32;
-            padding: 3px 10px;
+            padding: 3px 9px;
             border-radius: 20px;
             font-size: 11px;
             font-weight: 600;
@@ -423,7 +409,7 @@
         .badge-salida {
             background: #FFEBEE;
             color: #C62828;
-            padding: 3px 10px;
+            padding: 3px 9px;
             border-radius: 20px;
             font-size: 11px;
             font-weight: 600;
@@ -433,31 +419,103 @@
         .badge-ajuste {
             background: #EDE7F6;
             color: #6A1B9A;
-            padding: 3px 10px;
+            padding: 3px 9px;
             border-radius: 20px;
             font-size: 11px;
             font-weight: 600;
             display: inline-block;
         }
 
+        /* EMPTY STATE */
         .empty-state {
             text-align: center;
-            padding: 60px 20px;
+            padding: 56px 20px;
             color: #94A3B8;
         }
 
             .empty-state i {
-                font-size: 48px;
-                margin-bottom: 12px;
+                font-size: 40px;
+                margin-bottom: 10px;
                 display: block;
             }
 
+            /* Texto empty state — 12.5px */
             .empty-state p {
-                font-size: 13px;
+                font-size: 12.5px;
             }
+
+        /* SPINNER */
+        .spinner {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border: 2px solid rgba(255,255,255,.35);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin .6s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* TOAST — 12.5px / 500 */
+        #global-toast {
+            position: fixed;
+            top: 20px;
+            right: 24px;
+            z-index: 9999;
+            min-width: 270px;
+            padding: 11px 16px;
+            font-size: 12.5px;
+            font-weight: 500;
+            box-shadow: 0 4px 12px rgba(0,0,0,.12);
+            display: none;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Inter', sans-serif;
+        }
+
+            #global-toast.show {
+                display: flex;
+            }
+
+            #global-toast.success {
+                background: #DCFCE7;
+                color: #166534;
+                border: 1px solid #A7F3D0;
+            }
+
+            #global-toast.danger {
+                background: #FEE2E2;
+                color: #991B1B;
+                border: 1px solid #FECACA;
+            }
+
+        /* LAYOUT 2 COLUMNAS: filtros + tabla */
+        .kardex-layout {
+            display: grid;
+            grid-template-columns: 272px 1fr;
+            gap: 20px;
+            align-items: start;
+        }
+
+        .kardex-left {
+            position: sticky;
+            top: 66px;
+        }
+
+        .stats-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 14px;
+        }
     </style>
 </head>
-<body>
+<body spellcheck="false">
 
     <!-- SIDEBAR -->
     <div id="sidebar">
@@ -469,110 +527,186 @@
         <nav class="sidebar-nav">
             <div class="nav-section-label">Principal</div>
             <a href="/dashboard.html" class="nav-link"><i class="bi bi-speedometer2"></i> Dashboard</a>
+
             <div class="nav-section-label">Inventario</div>
             <a href="/productos.html" class="nav-link"><i class="bi bi-box-seam"></i> Productos</a>
             <a href="/kardex.html" class="nav-link active"><i class="bi bi-journal-text"></i> Kardex</a>
+
             <div class="nav-section-label">Operaciones</div>
             <a href="/solicitudes.html" class="nav-link"><i class="bi bi-clipboard-check"></i> Solicitudes</a>
+
             <div class="nav-section-label">Reportes</div>
             <a href="/reportes.html" class="nav-link"><i class="bi bi-bar-chart-line"></i> Reportes</a>
+
             <div class="nav-section-label" id="label-admin" style="display:none;">Administración</div>
             <a href="/usuarios.html" class="nav-link" id="link-usuarios" style="display:none;"><i class="bi bi-people"></i> Usuarios</a>
             <a href="/bodegas.html" class="nav-link" id="link-bodegas" style="display:none;"><i class="bi bi-building"></i> Bodegas</a>
         </nav>
         <div class="sidebar-footer">
-            <button class="btn-logout" onclick="auth.logout()"><i class="bi bi-box-arrow-left"></i> Cerrar Sesión</button>
+            <button class="btn-logout" onclick="auth.logout()">
+                <i class="bi bi-box-arrow-left"></i> Cerrar Sesión
+            </button>
         </div>
     </div>
 
     <!-- MAIN -->
     <div id="main">
+
+        <!-- TOPBAR -->
         <div class="topbar">
             <div>
-                <div class="topbar-title">Kardex de Inventario</div>
-                <div class="topbar-sub">Inventario → Kardex</div>
+                <button class="topbar-hamburger"><i class="bi bi-list"></i></button>
             </div>
-            <div class="topbar-right">
-                <i class="bi bi-person-circle" style="font-size:20px;color:#9CA3AF;"></i>
+            <div class="topbar-user">
+                <i class="bi bi-person-circle" style="font-size:19px;color:#9CA3AF;"></i>
                 <span id="topbar-nombre"></span>
             </div>
         </div>
 
-        <div class="page-body">
-
-            <!-- FILTROS -->
-            <div class="filter-card">
-                <div class="filter-row">
-                    <div class="filter-group">
-                        <label>Producto</label>
-                        <select id="fil-producto"><option value="">— Selecciona un producto —</option></select>
-                    </div>
-                    <div class="filter-group">
-                        <label>Bodega</label>
-                        <select id="fil-bodega"><option value="">Todas las bodegas</option></select>
-                    </div>
-                    <div class="filter-group">
-                        <label>Fecha Inicio</label>
-                        <input type="date" id="fil-desde">
-                    </div>
-                    <div class="filter-group">
-                        <label>Fecha Fin</label>
-                        <input type="date" id="fil-hasta">
-                    </div>
-                    <div class="filter-group" style="display:flex;gap:8px;">
-                        <button class="btn-primary-sm" onclick="buscar()"><i class="bi bi-search"></i> Buscar</button>
-                        <button class="btn-secondary-sm" onclick="exportar()"><i class="bi bi-download"></i> CSV</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- STATS -->
-            <div class="stat-grid" id="stats-kardex" style="display:none;">
-                <div class="stat-card"><div class="stat-icon blue"><i class="bi bi-arrow-left-right"></i></div><div><div class="stat-label">Total Movimientos</div><div class="stat-value" id="sk-total">-</div></div></div>
-                <div class="stat-card"><div class="stat-icon green"><i class="bi bi-arrow-down-circle"></i></div><div><div class="stat-label">Total Entradas</div><div class="stat-value" id="sk-entradas">-</div></div></div>
-                <div class="stat-card"><div class="stat-icon red"><i class="bi bi-arrow-up-circle"></i></div><div><div class="stat-label">Total Salidas</div><div class="stat-value" id="sk-salidas">-</div></div></div>
-                <div class="stat-card"><div class="stat-icon purple"><i class="bi bi-box-seam"></i></div><div><div class="stat-label">Stock Actual</div><div class="stat-value" id="sk-stock">-</div></div></div>
-            </div>
-
-            <!-- TABLA -->
-            <div class="dash-card">
-                <div class="dash-card-header">
-                    <div class="dash-card-title"><i class="bi bi-journal-text" style="color:var(--blue);"></i> Movimientos</div>
-                    <span id="lbl-conteo" style="font-size:12px;color:#64748B;"></span>
-                </div>
-                <div class="table-responsive">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Fecha</th>
-                                <th>Tipo</th>
-                                <th>Producto</th>
-                                <th>Bodega</th>
-                                <th style="text-align:right;">Cantidad</th>
-                                <th style="text-align:right;">Stock Antes</th>
-                                <th style="text-align:right;">Stock Después</th>
-                                <th>Referencia</th>
-                                <th>Usuario</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tbody-kardex">
-                            <tr><td colspan="9"><div class="empty-state"><i class="bi bi-journal-text"></i><p>Selecciona un producto y presiona Buscar</p></div></td></tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
+        <!-- TITLE -->
+        <div style="padding:22px 28px 0;">
+            <!-- Título página — 21px / 700 -->
+            <div style="font-size:21px;font-weight:700;color:#0F172A;letter-spacing:-.5px;font-family:'Inter',sans-serif;">Kardex</div>
         </div>
-    </div>
 
+        <!-- PAGE BODY -->
+        <div class="page-body mt-3">
+            <div class="kardex-layout">
+
+                <!-- ── COL IZQUIERDA: filtros + stats ── -->
+                <div class="kardex-left">
+
+                    <!-- Filtros -->
+                    <div class="filter-card">
+                        <div class="filter-card-header">
+                            <i class="bi bi-funnel"></i> Filtros
+                        </div>
+                        <div class="filter-card-body">
+
+                            <div class="form-group">
+                                <label class="filter-label">Producto <span style="color:#EF4444;">*</span></label>
+                                <select class="filter-control" id="fil-producto">
+                                    <option value="">— Selecciona —</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="filter-label">Bodega</label>
+                                <select class="filter-control" id="fil-bodega">
+                                    <option value="">Todas las bodegas</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="filter-label">Fecha Inicio</label>
+                                <input type="date" class="filter-control" id="fil-desde">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="filter-label">Fecha Fin</label>
+                                <input type="date" class="filter-control" id="fil-hasta">
+                            </div>
+
+                            <div style="display:flex;gap:8px;">
+                                <button class="btn btn-primary" style="flex:1;" onclick="buscar()">
+                                    <i class="bi bi-search mr-1"></i> Buscar
+                                </button>
+                                <button class="btn btn-outline-secondary" onclick="exportar()" title="Exportar CSV">
+                                    <i class="bi bi-download"></i>
+                                </button>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- Stats (ocultos hasta buscar) -->
+                    <div id="stats-kardex" class="stats-stack" style="display:none;">
+                        <div class="stat-card">
+                            <div class="stat-icon blue"><i class="bi bi-arrow-left-right"></i></div>
+                            <div>
+                                <div class="stat-label">Total Movimientos</div>
+                                <div class="stat-value" id="sk-total">-</div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon green"><i class="bi bi-arrow-down-circle"></i></div>
+                            <div>
+                                <div class="stat-label">Total Entradas</div>
+                                <div class="stat-value" id="sk-entradas">-</div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon red"><i class="bi bi-arrow-up-circle"></i></div>
+                            <div>
+                                <div class="stat-label">Total Salidas</div>
+                                <div class="stat-value" id="sk-salidas">-</div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon purple"><i class="bi bi-box-seam"></i></div>
+                            <div>
+                                <div class="stat-label">Stock Actual</div>
+                                <div class="stat-value" id="sk-stock">-</div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div><!-- /kardex-left -->
+                <!-- ── COL DERECHA: tabla ── -->
+                <div>
+                    <div class="table-card">
+                        <div class="table-card-header">
+                            <div class="table-card-title">
+                                <i class="bi bi-journal-text"></i> Movimientos
+                            </div>
+                            <span class="table-card-count" id="lbl-conteo"></span>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Fecha</th>
+                                        <th>Tipo</th>
+                                        <th>Producto</th>
+                                        <th>Bodega</th>
+                                        <th class="text-right">Cantidad</th>
+                                        <th class="text-right">Stock Antes</th>
+                                        <th class="text-right">Stock Después</th>
+                                        <th>Referencia</th>
+                                        <th>Usuario</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody-kardex">
+                                    <tr>
+                                        <td colspan="9">
+                                            <div class="empty-state">
+                                                <i class="bi bi-journal-text"></i>
+                                                <p>Selecciona un producto y presiona Buscar</p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div><!-- /col derecha -->
+
+            </div><!-- /kardex-layout -->
+        </div><!-- /page-body -->
+    </div><!-- /main -->
+    <!-- GLOBAL TOAST -->
+    <div id="global-toast"></div>
+
+    <!-- Bootstrap 4 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"></script>
     <script src="/js/utils.js"></script>
     <script src="/js/router.js"></script>
     <script>
         auth.checkAuth();
-
         const user = auth.getUser();
-        $('#sidebar-nombre').text(user.nombre);
-        $('#sidebar-rol').text(user.rol);
+
         const elTopbar = document.getElementById('topbar-nombre');
         if (elTopbar) elTopbar.textContent = user.nombre;
 
@@ -584,32 +718,60 @@
 
         let movimientos = [];
 
+        function showToast(msg, tipo = 'success') {
+            const el = document.getElementById('global-toast');
+            el.className = `show ${tipo}`;
+            el.innerHTML = `<i class="bi bi-${tipo === 'success' ? 'check-circle' : 'exclamation-circle'}"></i> ${msg}`;
+            setTimeout(() => { el.className = ''; }, 3500);
+        }
+
         async function init() {
             const hoy = new Date();
-            const hace30 = new Date(); hace30.setDate(hoy.getDate() - 30);
-            $('#fil-hasta').val(hoy.toISOString().split('T')[0]);
-            $('#fil-desde').val(hace30.toISOString().split('T')[0]);
+            const hace30 = new Date();
+            hace30.setDate(hoy.getDate() - 30);
+            document.getElementById('fil-hasta').value = hoy.toISOString().split('T')[0];
+            document.getElementById('fil-desde').value = hace30.toISOString().split('T')[0];
 
-            const [rp, rb] = await Promise.all([apiCall('GET', '/productos'), apiCall('GET', '/bodegas')]);
-            if (rp?.success) $('#fil-producto').append(rp.data.map(p => `<option value="${p.productoID}">${p.nombre} (${p.codigo})</option>`).join(''));
-            if (rb?.success) $('#fil-bodega').append(rb.data.map(b => `<option value="${b.bodegaID}">${b.nombre}</option>`).join(''));
+            const [rp, rb] = await Promise.all([
+                apiCall('GET', '/productos'),
+                apiCall('GET', '/bodegas')
+            ]);
+
+            if (rp?.success) {
+                const sel = document.getElementById('fil-producto');
+                rp.data.forEach(p => {
+                    const o = document.createElement('option');
+                    o.value = p.productoID;
+                    o.textContent = `${p.nombre} (${p.codigo})`;
+                    sel.appendChild(o);
+                });
+            }
+            if (rb?.success) {
+                const sel = document.getElementById('fil-bodega');
+                rb.data.forEach(b => {
+                    const o = document.createElement('option');
+                    o.value = b.bodegaID;
+                    o.textContent = b.nombre;
+                    sel.appendChild(o);
+                });
+            }
         }
 
         async function buscar() {
-            const pid = $('#fil-producto').val();
-            const bid = $('#fil-bodega').val();
-            const desde = $('#fil-desde').val();
-            const hasta = $('#fil-hasta').val();
+            const pid = document.getElementById('fil-producto').value;
+            const bid = document.getElementById('fil-bodega').value;
+            const desde = document.getElementById('fil-desde').value;
+            const hasta = document.getElementById('fil-hasta').value;
 
-            if (!pid) { alert('Selecciona un producto'); return; }
+            if (!pid) { showToast('Selecciona un producto', 'danger'); return; }
 
-            // ✅ Nombres correctos que espera el controller
             let url = `/dashboard/kardex?productoId=${pid}`;
             if (bid) url += `&bodegaId=${bid}`;
             if (desde) url += `&fechaDesde=${desde}`;
             if (hasta) url += `&fechaHasta=${hasta}`;
 
-            $('#tbody-kardex').html('<tr><td colspan="9" style="text-align:center;color:#94A3B8;padding:28px;">Cargando...</td></tr>');
+            document.getElementById('tbody-kardex').innerHTML =
+                '<tr><td colspan="9" class="text-center text-muted py-4">Cargando...</td></tr>';
 
             const res = await apiCall('GET', url);
             if (res?.success) {
@@ -620,47 +782,49 @@
         }
 
         function renderStats(d) {
-            if (!d.length) { $('#stats-kardex').hide(); return; }
-            $('#stats-kardex').show();
-            $('#sk-total').text(d.length);
-            $('#sk-entradas').text(
-                d.filter(m => m.tipoMovimiento === 'Entrada').reduce((s, m) => s + m.cantidad, 0)
-            );
-            $('#sk-salidas').text(
-                d.filter(m => m.tipoMovimiento === 'Salida').reduce((s, m) => s + m.cantidad, 0)
-            );
-            // ✅ Stock actual real desde el API de productos
-            const pid = $('#fil-producto').val();
+            const el = document.getElementById('stats-kardex');
+            if (!d.length) { el.style.display = 'none'; return; }
+            el.style.display = 'flex';
+            document.getElementById('sk-total').textContent = d.length;
+            document.getElementById('sk-entradas').textContent = d.filter(m => m.tipoMovimiento === 'Entrada').reduce((s, m) => s + m.cantidad, 0);
+            document.getElementById('sk-salidas').textContent = d.filter(m => m.tipoMovimiento === 'Salida').reduce((s, m) => s + m.cantidad, 0);
+
+            const pid = document.getElementById('fil-producto').value;
             apiCall('GET', '/productos').then(res => {
                 if (res?.success) {
                     const prod = res.data.find(p => p.productoID == pid);
-                    $('#sk-stock').text(prod ? prod.stockActual : '-');
+                    document.getElementById('sk-stock').textContent = prod ? prod.stockActual : '-';
                 }
             });
         }
 
         function renderTabla(d) {
-            $('#lbl-conteo').text(d.length + ' movimientos');
+            document.getElementById('lbl-conteo').textContent = d.length + ' movimientos';
+            const tbody = document.getElementById('tbody-kardex');
+
             if (!d.length) {
-                $('#tbody-kardex').html('<tr><td colspan="9"><div class="empty-state"><i class="bi bi-journal-text"></i><p>Sin movimientos en el período seleccionado</p></div></td></tr>');
+                tbody.innerHTML = `<tr><td colspan="9"><div class="empty-state">
+                        <i class="bi bi-journal-text"></i>
+                        <p>Sin movimientos en el período seleccionado</p>
+                    </div></td></tr>`;
                 return;
             }
-            // ✅ Usa los nombres correctos del DTO: fechaMovimiento, stockAnterior, stockNuevo, documentoReferencia
-            $('#tbody-kardex').html(d.map(m => `
-                        <tr>
-                            <td style="color:#64748B;white-space:nowrap;">${formatDate(m.fechaMovimiento)}</td>
-                            <td>${badgeTipo(m.tipoMovimiento)}</td>
-                            <td><strong>${m.producto || '-'}</strong></td>
-                            <td style="color:#64748B;">${m.bodega || '-'}</td>
-                            <td style="text-align:right;font-weight:700;color:${m.tipoMovimiento === 'Entrada' ? '#2E7D32' : '#C62828'};">
-                                ${m.tipoMovimiento === 'Entrada' ? '+' : '-'}${m.cantidad}
-                            </td>
-                            <td style="text-align:right;color:#64748B;">${m.stockAnterior}</td>
-                            <td style="text-align:right;font-weight:600;">${m.stockNuevo}</td>
-                            <td style="color:#64748B;font-size:12px;">${m.documentoReferencia || '-'}</td>
-                            <td style="color:#64748B;">${m.usuario}</td>
-                        </tr>
-                    `).join(''));
+
+            tbody.innerHTML = d.map(m => `
+                    <tr>
+                        <td style="color:#64748B;white-space:nowrap;">${formatDate(m.fechaMovimiento)}</td>
+                        <td>${badgeTipo(m.tipoMovimiento)}</td>
+                        <td><strong>${m.producto || '-'}</strong></td>
+                        <td style="color:#64748B;">${m.bodega || '-'}</td>
+                        <td class="text-right font-weight-bold" style="color:${m.tipoMovimiento === 'Entrada' ? '#2E7D32' : '#C62828'};">
+                            ${m.tipoMovimiento === 'Entrada' ? '+' : '-'}${m.cantidad}
+                        </td>
+                        <td class="text-right" style="color:#64748B;">${m.stockAnterior}</td>
+                        <td class="text-right" style="font-weight:600;">${m.stockNuevo}</td>
+                        <td style="color:#64748B;font-size:12px;">${m.documentoReferencia || '-'}</td>
+                        <td style="color:#64748B;">${m.usuario}</td>
+                    </tr>
+                `).join('');
         }
 
         function badgeTipo(t) {
@@ -670,7 +834,7 @@
         }
 
         function exportar() {
-            if (!movimientos.length) { alert('No hay datos para exportar'); return; }
+            if (!movimientos.length) { showToast('No hay datos para exportar', 'danger'); return; }
             const headers = ['Fecha', 'Tipo', 'Producto', 'Bodega', 'Cantidad', 'Stock Antes', 'Stock Después', 'Referencia', 'Usuario'];
             const rows = movimientos.map(m => [
                 formatDate(m.fechaMovimiento), m.tipoMovimiento, m.producto, m.bodega,

@@ -36,6 +36,18 @@
         }
       }
     },
+    "/api/auth/genhash": {
+      "get": {
+        "tags": [
+          "Auth"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
     "/api/bodegas": {
       "get": {
         "tags": [

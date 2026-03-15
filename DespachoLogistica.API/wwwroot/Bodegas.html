@@ -6,8 +6,9 @@
     <title>Bodegas — Despacho Logística</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+
     <style>
         :root {
             --sidebar-bg: #1a237e;
@@ -25,13 +26,14 @@
         }
 
         body {
-            font-family: 'Poppins', sans-serif;
-            font-size: 14px;
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
             background: var(--bg);
             color: #212529;
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* SIDEBAR */
+        /* ══ SIDEBAR ══ */
         #sidebar {
             position: fixed;
             top: 0;
@@ -62,15 +64,17 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 16px;
-            font-weight: 800;
+            font-size: 15px;
+            font-weight: 700;
             color: #fff;
         }
 
+        /* Nombre sistema — 13px / 700 */
         .brand-name {
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 700;
             color: #fff;
+            letter-spacing: .5px;
         }
 
         .brand-sub {
@@ -84,29 +88,31 @@
             padding: 10px 0;
         }
 
+        /* Etiquetas sección — 10px / 600 */
         .nav-section-label {
             padding: 10px 20px 4px;
             font-size: 10px;
-            font-weight: 700;
+            font-weight: 600;
             color: rgba(255,255,255,.3);
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 1.2px;
         }
 
+        /* Links sidebar — 12.5px / 500 */
         .nav-link {
             display: flex;
             align-items: center;
             gap: 10px;
-            padding: 10px 20px;
+            padding: 9px 20px;
             color: rgba(255,255,255,.72) !important;
-            font-size: 13.5px;
+            font-size: 12.5px;
             font-weight: 500;
             text-decoration: none;
             transition: background .15s, color .15s;
         }
 
             .nav-link i {
-                font-size: 18px;
+                font-size: 17px;
                 width: 20px;
             }
 
@@ -126,19 +132,20 @@
             border-top: 1px solid rgba(255,255,255,.1);
         }
 
+        /* Logout — 12.5px / 500 */
         .btn-logout {
             width: 100%;
             display: flex;
             align-items: center;
             gap: 10px;
-            padding: 10px 20px;
+            padding: 9px 20px;
             background: transparent;
             border: none;
             color: rgba(255,255,255,.6);
-            font-size: 13.5px;
+            font-size: 12.5px;
             font-weight: 500;
             cursor: pointer;
-            font-family: inherit;
+            font-family: 'Inter', sans-serif;
             transition: background .15s, color .15s;
         }
 
@@ -147,7 +154,7 @@
                 color: #fff;
             }
 
-        /* MAIN */
+        /* ══ MAIN ══ */
         #main {
             margin-left: var(--sidebar-w);
             min-height: 100vh;
@@ -188,11 +195,12 @@
             cursor: pointer;
         }
 
+        /* Usuario topbar — 12.5px / 500 */
         .topbar-user {
             display: flex;
             align-items: center;
             gap: 6px;
-            font-size: 13px;
+            font-size: 12.5px;
             font-weight: 500;
             color: #374151;
         }
@@ -205,74 +213,48 @@
             gap: 16px;
         }
 
-        /* TOOLBAR */
-        .toolbar-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-        }
-
-        .toolbar-left {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .toolbar-right {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .btn-new {
-            display: inline-flex;
-            align-items: center;
-            gap: 7px;
-            padding: 9px 20px;
-            border-radius: 8px;
-            border: none;
-            background: var(--blue);
-            font-size: 13px;
-            font-weight: 600;
-            color: #fff;
-            cursor: pointer;
-            font-family: inherit;
-            transition: background .15s, box-shadow .15s;
-            white-space: nowrap;
-        }
-
-            .btn-new:hover {
-                background: #1565C0;
-                box-shadow: 0 2px 8px rgba(25,118,210,.3);
-            }
-
-        /* STAT GRID */
-        .stat-grid {
+        /* ══ LAYOUT PRINCIPAL: KPIs columna fija 260px | bodegas el resto ══ */
+        .main-layout {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: 260px 1fr;
             gap: 16px;
+            align-items: start;
         }
 
+        /* KPIs — columna fija, sticky */
+        .kpis-col {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            position: sticky;
+            top: 64px;
+        }
+
+        /* Bodegas — ocupa el resto */
+        .bodegas-col {
+            min-width: 0;
+        }
+
+        /* ══ STAT CARDS — KPIs ══ */
         .stat-card {
             background: #fff;
             border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 16px 18px;
+            border-radius: 4px;
+            padding: 14px 16px;
             display: flex;
             align-items: center;
-            gap: 14px;
+            gap: 12px;
             box-shadow: 0 1px 3px rgba(0,0,0,.05);
         }
 
         .stat-icon {
-            width: 44px;
-            height: 44px;
-            border-radius: 10px;
+            width: 38px;
+            height: 38px;
+            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 21px;
+            font-size: 18px;
             flex-shrink: 0;
         }
 
@@ -291,37 +273,44 @@
                 color: #F9A825;
             }
 
+        /* Label KPI — 10px / 600 uppercase */
         .stat-label {
-            font-size: 11px;
+            font-size: 10px;
             color: #64748B;
-            font-weight: 500;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: .3px;
         }
 
+        /* Valor KPI — 22px / 700 */
         .stat-value {
-            font-size: 26px;
+            font-size: 22px;
             font-weight: 700;
             color: #0F172A;
             line-height: 1.1;
             margin-top: 2px;
         }
 
-        /* BODEGAS GRID */
+        /* ══ BODEGAS GRID — 4 columnas, 4 filas por página ══ */
         .bodegas-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 16px;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
         }
 
+        /* ══ BODEGA CARD — border-radius: 4px ══ */
         .bodega-card {
             background: #fff;
             border: 1px solid var(--border);
-            border-radius: 10px;
+            border-radius: 4px;
             box-shadow: 0 1px 3px rgba(0,0,0,.05);
             overflow: hidden;
+            display: flex;
+            flex-direction: column;
         }
 
         .bodega-card-head {
-            padding: 16px 18px;
+            padding: 14px 16px;
             border-bottom: 1px solid var(--border);
             display: flex;
             align-items: flex-start;
@@ -330,39 +319,43 @@
         }
 
         .bodega-icon {
-            width: 44px;
-            height: 44px;
+            width: 38px;
+            height: 38px;
             background: #E3F2FD;
-            border-radius: 10px;
+            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 20px;
+            font-size: 18px;
             color: #1976D2;
             flex-shrink: 0;
         }
 
+        /* Nombre bodega — 13px / 600 */
         .bodega-name {
-            font-size: 14px;
-            font-weight: 700;
+            font-size: 13px;
+            font-weight: 600;
             color: #0F172A;
         }
 
+        /* Ubicación bodega — 11.5px */
         .bodega-ubicacion {
-            font-size: 12px;
+            font-size: 11.5px;
             color: #64748B;
             margin-top: 2px;
         }
 
         .bodega-card-body {
-            padding: 14px 18px;
+            padding: 12px 16px;
+            flex: 1;
         }
 
+        /* Stat de bodega — 12px */
         .bodega-stat {
             display: flex;
             justify-content: space-between;
             font-size: 12px;
-            padding: 5px 0;
+            padding: 4px 0;
             border-bottom: 1px solid #F1F5F9;
         }
 
@@ -380,18 +373,19 @@
         }
 
         .bodega-card-foot {
-            padding: 12px 18px;
+            padding: 10px 16px;
             border-top: 1px solid var(--border);
             display: flex;
             gap: 8px;
         }
 
-        /* BADGES */
+        /* ══ BADGES ══ */
+        /* Badge estado bodega — 11px / 600 */
         .badge-estado {
             display: inline-block;
-            padding: 4px 12px;
+            padding: 3px 10px;
             border-radius: 20px;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 600;
         }
 
@@ -405,10 +399,11 @@
             color: #475569;
         }
 
+        /* Badges stock — 11px / 600 */
         .badge-stock-ok {
             background: #DCFCE7;
             color: #16A34A;
-            padding: 3px 10px;
+            padding: 3px 9px;
             border-radius: 20px;
             font-size: 11px;
             font-weight: 600;
@@ -417,7 +412,7 @@
         .badge-stock-bajo {
             background: #FEF9C3;
             color: #CA8A04;
-            padding: 3px 10px;
+            padding: 3px 9px;
             border-radius: 20px;
             font-size: 11px;
             font-weight: 600;
@@ -426,28 +421,29 @@
         .badge-stock-sin {
             background: #FEE2E2;
             color: #DC2626;
-            padding: 3px 10px;
+            padding: 3px 9px;
             border-radius: 20px;
             font-size: 11px;
             font-weight: 600;
         }
 
-        /* CARD BUTTONS */
+        /* ══ BOTONES CARD ══ */
+        /* Botón icono — 12px / 500 */
         .btn-icon {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            height: 32px;
-            border-radius: 7px;
+            height: 30px;
+            border-radius: 4px;
             border: 1px solid var(--border);
             background: #fff;
             color: #64748B;
             cursor: pointer;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 500;
-            padding: 0 12px;
-            gap: 6px;
-            font-family: inherit;
+            padding: 0 10px;
+            gap: 5px;
+            font-family: 'Inter', sans-serif;
             transition: background .15s, color .15s, border-color .15s;
         }
 
@@ -467,7 +463,29 @@
                     background: #DBEAFE;
                 }
 
-        /* TABLE */
+        /* Botón Nueva Bodega — 12.5px / 600 */
+        .btn-new {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 7px 16px;
+            border-radius: 4px;
+            border: none;
+            background: var(--blue);
+            font-size: 12.5px;
+            font-weight: 600;
+            color: #fff;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            transition: background .15s;
+            white-space: nowrap;
+        }
+
+            .btn-new:hover {
+                background: #1565C0;
+            }
+
+        /* ══ TABLE en modal ══ */
         table {
             width: 100%;
             border-collapse: collapse;
@@ -477,22 +495,26 @@
             background: #F8FAFC;
         }
 
+        /* TH modal — 10.5px / 600 */
         th {
-            padding: 11px 20px;
-            font-size: 11px;
-            font-weight: 700;
+            padding: 10px 16px;
+            font-size: 10.5px;
+            font-weight: 600;
             color: #64748B;
             text-transform: uppercase;
             letter-spacing: .5px;
             border-bottom: 1px solid var(--border);
             white-space: nowrap;
+            font-family: 'Inter', sans-serif;
         }
 
+        /* TD modal — 12.5px */
         td {
-            padding: 13px 20px;
-            font-size: 13px;
+            padding: 11px 16px;
+            font-size: 12.5px;
             border-bottom: 1px solid #F1F5F9;
             vertical-align: middle;
+            font-family: 'Inter', sans-serif;
         }
 
         tbody tr:last-child td {
@@ -503,18 +525,19 @@
             background: #FAFBFF;
         }
 
+        /* Code badge — 11px */
         .code-badge {
             display: inline-block;
             background: #EFF6FF;
             color: #1976D2;
             font-size: 11px;
             font-weight: 600;
-            padding: 3px 9px;
-            border-radius: 6px;
-            font-family: 'SF Mono','Fira Code',monospace;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: 'SF Mono', 'Fira Code', monospace;
         }
 
-        /* MODALS */
+        /* ══ MODALES ══ */
         .modal-overlay {
             position: fixed;
             inset: 0;
@@ -532,7 +555,7 @@
 
         .modal-box {
             background: #fff;
-            border-radius: 12px;
+            border-radius: 4px;
             width: 100%;
             max-width: 480px;
             box-shadow: 0 20px 60px rgba(0,0,0,.18);
@@ -556,17 +579,19 @@
         }
 
         .modal-header {
-            padding: 18px 22px;
+            padding: 16px 22px;
             border-bottom: 1px solid var(--border);
             display: flex;
             align-items: center;
             justify-content: space-between;
         }
 
+        /* Título modal — 14px / 600 */
         .modal-title {
-            font-size: 15px;
-            font-weight: 700;
+            font-size: 14px;
+            font-weight: 600;
             color: #0F172A;
+            letter-spacing: -0.02em;
         }
 
         .modal-close {
@@ -583,26 +608,27 @@
             }
 
         .modal-body {
-            padding: 22px;
+            padding: 20px 22px;
             overflow-y: auto;
         }
 
         .modal-footer {
-            padding: 14px 22px;
+            padding: 12px 22px;
             border-top: 1px solid var(--border);
             display: flex;
             justify-content: flex-end;
             gap: 10px;
         }
 
-        /* FORM */
+        /* ══ FORMULARIOS ══ */
+        /* Input/select — 13px */
         .form-control {
             width: 100%;
-            padding: 8px 12px;
+            padding: 7px 11px;
             border: 1px solid var(--border);
-            border-radius: 7px;
+            border-radius: 4px;
             font-size: 13px;
-            font-family: inherit;
+            font-family: 'Inter', sans-serif;
             color: #0F172A;
             background: #fff;
             outline: none;
@@ -622,29 +648,31 @@
             cursor: pointer;
         }
 
+        /* Label form — 12.5px / 500 */
         .form-label {
             display: block;
-            font-size: 13px;
+            font-size: 12.5px;
             font-weight: 500;
             color: #0F172A;
-            margin-bottom: 6px;
+            margin-bottom: 5px;
         }
 
         .form-group {
-            margin-bottom: 16px;
+            margin-bottom: 14px;
         }
 
+        /* Botones modal — 12.5px / 500 */
         .btn-modal {
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            padding: 8px 18px;
-            border-radius: 7px;
-            font-size: 13px;
+            padding: 7px 16px;
+            border-radius: 4px;
+            font-size: 12.5px;
             font-weight: 500;
             cursor: pointer;
             border: none;
-            font-family: inherit;
+            font-family: 'Inter', sans-serif;
             transition: background .15s;
         }
 
@@ -672,44 +700,191 @@
                 background: #F8FAFC;
             }
 
-        /* TOAST */
-        #global-toast {
+        /* ══ TOAST CUSTOM POSITIONED — versión compacta ══ */
+        #toast-container {
             position: fixed;
-            top: 20px;
+            bottom: 24px;
             right: 24px;
             z-index: 9999;
-            min-width: 280px;
-            padding: 12px 18px;
-            border-radius: 8px;
-            font-size: 13px;
-            font-weight: 500;
-            box-shadow: 0 4px 12px rgba(0,0,0,.12);
-            display: none;
-            align-items: center;
-            gap: 8px;
+            min-width: 300px;
+            max-width: 400px;
         }
 
-            #global-toast.show {
+        .toast-custom {
+            border: none;
+            border-radius: 0;
+            box-shadow: 0 6px 24px rgba(0,0,0,.15);
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+            opacity: 0;
+            transition: opacity .3s ease, transform .3s ease;
+            transform: translateY(12px);
+            display: none;
+        }
+
+            .toast-custom.show {
+                display: block;
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            .toast-custom .toast-header-custom {
+                padding: 11px 15px 8px;
                 display: flex;
+                align-items: center;
+                gap: 10px;
+                border-bottom: 1px solid rgba(0,0,0,.07);
             }
 
-            #global-toast.success {
-                background: #DCFCE7;
-                color: #166534;
-                border: 1px solid #A7F3D0;
+            .toast-custom .toast-icon {
+                width: 30px;
+                height: 30px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 14px;
+                flex-shrink: 0;
             }
 
-            #global-toast.danger {
-                background: #FEE2E2;
-                color: #991B1B;
-                border: 1px solid #FECACA;
+            .toast-custom .toast-body-custom {
+                padding: 10px 15px 13px;
+                font-size: 12px;
+                line-height: 1.55;
+            }
+
+            .toast-custom.toast-success {
+                background: #fff;
+                border-left: 4px solid #16A34A;
+            }
+
+                .toast-custom.toast-success .toast-icon {
+                    background: #DCFCE7;
+                    color: #16A34A;
+                }
+
+                .toast-custom.toast-success .toast-titulo {
+                    color: #166534;
+                    font-size: 12.5px;
+                    font-weight: 600;
+                }
+
+                .toast-custom.toast-success .toast-body-custom {
+                    color: #374151;
+                }
+
+            .toast-custom.toast-danger {
+                background: #fff;
+                border-left: 4px solid #DC2626;
+            }
+
+                .toast-custom.toast-danger .toast-icon {
+                    background: #FEE2E2;
+                    color: #DC2626;
+                }
+
+                .toast-custom.toast-danger .toast-titulo {
+                    color: #991B1B;
+                    font-size: 12.5px;
+                    font-weight: 600;
+                }
+
+                .toast-custom.toast-danger .toast-body-custom {
+                    color: #374151;
+                }
+
+        .toast-cerrar {
+            margin-left: auto;
+            background: none;
+            border: none;
+            font-size: 18px;
+            color: #94A3B8;
+            cursor: pointer;
+            line-height: 1;
+            padding: 0;
+        }
+
+            .toast-cerrar:hover {
+                color: #374151;
+            }
+
+        .toast-progress {
+            height: 3px;
+            background: #16A34A;
+            animation: progress-shrink 4s linear forwards;
+        }
+
+        .toast-custom.toast-danger .toast-progress {
+            background: #DC2626;
+        }
+
+        @keyframes progress-shrink {
+            from {
+                width: 100%;
+            }
+
+            to {
+                width: 0%;
+            }
+        }
+
+        /* ══ PAGINACIÓN ══ */
+        .pag-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 4px 0;
+            grid-column: 1 / -1;
+        }
+
+        .pag-info {
+            font-size: 11.5px;
+            color: #94A3B8;
+            letter-spacing: .01em;
+        }
+
+        .pag-btns {
+            display: flex;
+            gap: 4px;
+        }
+
+        .pag-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            border: 1px solid var(--border);
+            background: #fff;
+            color: #374151;
+            font-size: 12px;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background .15s, color .15s;
+        }
+
+            .pag-btn:hover {
+                background: #F1F5F9;
+            }
+
+            .pag-btn.active {
+                background: var(--blue);
+                border-color: var(--blue);
+                color: #fff;
+            }
+
+            .pag-btn:disabled {
+                color: #CBD5E1;
+                cursor: not-allowed;
+                background: #fff;
             }
 
         /* SPINNER */
         .spinner {
             display: inline-block;
-            width: 13px;
-            height: 13px;
+            width: 12px;
+            height: 12px;
             border: 2px solid rgba(255,255,255,.35);
             border-top-color: #fff;
             border-radius: 50%;
@@ -723,7 +898,7 @@
         }
     </style>
 </head>
-<body>
+<body spellcheck="false">
 
     <!-- SIDEBAR -->
     <div id="sidebar">
@@ -767,69 +942,85 @@
             </div>
             <div class="topbar-right">
                 <div class="topbar-user">
-                    <i class="bi bi-person-circle" style="font-size:20px;color:#9CA3AF;"></i>
+                    <i class="bi bi-person-circle" style="font-size:19px;color:#9CA3AF;"></i>
                     <span id="topbar-nombre"></span>
                 </div>
             </div>
         </div>
 
-        <!-- TÍTULO -->
-        <div style="padding:24px 28px 0;">
-            <div style="font-size:26px;font-weight:700;color:#0F172A;letter-spacing:-.3px;">Bodegas</div>
-            <div style="font-size:13px;color:#94A3B8;margin-top:3px;">Administración y control de bodegas del sistema</div>
-
+        <!-- TÍTULO — igual que otros módulos -->
+        <div style="padding:22px 28px 0; display:flex; align-items:center; justify-content:space-between;">
+            <div>
+                <!-- Título página — 21px / 700 -->
+                <div style="font-size:21px;font-weight:700;color:#0F172A;letter-spacing:-.5px;font-family:'Inter',sans-serif;">Bodegas</div>
+                <!-- Subtítulo página — 12px -->
+                <div style="font-size:12px;color:#94A3B8;margin-top:2px;letter-spacing:.01em;">Administración y control de bodegas del sistema</div>
+            </div>
+            <button class="btn-new" onclick="abrirNuevo()">
+                <i class="bi bi-plus-lg"></i> Nueva Bodega
+            </button>
         </div>
 
         <!-- PAGE BODY -->
-        <div class="page-body">
+        <div class="page-body mt-3">
 
-            <!-- TOOLBAR -->
-            <div class="toolbar-row">
-                <div class="toolbar-left"></div>
-                <div class="toolbar-right">
-                    <button class="btn-new" onclick="abrirNuevo()">
-                        <i class="bi bi-plus-lg"></i> Nueva Bodega
-                    </button>
-                </div>
-            </div>
+            <!-- LAYOUT: 3 KPIs | 9 bodegas -->
+            <div class="main-layout">
 
-            <!-- STATS -->
-            <div class="stat-grid">
-                <div class="stat-card">
-                    <div class="stat-icon blue"><i class="bi bi-building"></i></div>
-                    <div>
-                        <div class="stat-label">Total Bodegas</div>
-                        <div class="stat-value" id="stat-total">-</div>
+                <!-- COLUMNA IZQUIERDA: 3 KPIs -->
+                <div class="kpis-col">
+                    <div class="stat-card">
+                        <div class="stat-icon blue"><i class="bi bi-building"></i></div>
+                        <div>
+                            <div class="stat-label">Total Bodegas</div>
+                            <div class="stat-value" id="stat-total">-</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon green"><i class="bi bi-check-circle"></i></div>
+                        <div>
+                            <div class="stat-label">Activas</div>
+                            <div class="stat-value" id="stat-activas">-</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon amber"><i class="bi bi-box-seam"></i></div>
+                        <div>
+                            <div class="stat-label">Total Productos</div>
+                            <div class="stat-value" id="stat-productos">-</div>
+                        </div>
                     </div>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-icon green"><i class="bi bi-check-circle"></i></div>
-                    <div>
-                        <div class="stat-label">Activas</div>
-                        <div class="stat-value" id="stat-activas">-</div>
-                    </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon amber"><i class="bi bi-box-seam"></i></div>
-                    <div>
-                        <div class="stat-label">Total Productos</div>
-                        <div class="stat-value" id="stat-productos">-</div>
-                    </div>
-                </div>
-            </div>
 
-            <!-- GRID DE BODEGAS -->
-            <div id="bodegas-grid" class="bodegas-grid">
-                <div style="grid-column:1/-1;text-align:center;color:#94A3B8;padding:40px;">
-                    <i class="bi bi-arrow-repeat" style="font-size:24px;"></i><br>Cargando bodegas...
-                </div>
-            </div>
+                <!-- COLUMNA DERECHA: grid 4 columnas de bodegas -->
+                <div class="bodegas-col">
+                    <div id="bodegas-grid" class="bodegas-grid">
+                        <div style="grid-column:1/-1;text-align:center;color:#94A3B8;padding:40px;font-size:13px;">
+                            <i class="bi bi-arrow-repeat" style="font-size:22px;display:block;margin-bottom:8px;"></i>
+                            Cargando bodegas...
+                        </div>
+                    </div>
 
+                </div><!-- /bodegas-grid -->
+            </div><!-- /bodegas-col -->
+        </div><!-- /main-layout -->
+    </div><!-- /page-body -->
+    </div><!-- /main -->
+    <!-- TOAST CUSTOM POSITIONED -->
+    <div id="toast-container">
+        <div id="toast-custom" class="toast-custom">
+            <div class="toast-header-custom">
+                <div class="toast-icon" id="toast-icon"><i id="toast-icon-i" class="bi bi-check-circle-fill"></i></div>
+                <div>
+                    <div class="toast-titulo" id="toast-titulo">Éxito</div>
+                    <div style="font-size:10.5px;color:#94A3B8;" id="toast-sub">Operación completada</div>
+                </div>
+                <button class="toast-cerrar" onclick="cerrarToast()">&times;</button>
+            </div>
+            <div class="toast-body-custom" id="toast-body">Mensaje aquí.</div>
+            <div class="toast-progress" id="toast-progress"></div>
         </div>
     </div>
-
-    <!-- TOAST -->
-    <div id="global-toast"></div>
 
     <!-- MODAL NUEVA / EDITAR BODEGA -->
     <div class="modal-overlay" id="modal-bodega">
@@ -842,11 +1033,11 @@
                 <input type="hidden" id="bod-id">
                 <div class="form-group">
                     <label class="form-label">Nombre <span style="color:#EF4444;">*</span></label>
-                    <input type="text" class="form-control" id="bod-nombre" placeholder="Ej: Bodega Norte" maxlength="100">
+                    <input type="text" class="form-control" id="bod-nombre" placeholder="Ej: Bodega Norte" maxlength="100" spellcheck="false">
                 </div>
                 <div class="form-group">
                     <label class="form-label">Ubicación</label>
-                    <input type="text" class="form-control" id="bod-ubicacion" placeholder="Ej: Zona 5, Guatemala" maxlength="200">
+                    <input type="text" class="form-control" id="bod-ubicacion" placeholder="Ej: Zona 5, Guatemala" maxlength="200" spellcheck="false">
                 </div>
                 <div class="form-group" id="grp-activa" style="display:none;">
                     <label class="form-label">Estado</label>
@@ -907,6 +1098,32 @@
         $('#topbar-nombre').text(user.nombre);
 
         let bodegas = [];
+        const PAG_SIZE = 16; /* 4 columnas × 4 filas */
+        let pagActual = 1;
+
+        /* ═══════════ TOAST ═══════════ */
+        let toastTimer = null;
+
+        function showToast(titulo, mensaje, tipo = 'success', subtitulo = 'Operación completada') {
+            const el = document.getElementById('toast-custom');
+            const iconEl = document.getElementById('toast-icon-i');
+            el.className = `toast-custom toast-${tipo}`;
+            document.getElementById('toast-titulo').textContent = titulo;
+            document.getElementById('toast-sub').textContent = subtitulo;
+            document.getElementById('toast-body').textContent = mensaje;
+            iconEl.className = `bi bi-${tipo === 'success' ? 'check-circle-fill' : 'exclamation-circle-fill'}`;
+            const prog = document.getElementById('toast-progress');
+            prog.style.animation = 'none';
+            prog.offsetHeight;
+            prog.style.animation = '';
+            el.classList.add('show');
+            if (toastTimer) clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => cerrarToast(), 4500);
+        }
+
+        function cerrarToast() {
+            document.getElementById('toast-custom').classList.remove('show');
+        }
 
         async function cargar() {
             const res = await apiCall('GET', '/bodegas');
@@ -916,8 +1133,9 @@
                 renderStats(bodegas);
             } else {
                 $('#bodegas-grid').html(`
-                        <div style="grid-column:1/-1;text-align:center;color:#EF4444;padding:40px;">
-                            <i class="bi bi-exclamation-circle" style="font-size:24px;"></i><br>Error al cargar bodegas
+                        <div style="grid-column:1/-1;text-align:center;color:#EF4444;padding:40px;font-size:13px;">
+                            <i class="bi bi-exclamation-circle" style="font-size:22px;display:block;margin-bottom:8px;"></i>
+                            Error al cargar bodegas
                         </div>`);
             }
         }
@@ -931,18 +1149,25 @@
         function renderCards(d) {
             const g = $('#bodegas-grid');
             if (!d.length) {
-                g.html('<div style="grid-column:1/-1;text-align:center;color:#94A3B8;padding:40px;">No hay bodegas registradas</div>');
+                g.html('<div style="grid-column:1/-1;text-align:center;color:#94A3B8;padding:40px;font-size:13px;">No hay bodegas registradas</div>');
+                pagActual = 1;
                 return;
             }
-            g.html(d.map(b => `
+            const total = d.length;
+            const totalPag = Math.ceil(total / PAG_SIZE) || 1;
+            if (pagActual > totalPag) pagActual = 1;
+            const inicio = (pagActual - 1) * PAG_SIZE;
+            const pagina = d.slice(inicio, inicio + PAG_SIZE);
+
+            let html = pagina.map(b => `
                     <div class="bodega-card">
                         <div class="bodega-card-head">
-                            <div style="display:flex;align-items:center;gap:12px;">
+                            <div style="display:flex;align-items:center;gap:10px;">
                                 <div class="bodega-icon"><i class="bi bi-building"></i></div>
                                 <div>
                                     <div class="bodega-name">${b.nombre}</div>
                                     <div class="bodega-ubicacion">
-                                        <i class="bi bi-geo-alt" style="font-size:11px;"></i>
+                                        <i class="bi bi-geo-alt" style="font-size:10px;"></i>
                                         ${b.ubicacion || 'Sin ubicación'}
                                     </div>
                                 </div>
@@ -970,7 +1195,32 @@
                             </button>
                         </div>
                     </div>
-                `).join(''));
+                `).join('');
+
+            // Paginación
+            const fin = Math.min(inicio + PAG_SIZE, total);
+            let pagHtml = `<div class="pag-wrapper">
+                    <span class="pag-info">Mostrando ${inicio + 1}–${fin} de ${total} bodegas</span>
+                    <div class="pag-btns">`;
+
+            pagHtml += `<button class="pag-btn" onclick="irPag(${pagActual - 1})" ${pagActual === 1 ? 'disabled' : ''}>
+                    <i class="bi bi-chevron-left" style="font-size:10px;"></i>
+                </button>`;
+
+            for (let i = 1; i <= totalPag; i++) {
+                pagHtml += `<button class="pag-btn ${i === pagActual ? 'active' : ''}" onclick="irPag(${i})">${i}</button>`;
+            }
+
+            pagHtml += `<button class="pag-btn" onclick="irPag(${pagActual + 1})" ${pagActual === totalPag ? 'disabled' : ''}>
+                    <i class="bi bi-chevron-right" style="font-size:10px;"></i>
+                </button></div></div>`;
+
+            g.html(html + pagHtml);
+        }
+
+        function irPag(pag) {
+            pagActual = pag;
+            renderCards(bodegas);
         }
 
         function abrirNuevo() {
@@ -1020,11 +1270,11 @@
             btn.innerHTML = '<i class="bi bi-check-lg"></i> Guardar';
 
             if (res?.success) {
-                showAlert(id ? 'Bodega actualizada correctamente.' : 'Bodega creada correctamente.', 'success');
+                showToast(id ? '¡Bodega actualizada!' : '¡Bodega creada!', id ? 'Los datos de la bodega fueron actualizados.' : 'La nueva bodega fue registrada correctamente.', 'success', id ? 'Actualización' : 'Nueva bodega');
                 cerrar('modal-bodega');
                 cargar();
             } else {
-                showAlert(res?.message || 'Error al guardar la bodega.', 'danger');
+                showToast('Error al guardar', res?.message || 'Ocurrió un error al guardar la bodega.', 'danger', 'Error');
             }
         }
 
@@ -1044,16 +1294,16 @@
                 $('#tbody-stock').html(d.map(p => `
                         <tr>
                             <td><span class="code-badge">${p.codigo}</span></td>
-                            <td><strong>${p.nombre}</strong></td>
+                            <td><strong style="font-size:12.5px;">${p.nombre}</strong></td>
                             <td style="color:#64748B;">${p.unidadMedida}</td>
                             <td style="text-align:center;color:#64748B;">${p.stockMinimo}</td>
-                            <td style="text-align:center;font-weight:700;font-size:14px;">${p.stockActual}</td>
+                            <td style="text-align:center;font-weight:700;">${p.stockActual}</td>
                             <td>${getBadgeStock(p.estadoStock)}</td>
                         </tr>
                     `).join(''));
             } else {
                 $('#tbody-stock').html('<tr><td colspan="6" style="text-align:center;color:#EF4444;padding:40px;">Error al cargar el stock</td></tr>');
-                showAlert('Error al cargar el stock de la bodega.', 'danger');
+                showToast('Error', 'No se pudo cargar el stock de la bodega.', 'danger', 'Error');
             }
         }
 
@@ -1066,12 +1316,7 @@
         function abrir(id) { document.getElementById(id).classList.add('show'); }
         function cerrar(id) { document.getElementById(id).classList.remove('show'); }
 
-        function showAlert(msg, tipo = 'success') {
-            const el = document.getElementById('global-toast');
-            el.className = `show ${tipo}`;
-            el.innerHTML = `<i class="bi bi-${tipo === 'success' ? 'check-circle' : 'exclamation-circle'}"></i> ${msg}`;
-            setTimeout(() => { el.className = ''; }, 3500);
-        }
+
 
         cargar();
     </script>

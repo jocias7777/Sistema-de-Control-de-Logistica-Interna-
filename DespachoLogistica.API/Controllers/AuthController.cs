@@ -50,5 +50,12 @@ namespace DespachoLogistica.API.Controllers
                 Expiracion = expiracion
             }, "Login exitoso."));
         }
+
+        // ⚠️ ENDPOINT TEMPORAL - BORRAR DESPUÉS DE USARLO
+        [HttpGet("genhash")]
+        public IActionResult GenHash()
+        {
+            return Ok(BCrypt.Net.BCrypt.HashPassword("admin123!"));
+        }
     }
 }

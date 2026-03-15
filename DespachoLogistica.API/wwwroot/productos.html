@@ -5,10 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Productos — Despacho Logística</title>
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
         :root {
@@ -20,17 +19,18 @@
             --sidebar-w: 225px;
         }
 
-        *, *::before, *::after {
+        * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
 
         body {
-            font-family: 'Poppins', sans-serif;
-            font-size: 14px;
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
             background: var(--bg);
             color: #212529;
+            -webkit-font-smoothing: antialiased;
         }
 
         /* SIDEBAR */
@@ -64,15 +64,17 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 16px;
-            font-weight: 800;
+            font-size: 15px;
+            font-weight: 700;
             color: #fff;
         }
 
+        /* Nombre sistema — 13px / 700 */
         .brand-name {
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 700;
             color: #fff;
+            letter-spacing: .5px;
         }
 
         .brand-sub {
@@ -86,39 +88,40 @@
             padding: 10px 0;
         }
 
-        /* ✅ CSS que faltaba */
+        /* Etiquetas sección — 10px / 600 */
         .nav-section-label {
             padding: 10px 20px 4px;
             font-size: 10px;
-            font-weight: 700;
+            font-weight: 600;
             color: rgba(255,255,255,.3);
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 1.2px;
         }
 
-        .nav-link {
+        /* Links sidebar — 12.5px / 500 */
+        .sidebar-nav .nav-link {
             display: flex;
             align-items: center;
             gap: 10px;
-            padding: 10px 20px;
+            padding: 9px 20px;
             color: rgba(255,255,255,.72) !important;
-            font-size: 13.5px;
+            font-size: 12.5px;
             font-weight: 500;
             text-decoration: none;
             transition: background .15s, color .15s;
         }
 
-            .nav-link i {
-                font-size: 18px;
+            .sidebar-nav .nav-link i {
+                font-size: 17px;
                 width: 20px;
             }
 
-            .nav-link:hover {
+            .sidebar-nav .nav-link:hover {
                 background: var(--sidebar-hover);
                 color: #fff !important;
             }
 
-            .nav-link.active {
+            .sidebar-nav .nav-link.active {
                 background: rgba(255,255,255,.13);
                 color: #fff !important;
                 font-weight: 600;
@@ -129,19 +132,20 @@
             border-top: 1px solid rgba(255,255,255,.1);
         }
 
+        /* Logout — 12.5px / 500 */
         .btn-logout {
             width: 100%;
             display: flex;
             align-items: center;
             gap: 10px;
-            padding: 10px 20px;
+            padding: 9px 20px;
             background: transparent;
             border: none;
             color: rgba(255,255,255,.6);
-            font-size: 13.5px;
+            font-size: 12.5px;
             font-weight: 500;
             cursor: pointer;
-            font-family: inherit;
+            font-family: 'Inter', sans-serif;
             transition: background .15s, color .15s;
         }
 
@@ -171,18 +175,6 @@
             z-index: 100;
         }
 
-        .topbar-left {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .topbar-right {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
         .topbar-hamburger {
             background: none;
             border: none;
@@ -191,11 +183,12 @@
             cursor: pointer;
         }
 
+        /* Usuario topbar — 12.5px / 500 */
         .topbar-user {
             display: flex;
             align-items: center;
             gap: 6px;
-            font-size: 13px;
+            font-size: 12.5px;
             font-weight: 500;
             color: #374151;
         }
@@ -203,154 +196,59 @@
         /* PAGE BODY */
         .page-body {
             padding: 0 28px 28px;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
         }
 
-        /* TOOLBAR */
-        .toolbar-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
+        /* BOTONES — 12.5px / 500 */
+        .btn {
+            font-family: 'Inter', sans-serif;
+            font-size: 12.5px;
+            font-weight: 500;
+            padding: 6px 14px !important;
         }
 
-        .toolbar-left {
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            .btn + .btn,
+            .btn-group > .btn + .btn {
+                margin-left: 8px !important;
+            }
+
+        .btn-group-sm > .btn,
+        .btn-sm {
+            padding: 4px 10px !important;
         }
 
-        .toolbar-right {
-            display: flex;
-            align-items: center;
-            gap: 10px;
+        .btn-icon-action {
+            padding: 0 !important;
+            width: 32px;
+            height: 32px;
         }
 
-        .search-wrap {
-            display: flex;
-            align-items: center;
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .modal-footer {
             gap: 8px;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 8px 14px;
-            background: #fff;
-            width: 240px;
-            transition: border-color .15s, box-shadow .15s;
         }
 
-            .search-wrap:focus-within {
-                border-color: var(--blue);
-                box-shadow: 0 0 0 3px rgba(25,118,210,.1);
+            .modal-footer > .btn {
+                margin: 0 !important;
             }
 
-            .search-wrap i {
-                color: #94A3B8;
-                font-size: 14px;
-                flex-shrink: 0;
-            }
-
-            .search-wrap input {
-                border: none;
-                outline: none;
-                font-size: 13px;
-                font-family: inherit;
-                color: #0F172A;
-                background: transparent;
-                width: 100%;
-            }
-
-                .search-wrap input::placeholder {
-                    color: #94A3B8;
-                }
-
-        .filter-wrap {
-            display: flex;
-            align-items: center;
-            gap: 7px;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 8px 12px;
-            background: #fff;
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: 500;
-            color: #374151;
-            transition: border-color .15s;
+        .form-row > .col,
+        .form-row > [class*="col-"] {
+            padding-right: 8px;
+            padding-left: 8px;
         }
 
-            .filter-wrap:hover {
-                border-color: #94A3B8;
-            }
-
-            .filter-wrap i.icon-filter {
-                color: #64748B;
-            }
-
-            .filter-wrap select {
-                border: none;
-                outline: none;
-                background: transparent;
-                font-size: 13px;
-                font-family: inherit;
-                color: #374151;
-                cursor: pointer;
-                appearance: none;
-            }
-
-            .filter-wrap i.icon-chevron {
-                font-size: 11px;
-                color: #94A3B8;
-            }
-
-        .btn-export {
-            display: inline-flex;
-            align-items: center;
-            gap: 7px;
-            padding: 8px 16px;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            background: #fff;
-            font-size: 13px;
-            font-weight: 500;
-            color: #374151;
-            cursor: pointer;
-            font-family: inherit;
-            transition: background .15s;
+        .form-row {
+            margin-right: -8px;
+            margin-left: -8px;
         }
-
-            .btn-export:hover {
-                background: #F8FAFC;
-            }
-
-        .btn-new {
-            display: inline-flex;
-            align-items: center;
-            gap: 7px;
-            padding: 9px 20px;
-            border-radius: 8px;
-            border: none;
-            background: var(--blue);
-            font-size: 13px;
-            font-weight: 600;
-            color: #fff;
-            cursor: pointer;
-            font-family: inherit;
-            transition: background .15s, box-shadow .15s;
-            white-space: nowrap;
-        }
-
-            .btn-new:hover {
-                background: #1565C0;
-                box-shadow: 0 2px 8px rgba(25,118,210,.3);
-            }
 
         /* TABLE CARD */
         .table-card {
             background: #fff;
             border: 1px solid var(--border);
-            border-radius: 10px;
             overflow: hidden;
             box-shadow: 0 1px 3px rgba(0,0,0,.05);
         }
@@ -359,66 +257,63 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 14px 20px;
+            padding: 12px 18px;
             border-bottom: 1px solid var(--border);
         }
 
+        /* Título tabla — 13px / 600 */
         .table-card-title {
             display: flex;
             align-items: center;
             gap: 8px;
-            font-size: 14px;
-            font-weight: 700;
+            font-size: 13px;
+            font-weight: 600;
             color: #0F172A;
         }
 
             .table-card-title i {
                 color: var(--blue);
-                font-size: 16px;
+                font-size: 15px;
             }
 
+        /* Contador tabla — 12px / 400 */
         .table-card-count {
-            font-size: 13px;
+            font-size: 12px;
             color: #94A3B8;
             font-weight: 400;
         }
 
-        /* TABLE */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        thead tr {
-            background: #F8FAFC;
-        }
-
-        th {
-            padding: 11px 20px;
-            font-size: 11px;
-            font-weight: 700;
+        /* TH — 10.5px / 600 uppercase */
+        .table-bordered th {
+            font-size: 10.5px;
+            font-weight: 600;
             color: #64748B;
             text-transform: uppercase;
-            letter-spacing: .5px;
-            border-bottom: 1px solid var(--border);
+            letter-spacing: .6px;
+            background: #F8FAFC;
             white-space: nowrap;
-        }
-
-        td {
-            padding: 16px 20px;
-            font-size: 13px;
-            border-bottom: 1px solid #F1F5F9;
             vertical-align: middle;
+            padding: 11px 18px;
         }
 
-        tbody tr:last-child td {
-            border-bottom: none;
+        /* TD — 12.5px / 400 */
+        .table-bordered td {
+            font-size: 12.5px;
+            vertical-align: middle;
+            padding: 11px 18px;
+            letter-spacing: -0.01em;
         }
 
-        tbody tr:hover {
+        .table-hover tbody tr:hover {
             background: #FAFBFF;
         }
 
+        th.th-center,
+        td.td-center {
+            text-align: center !important;
+        }
+
+        /* Código badge */
         .code-badge {
             display: inline-block;
             background: #EFF6FF;
@@ -426,19 +321,11 @@
             font-size: 11px;
             font-weight: 600;
             padding: 3px 9px;
-            border-radius: 6px;
-            font-family: 'SF Mono','Fira Code',monospace;
+            font-family: 'SF Mono', 'Fira Code', monospace;
             letter-spacing: .3px;
         }
 
-        .badge-stock {
-            display: inline-block;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-        }
-
+        /* Stock badges — 11.5px / 600 */
         .badge-ok {
             background: #DCFCE7;
             color: #16A34A;
@@ -454,115 +341,186 @@
             color: #DC2626;
         }
 
-        .btn-icon {
+        .badge-stock {
+            display: inline-block;
+            padding: 3px 10px;
+            font-size: 11px;
+            font-weight: 600;
+            border-radius: 20px;
+        }
+
+        /* Action button group */
+        .btn-icon-action {
+            width: 32px;
+            height: 32px;
+            padding: 0;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 32px;
-            height: 32px;
-            border-radius: 7px;
-            border: 1px solid var(--border);
-            background: #fff;
-            color: #64748B;
-            cursor: pointer;
-            font-size: 14px;
-            transition: background .15s, color .15s, border-color .15s;
         }
 
-            .btn-icon:hover {
-                background: #F1F5F9;
-                color: #0F172A;
-                border-color: #CBD5E1;
-            }
-
-        /* MODALS */
-        .modal-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(15,23,42,.45);
-            display: none;
+        /* Search & filter bar */
+        .search-wrap {
+            display: flex;
             align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            padding: 20px;
-        }
-
-            .modal-overlay.show {
-                display: flex;
-            }
-
-        .modal-box {
+            gap: 8px;
+            border: 1px solid var(--border);
+            padding: 7px 13px;
             background: #fff;
-            border-radius: 12px;
-            width: 100%;
-            max-width: 520px;
-            box-shadow: 0 20px 60px rgba(0,0,0,.18);
-            animation: modalIn .2s ease;
+            width: 240px;
+            transition: border-color .15s, box-shadow .15s;
         }
 
-        @keyframes modalIn {
-            from {
-                transform: translateY(-10px);
-                opacity: 0;
+            .search-wrap:focus-within {
+                border-color: var(--blue);
+                box-shadow: 0 0 0 3px rgba(25,118,210,.1);
             }
 
-            to {
-                transform: translateY(0);
-                opacity: 1;
+            .search-wrap i {
+                color: #94A3B8;
+                font-size: 13px;
+                flex-shrink: 0;
             }
+
+            /* Input búsqueda — 12.5px */
+            .search-wrap input {
+                border: none;
+                outline: none;
+                font-size: 12.5px;
+                font-family: 'Inter', sans-serif;
+                color: #0F172A;
+                background: transparent;
+                width: 100%;
+            }
+
+                .search-wrap input::placeholder {
+                    color: #94A3B8;
+                }
+
+        .filter-wrap {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            border: 1px solid var(--border);
+            padding: 7px 12px;
+            background: #fff;
+            font-size: 12.5px;
+            font-weight: 500;
+            color: #374151;
+            transition: border-color .15s;
+        }
+
+            .filter-wrap:hover {
+                border-color: #94A3B8;
+            }
+
+            .filter-wrap i.icon-filter {
+                color: #64748B;
+                font-size: 13px;
+            }
+
+            /* Select filtro — 12.5px */
+            .filter-wrap select {
+                border: none;
+                outline: none;
+                background: transparent;
+                font-size: 12.5px;
+                font-family: 'Inter', sans-serif;
+                color: #374151;
+                cursor: pointer;
+                appearance: none;
+            }
+
+            .filter-wrap i.icon-chevron {
+                font-size: 11px;
+                color: #94A3B8;
+            }
+
+            .search-wrap + .filter-wrap,
+            .filter-wrap + .filter-wrap {
+                margin-left: 8px;
+            }
+
+        /* Nombre producto en tabla — 12.5px / 600 */
+        .prod-nombre {
+            font-weight: 600;
+            color: #0F172A;
+            font-size: 12.5px;
+        }
+
+        /* Descripción producto — 11.5px */
+        .prod-desc {
+            font-size: 11.5px;
+            color: #94A3B8;
+            margin-top: 3px;
+        }
+
+        /* Info card en modal ajuste */
+        .info-card {
+            background: #F8FAFC;
+            border: 1px solid #E2E8F0;
+            padding: 11px 15px;
+            margin-bottom: 18px;
+        }
+
+        /* Label info card — 10.5px / 600 */
+        .info-card-label {
+            font-size: 10.5px;
+            color: #94A3B8;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: .5px;
+        }
+
+        /* Valor info card — 13.5px / 700 */
+        .info-card-value {
+            font-size: 13.5px;
+            font-weight: 700;
+            color: #0F172A;
+            margin-top: 4px;
+        }
+
+        /* MODAL */
+        .modal-content {
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Título modal — 14px / 600 */
+        .modal-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #0F172A;
+            letter-spacing: -0.02em;
         }
 
         .modal-header {
-            padding: 18px 22px;
             border-bottom: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+            padding: 16px 22px;
         }
-
-        .modal-title {
-            font-size: 15px;
-            font-weight: 700;
-            color: #0F172A;
-        }
-
-        .modal-close {
-            background: none;
-            border: none;
-            font-size: 22px;
-            color: #94A3B8;
-            cursor: pointer;
-            line-height: 1;
-        }
-
-            .modal-close:hover {
-                color: #0F172A;
-            }
 
         .modal-body {
-            padding: 22px;
+            padding: 20px 22px;
         }
 
         .modal-footer {
-            padding: 14px 22px;
             border-top: 1px solid var(--border);
-            display: flex;
-            justify-content: flex-end;
-            gap: 10px;
+            padding: 12px 22px;
         }
 
-        /* FORM */
-        .form-control {
-            width: 100%;
-            padding: 8px 12px;
-            border: 1px solid var(--border);
-            border-radius: 7px;
-            font-size: 13px;
-            font-family: inherit;
+        /* Labels form modal — 12.5px / 500 */
+        .form-label {
+            display: block;
+            font-size: 12.5px;
+            font-weight: 500;
             color: #0F172A;
-            background: #fff;
-            outline: none;
-            transition: border-color .15s, box-shadow .15s;
+            margin-bottom: 5px;
+        }
+
+        /* Inputs modal — 13px */
+        .form-control {
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            letter-spacing: -0.01em;
         }
 
             .form-control:focus {
@@ -570,132 +528,21 @@
                 box-shadow: 0 0 0 3px rgba(25,118,210,.12);
             }
 
-            .form-control::placeholder {
-                color: #94A3B8;
-            }
-
-        .form-label {
-            display: block;
-            font-size: 13px;
-            font-weight: 500;
-            color: #0F172A;
-            margin-bottom: 6px;
-        }
-
-        .form-group {
-            margin-bottom: 16px;
-        }
-
-        select.form-control {
-            cursor: pointer;
-        }
-
-        textarea.form-control {
-            resize: vertical;
-        }
-
-        .btn-modal {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 8px 18px;
-            border-radius: 7px;
-            font-size: 13px;
-            font-weight: 500;
-            cursor: pointer;
-            border: none;
-            font-family: inherit;
-            transition: background .15s;
-        }
-
-            .btn-modal:disabled {
-                opacity: .6;
-                cursor: not-allowed;
-            }
-
-        .btn-modal-primary {
-            background: var(--blue);
-            color: #fff;
-        }
-
-            .btn-modal-primary:hover:not(:disabled) {
-                background: #1565C0;
-            }
-
-        .btn-modal-secondary {
-            background: #fff;
-            color: #374151;
-            border: 1px solid var(--border);
-        }
-
-            .btn-modal-secondary:hover:not(:disabled) {
-                background: #F8FAFC;
-            }
-
-        /* ALERT */
+        /* Alert inline — 12.5px */
         .alert-inline {
             display: none;
-            padding: 10px 14px;
-            border-radius: 7px;
-            font-size: 13px;
-            font-weight: 500;
-            margin-bottom: 16px;
+            font-size: 12.5px;
         }
 
             .alert-inline.show {
                 display: block;
             }
 
-            .alert-inline.danger {
-                background: #FEE2E2;
-                color: #991B1B;
-                border: 1px solid #FECACA;
-            }
-
-            .alert-inline.success {
-                background: #DCFCE7;
-                color: #166534;
-                border: 1px solid #A7F3D0;
-            }
-
-        /* TOAST */
-        #global-toast {
-            position: fixed;
-            top: 20px;
-            right: 24px;
-            z-index: 9999;
-            min-width: 280px;
-            padding: 12px 18px;
-            border-radius: 8px;
-            font-size: 13px;
-            font-weight: 500;
-            box-shadow: 0 4px 12px rgba(0,0,0,.12);
-            display: none;
-            align-items: center;
-            gap: 8px;
-        }
-
-            #global-toast.show {
-                display: flex;
-            }
-
-            #global-toast.success {
-                background: #DCFCE7;
-                color: #166534;
-                border: 1px solid #A7F3D0;
-            }
-
-            #global-toast.danger {
-                background: #FEE2E2;
-                color: #991B1B;
-                border: 1px solid #FECACA;
-            }
-
         /* SPINNER */
         .spinner {
             display: inline-block;
-            width: 13px;
-            height: 13px;
+            width: 12px;
+            height: 12px;
             border: 2px solid rgba(255,255,255,.35);
             border-top-color: #fff;
             border-radius: 50%;
@@ -708,16 +555,140 @@
             }
         }
 
-        .text-muted {
-            color: #94A3B8;
+        /* ══ TOAST CUSTOM POSITIONED — versión compacta ══ */
+        #toast-container {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 9999;
+            min-width: 300px;
+            max-width: 400px;
         }
 
-        .mt-1 {
-            margin-top: 4px;
+        .toast-custom {
+            border: none;
+            border-radius: 0;
+            box-shadow: 0 6px 24px rgba(0,0,0,.15);
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+            opacity: 0;
+            transition: opacity .3s ease, transform .3s ease;
+            transform: translateY(12px);
+            display: none;
+        }
+
+            .toast-custom.show {
+                display: block;
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            .toast-custom .toast-header-custom {
+                padding: 11px 15px 8px;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                border-bottom: 1px solid rgba(0,0,0,.07);
+            }
+
+            .toast-custom .toast-icon {
+                width: 30px;
+                height: 30px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 14px;
+                flex-shrink: 0;
+            }
+
+            /* Body toast — 12px */
+            .toast-custom .toast-body-custom {
+                padding: 10px 15px 13px;
+                font-size: 12px;
+                line-height: 1.55;
+            }
+
+            .toast-custom.toast-success {
+                background: #fff;
+                border-left: 4px solid #16A34A;
+            }
+
+                .toast-custom.toast-success .toast-icon {
+                    background: #DCFCE7;
+                    color: #16A34A;
+                }
+
+                /* Título toast success — 12.5px / 600 */
+                .toast-custom.toast-success .toast-titulo {
+                    color: #166534;
+                    font-size: 12.5px;
+                    font-weight: 600;
+                }
+
+                .toast-custom.toast-success .toast-body-custom {
+                    color: #374151;
+                }
+
+            .toast-custom.toast-danger {
+                background: #fff;
+                border-left: 4px solid #DC2626;
+            }
+
+                .toast-custom.toast-danger .toast-icon {
+                    background: #FEE2E2;
+                    color: #DC2626;
+                }
+
+                /* Título toast danger — 12.5px / 600 */
+                .toast-custom.toast-danger .toast-titulo {
+                    color: #991B1B;
+                    font-size: 12.5px;
+                    font-weight: 600;
+                }
+
+                .toast-custom.toast-danger .toast-body-custom {
+                    color: #374151;
+                }
+
+        .toast-cerrar {
+            margin-left: auto;
+            background: none;
+            border: none;
+            font-size: 18px;
+            color: #94A3B8;
+            cursor: pointer;
+            line-height: 1;
+            padding: 0;
+        }
+
+            .toast-cerrar:hover {
+                color: #374151;
+            }
+
+        /* Barra de progreso del toast */
+        .toast-progress {
+            height: 3px;
+            background: #16A34A;
+            animation: progress-shrink 4s linear forwards;
+        }
+
+        .toast-custom.toast-danger .toast-progress {
+            background: #DC2626;
+        }
+
+        @keyframes progress-shrink {
+            from {
+                width: 100%;
+            }
+
+            to {
+                width: 0%;
+            }
         }
     </style>
 </head>
-<body>
+<body spellcheck="false">
 
     <!-- SIDEBAR -->
     <div id="sidebar">
@@ -756,32 +727,30 @@
 
         <!-- TOPBAR -->
         <div class="topbar">
-            <div class="topbar-left">
+            <div>
                 <button class="topbar-hamburger"><i class="bi bi-list"></i></button>
             </div>
-            <div class="topbar-right">
-                <div class="topbar-user">
-                    <i class="bi bi-person-circle" style="font-size:20px;color:#9CA3AF;"></i>
-                    <span id="topbar-nombre"></span>
-                </div>
+            <div class="topbar-user">
+                <i class="bi bi-person-circle" style="font-size:19px;color:#9CA3AF;"></i>
+                <span id="topbar-nombre"></span>
             </div>
         </div>
 
-        <!-- TÍTULO -->
-        <div style="padding:24px 28px 0;">
-            <div style="font-size:26px;font-weight:700;color:#0F172A;letter-spacing:-.3px;">Productos</div>
-            <div style="font-size:13px;color:#94A3B8;margin-top:3px;">Gestión de inventario y catálogo de productos</div>
+        <!-- TITLE -->
+        <div style="padding:22px 28px 0;">
+            <!-- Título página — 21px / 700 -->
+            <div style="font-size:21px;font-weight:700;color:#0F172A;letter-spacing:-.5px;font-family:'Inter',sans-serif;">Productos</div>
         </div>
 
         <!-- PAGE BODY -->
-        <div class="page-body">
+        <div class="page-body mt-3">
 
-            <!-- TOOLBAR ROW -->
-            <div class="toolbar-row">
-                <div class="toolbar-left">
+            <!-- TOOLBAR -->
+            <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-3">
+                <div class="d-flex align-items-center gap-2">
                     <div class="search-wrap">
                         <i class="bi bi-search"></i>
-                        <input type="text" id="input-busqueda" placeholder="Buscar por código o nombre..." oninput="filtrarTabla(this.value)">
+                        <input type="text" id="input-busqueda" placeholder="Buscar por código o nombre..." oninput="filtrarTabla(this.value)" spellcheck="false">
                     </div>
                     <div class="filter-wrap">
                         <i class="bi bi-funnel icon-filter"></i>
@@ -794,126 +763,174 @@
                         <i class="bi bi-chevron-down icon-chevron"></i>
                     </div>
                 </div>
-                <div class="toolbar-right">
-                    <button class="btn-export" onclick="exportarCSV()"><i class="bi bi-download"></i> Exportar</button>
-                    <button class="btn-new" id="btn-nuevo-producto" onclick="abrirModalProducto(null)">
-                        <i class="bi bi-plus-lg"></i> Nuevo Producto
-                    </button>
+                <div class="d-flex align-items-center gap-2">
+                    <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-outline-secondary" onclick="exportarCSV()">
+                            <i class="bi bi-download mr-1"></i> Exportar
+                        </button>
+                        <button type="button" id="btn-nuevo-producto"
+                                class="btn btn-primary"
+                                data-toggle="modal" data-target="#modalProducto"
+                                onclick="abrirModalProducto(null)">
+                            <i class="bi bi-plus-lg mr-1"></i> Nuevo Producto
+                        </button>
+                    </div>
                 </div>
             </div>
 
             <!-- TABLE CARD -->
             <div class="table-card">
                 <div class="table-card-header">
-                    <div class="table-card-title"><i class="bi bi-box-seam"></i> Inventario de Productos</div>
+                    <div class="table-card-title"></i> Inventario</div>
                     <span class="table-card-count" id="lbl-conteo"></span>
                 </div>
                 <div class="table-responsive">
-                    <table>
+                    <table class="table table-bordered table-hover mb-0">
                         <thead>
                             <tr>
                                 <th>Código</th>
                                 <th>Producto</th>
                                 <th>Unidad</th>
-                                <th style="text-align:center;">Stock Mín.</th>
-                                <th style="text-align:center;">Stock Actual</th>
-                                <th>Estado</th>
-                                <th style="text-align:right;">Acciones</th>
+                                <th class="text-center">Stock Mín.</th>
+                                <th class="text-center">Stock Actual</th>
+                                <th class="th-center">Estado</th>
+                                <th class="th-center">Acciones</th>
                             </tr>
                         </thead>
                         <tbody id="tabla-productos">
-                            <tr><td colspan="7" style="text-align:center;color:#94A3B8;padding:40px;">Cargando productos...</td></tr>
+                            <tr>
+                                <td colspan="7" class="text-center text-muted py-5">Cargando productos...</td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
 
+        </div><!-- /page-body -->
+    </div><!-- /main -->
+    <!-- TOAST CUSTOM POSITIONED -->
+    <div id="toast-container">
+        <div id="toast-custom" class="toast-custom">
+            <div class="toast-header-custom">
+                <div class="toast-icon" id="toast-icon"><i id="toast-icon-i" class="bi bi-check-circle-fill"></i></div>
+                <div>
+                    <div class="toast-titulo" id="toast-titulo">Éxito</div>
+                    <div style="font-size:10.5px;color:#94A3B8;" id="toast-sub">Operación completada</div>
+                </div>
+                <button class="toast-cerrar" onclick="cerrarToast()">&times;</button>
+            </div>
+            <div class="toast-body-custom" id="toast-body">Mensaje aquí.</div>
+            <div class="toast-progress" id="toast-progress"></div>
         </div>
     </div>
 
-    <!-- GLOBAL TOAST -->
-    <div id="global-toast"></div>
 
-    <!-- MODAL CREAR / EDITAR -->
-    <div class="modal-overlay" id="modal-producto">
-        <div class="modal-box">
-            <div class="modal-header">
-                <div class="modal-title" id="modal-producto-titulo">Nuevo Producto</div>
-                <button class="modal-close" onclick="cerrarModalProducto()">&times;</button>
-            </div>
-            <div class="modal-body">
-                <div id="alert-producto" class="alert-inline"></div>
-                <input type="hidden" id="prod-id">
-                <div class="form-group">
-                    <label class="form-label">Código <span style="color:#EF4444;">*</span></label>
-                    <input type="text" class="form-control" id="prod-codigo" placeholder="Ej: PROD-001" maxlength="50">
+    <!-- MODAL CREAR / EDITAR PRODUCTO -->
+    <div class="modal fade" id="modalProducto" tabindex="-1" role="dialog" aria-labelledby="modalProductoTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalProductoTitle">Nuevo Producto</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
-                <div class="form-group">
-                    <label class="form-label">Nombre <span style="color:#EF4444;">*</span></label>
-                    <input type="text" class="form-control" id="prod-nombre" placeholder="Nombre del producto" maxlength="200">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Descripción</label>
-                    <textarea class="form-control" id="prod-descripcion" rows="3" placeholder="Descripción opcional"></textarea>
-                </div>
-                <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+                <div class="modal-body">
+                    <div id="alert-producto" class="alert-inline alert alert-danger"></div>
+                    <input type="hidden" id="prod-id">
+
                     <div class="form-group">
-                        <label class="form-label">Unidad de Medida <span style="color:#EF4444;">*</span></label>
-                        <input type="text" class="form-control" id="prod-unidad" placeholder="Ej: unidad, kg, litro" maxlength="50">
+                        <label class="form-label">Código <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="prod-codigo" placeholder="Ej: PROD-001" maxlength="50" spellcheck="false">
                     </div>
                     <div class="form-group">
-                        <label class="form-label">Stock Mínimo <span style="color:#EF4444;">*</span></label>
-                        <input type="number" class="form-control" id="prod-stock-minimo" placeholder="0" min="0">
+                        <label class="form-label">Nombre <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="prod-nombre" placeholder="Nombre del producto" maxlength="200" spellcheck="false">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Descripción</label>
+                        <textarea class="form-control" id="prod-descripcion" rows="3" placeholder="Descripción opcional" spellcheck="false"></textarea>
+                    </div>
+                    <div class="form-row">
+                        <div class="col">
+                            <div class="form-group">
+                                <label class="form-label">Unidad de Medida <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="prod-unidad" placeholder="Ej: unidad, kg, litro" maxlength="50" spellcheck="false">
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label class="form-label">Stock Mínimo <span class="text-danger">*</span></label>
+                                <input type="number" class="form-control" id="prod-stock-minimo" placeholder="0" min="0">
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn-modal btn-modal-secondary" onclick="cerrarModalProducto()">Cancelar</button>
-                <button class="btn-modal btn-modal-primary" id="btn-guardar-producto" onclick="guardarProducto()">
-                    <i class="bi bi-check-lg"></i> Guardar
-                </button>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                        <i class="bi bi-x-lg mr-1"></i> Cancelar
+                    </button>
+                    <button type="button" class="btn btn-primary" id="btn-guardar-producto" onclick="guardarProducto()">
+                        <i class="bi bi-check-lg mr-1"></i> Guardar
+                    </button>
+                </div>
             </div>
         </div>
     </div>
+
 
     <!-- MODAL AJUSTAR STOCK -->
-    <div class="modal-overlay" id="modal-ajuste">
-        <div class="modal-box" style="max-width:460px;">
-            <div class="modal-header">
-                <div class="modal-title">Ajustar Stock</div>
-                <button class="modal-close" onclick="cerrarModalAjuste()">&times;</button>
-            </div>
-            <div class="modal-body">
-                <div id="alert-ajuste" class="alert-inline"></div>
-                <div style="background:#F8FAFC;border:1px solid #E2E8F0;border-radius:8px;padding:12px 16px;margin-bottom:20px;">
-                    <div style="font-size:11px;color:#94A3B8;font-weight:600;text-transform:uppercase;letter-spacing:.5px;">Producto</div>
-                    <div style="font-size:14px;font-weight:700;color:#0F172A;margin-top:4px;" id="ajuste-producto-nombre">—</div>
+    <div class="modal fade" id="modalAjuste" tabindex="-1" role="dialog" aria-labelledby="modalAjusteTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalAjusteTitle">Ajustar Stock</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
-                <input type="hidden" id="ajuste-producto-id">
-                <div class="form-group">
-                    <label class="form-label">Bodega <span style="color:#EF4444;">*</span></label>
-                    <select class="form-control" id="ajuste-bodega-id"><option value="">Cargando bodegas...</option></select>
+                <div class="modal-body">
+                    <div id="alert-ajuste" class="alert-inline alert alert-danger"></div>
+                    <div class="info-card">
+                        <div class="info-card-label">Producto</div>
+                        <div class="info-card-value" id="ajuste-producto-nombre">—</div>
+                    </div>
+                    <input type="hidden" id="ajuste-producto-id">
+
+                    <div class="form-group">
+                        <label class="form-label">Bodega <span class="text-danger">*</span></label>
+                        <select class="form-control" id="ajuste-bodega-id">
+                            <option value="">Cargando bodegas...</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Cantidad <span class="text-danger">*</span></label>
+                        <input type="number" class="form-control" id="ajuste-cantidad" placeholder="Positivo = ingreso  |  Negativo = salida">
+                        <small class="form-text text-muted" style="font-size:11.5px;"><i class="bi bi-info-circle"></i> Use número negativo para reducir stock (ej: -5)</small>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Motivo <span class="text-danger">*</span></label>
+                        <textarea class="form-control" id="ajuste-motivo" rows="3" placeholder="Describa el motivo del ajuste" spellcheck="false"></textarea>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label class="form-label">Cantidad <span style="color:#EF4444;">*</span></label>
-                    <input type="number" class="form-control" id="ajuste-cantidad" placeholder="Positivo = ingreso  |  Negativo = salida">
-                    <div class="text-muted mt-1" style="font-size:12px;"><i class="bi bi-info-circle"></i> Use número negativo para reducir stock (ej: -5)</div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                        <i class="bi bi-x-lg mr-1"></i> Cancelar
+                    </button>
+                    <button type="button" class="btn btn-primary" id="btn-guardar-ajuste" onclick="guardarAjuste()">
+                        <i class="bi bi-arrow-left-right mr-1"></i> Aplicar Ajuste
+                    </button>
                 </div>
-                <div class="form-group">
-                    <label class="form-label">Motivo <span style="color:#EF4444;">*</span></label>
-                    <textarea class="form-control" id="ajuste-motivo" rows="3" placeholder="Describa el motivo del ajuste"></textarea>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn-modal btn-modal-secondary" onclick="cerrarModalAjuste()">Cancelar</button>
-                <button class="btn-modal btn-modal-primary" id="btn-guardar-ajuste" onclick="guardarAjuste()">
-                    <i class="bi bi-arrow-left-right"></i> Aplicar Ajuste
-                </button>
             </div>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Bootstrap 4 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"></script>
+
     <script src="/js/utils.js"></script>
     <script src="/js/router.js"></script>
     <script>
@@ -923,39 +940,56 @@
         const topbarNombre = document.getElementById('topbar-nombre');
         if (topbarNombre) topbarNombre.textContent = user.nombre;
 
-        // ✅ Sección Admin
         if (auth.hasRole('Admin')) {
             document.getElementById('label-admin').style.display = 'block';
             document.getElementById('link-usuarios').style.display = 'flex';
             document.getElementById('link-bodegas').style.display = 'flex';
         }
 
-        // Botón nuevo producto solo para Admin
         if (!auth.hasRole('Admin')) {
             document.getElementById('btn-nuevo-producto').style.display = 'none';
         }
 
         let todosLosProductos = [], bodegasCache = [], filtroBusqueda = '', filtroEstadoActual = '';
 
-        function showAlert(msg, tipo = 'success') {
-            const el = document.getElementById('global-toast');
-            el.className = `show ${tipo}`;
-            el.innerHTML = `<i class="bi bi-${tipo === 'success' ? 'check-circle' : 'exclamation-circle'}"></i> ${msg}`;
-            setTimeout(() => { el.className = ''; }, 3500);
+        /* ═══════════ TOAST ═══════════ */
+        let toastTimer = null;
+
+        function showToast(titulo, mensaje, tipo = 'success', subtitulo = 'Operación completada') {
+            const el = document.getElementById('toast-custom');
+            const iconEl = document.getElementById('toast-icon-i');
+            el.className = `toast-custom toast-${tipo}`;
+            document.getElementById('toast-titulo').textContent = titulo;
+            document.getElementById('toast-sub').textContent = subtitulo;
+            document.getElementById('toast-body').textContent = mensaje;
+            iconEl.className = `bi bi-${tipo === 'success' ? 'check-circle-fill' : 'exclamation-circle-fill'}`;
+            const prog = document.getElementById('toast-progress');
+            prog.style.animation = 'none';
+            prog.offsetHeight;
+            prog.style.animation = '';
+            el.classList.add('show');
+            if (toastTimer) clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => cerrarToast(), 4500);
         }
 
+        function cerrarToast() {
+            document.getElementById('toast-custom').classList.remove('show');
+        }
+
+        /* ═══════════ STOCK BADGE ═══════════ */
         function badgeStock(actual, minimo) {
             if (actual === 0) return '<span class="badge-stock badge-sin">Sin stock</span>';
             if (actual <= minimo) return '<span class="badge-stock badge-bajo">Stock bajo</span>';
             return '<span class="badge-stock badge-ok">Normal</span>';
         }
 
+        /* ═══════════ CARGAR PRODUCTOS ═══════════ */
         async function cargarProductos() {
             const res = await apiCall('GET', '/productos');
             if (res && res.success) { todosLosProductos = res.data || []; aplicarFiltros(); }
         }
 
-        function filtrarTabla(query) { filtroBusqueda = query; aplicarFiltros(); }
+        function filtrarTabla(q) { filtroBusqueda = q; aplicarFiltros(); }
         function filtrarPorEstado(v) { filtroEstadoActual = v; aplicarFiltros(); }
 
         function aplicarFiltros() {
@@ -982,9 +1016,11 @@
             const csv = [headers, ...rows].map(r => r.map(c => `"${c}"`).join(',')).join('\n');
             const a = document.createElement('a');
             a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv' }));
-            a.download = 'productos.csv'; a.click();
+            a.download = 'productos.csv';
+            a.click();
         }
 
+        /* ═══════════ RENDER TABLA ═══════════ */
         function renderTabla(lista) {
             const tbody = document.getElementById('tabla-productos');
             const conteo = document.getElementById('lbl-conteo');
@@ -993,7 +1029,7 @@
                 : `${lista.length} de ${todosLosProductos.length} productos`;
 
             if (!lista || lista.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;color:#94A3B8;padding:40px;">No se encontraron productos</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="7" class="text-center text-muted py-5">No se encontraron productos</td></tr>`;
                 return;
             }
 
@@ -1002,36 +1038,49 @@
                 let colorStock = '#16A34A';
                 if (p.stockActual === 0) colorStock = '#DC2626';
                 else if (p.stockActual <= p.stockMinimo) colorStock = '#CA8A04';
+
                 const dataProducto = encodeURIComponent(JSON.stringify(p));
                 return `
-                        <tr>
-                            <td><span class="code-badge">${p.codigo}</span></td>
-                            <td>
-                                <div style="font-weight:600;color:#0F172A;">${p.nombre}</div>
-                                ${p.descripcion ? `<div style="font-size:12px;color:#94A3B8;margin-top:3px;">${p.descripcion}</div>` : ''}
-                            </td>
-                            <td style="color:#64748B;">${p.unidadMedida}</td>
-                            <td style="text-align:center;color:#64748B;">${p.stockMinimo}</td>
-                            <td style="text-align:center;font-weight:700;font-size:14px;color:${colorStock};">${p.stockActual}</td>
-                            <td>${badgeStock(p.stockActual, p.stockMinimo)}</td>
-                            <td>
-                                <div style="display:flex;gap:6px;justify-content:flex-end;">
-                                    ${esAdmin ? `<button class="btn-icon" title="Editar" onclick="abrirModalProducto(decodeProducto('${dataProducto}'))"><i class="bi bi-pencil"></i></button>` : ''}
-                                    <button class="btn-icon" title="Ajustar stock" onclick="abrirModalAjuste(${p.productoID}, '${p.nombre.replace(/'/g, "\\'")}')">
-                                        <i class="bi bi-arrow-left-right"></i>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>`;
+                    <tr>
+                        <td><span class="code-badge">${p.codigo}</span></td>
+                        <td>
+                            <div class="prod-nombre">${p.nombre}</div>
+                            ${p.descripcion ? `<div class="prod-desc">${p.descripcion}</div>` : ''}
+                        </td>
+                        <td class="text-muted">${p.unidadMedida}</td>
+                        <td class="text-center text-muted">${p.stockMinimo}</td>
+                        <td class="text-center font-weight-bold" style="font-size:13px;color:${colorStock};">${p.stockActual}</td>
+                        <td class="td-center">${badgeStock(p.stockActual, p.stockMinimo)}</td>
+                        <td class="td-center">
+                            <div class="btn-group btn-group-sm" role="group">
+                                ${esAdmin ? `
+                                <button type="button"
+                                        class="btn btn-outline-secondary btn-icon-action"
+                                        title="Editar"
+                                        data-toggle="modal" data-target="#modalProducto"
+                                        onclick="abrirModalProducto(decodeProducto('${dataProducto}'))">
+                                    <i class="bi bi-pencil"></i>
+                                </button>` : ''}
+                                <button type="button"
+                                        class="btn btn-outline-primary btn-icon-action"
+                                        title="Ajustar stock"
+                                        data-toggle="modal" data-target="#modalAjuste"
+                                        onclick="abrirModalAjuste(${p.productoID}, '${p.nombre.replace(/'/g, "\\'")}')">
+                                    <i class="bi bi-arrow-left-right"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>`;
             }).join('');
         }
 
         function decodeProducto(encoded) { return JSON.parse(decodeURIComponent(encoded)); }
 
+        /* ═══════════ MODAL PRODUCTO ═══════════ */
         function abrirModalProducto(producto) {
             limpiarAlerta('alert-producto');
             const esEdicion = producto !== null;
-            document.getElementById('modal-producto-titulo').textContent = esEdicion ? 'Editar Producto' : 'Nuevo Producto';
+            document.getElementById('modalProductoTitle').textContent = esEdicion ? 'Editar Producto' : 'Nuevo Producto';
             document.getElementById('prod-id').value = esEdicion ? producto.productoID : '';
             document.getElementById('prod-codigo').value = esEdicion ? producto.codigo : '';
             document.getElementById('prod-nombre').value = esEdicion ? producto.nombre : '';
@@ -1039,12 +1088,11 @@
             document.getElementById('prod-unidad').value = esEdicion ? producto.unidadMedida : '';
             document.getElementById('prod-stock-minimo').value = esEdicion ? producto.stockMinimo : '';
             document.getElementById('prod-codigo').disabled = esEdicion;
-            const btn = document.getElementById('btn-guardar-producto');
-            btn.disabled = false; btn.innerHTML = '<i class="bi bi-check-lg"></i> Guardar';
-            document.getElementById('modal-producto').classList.add('show');
-        }
 
-        function cerrarModalProducto() { document.getElementById('modal-producto').classList.remove('show'); }
+            const btn = document.getElementById('btn-guardar-producto');
+            btn.disabled = false;
+            btn.innerHTML = '<i class="bi bi-check-lg mr-1"></i> Guardar';
+        }
 
         async function guardarProducto() {
             limpiarAlerta('alert-producto');
@@ -1055,22 +1103,39 @@
             const unidad = document.getElementById('prod-unidad').value.trim();
             const stockMinimo = document.getElementById('prod-stock-minimo').value;
 
-            if (!codigo || !nombre || !unidad || stockMinimo === '') { mostrarAlerta('alert-producto', 'Complete todos los campos obligatorios (*).', 'danger'); return; }
-            if (parseInt(stockMinimo) < 0) { mostrarAlerta('alert-producto', 'El stock mínimo no puede ser negativo.', 'danger'); return; }
+            if (!codigo || !nombre || !unidad || stockMinimo === '') {
+                mostrarAlerta('alert-producto', 'Complete todos los campos obligatorios (*).'); return;
+            }
+            if (parseInt(stockMinimo) < 0) {
+                mostrarAlerta('alert-producto', 'El stock mínimo no puede ser negativo.'); return;
+            }
 
             const btn = document.getElementById('btn-guardar-producto');
-            btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> Guardando...';
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner"></span> Guardando...';
 
             const body = { codigo, nombre, descripcion, unidadMedida: unidad, stockMinimo: parseInt(stockMinimo) };
             if (id) body.productoID = parseInt(id);
 
             const res = await apiCall(id ? 'PUT' : 'POST', id ? `/productos/${id}` : '/productos', body);
-            btn.disabled = false; btn.innerHTML = '<i class="bi bi-check-lg"></i> Guardar';
+            btn.disabled = false;
+            btn.innerHTML = '<i class="bi bi-check-lg mr-1"></i> Guardar';
 
-            if (res && res.success) { cerrarModalProducto(); showAlert(id ? 'Producto actualizado correctamente.' : 'Producto creado correctamente.'); await cargarProductos(); }
-            else { mostrarAlerta('alert-producto', res?.message || 'Ocurrió un error al guardar.', 'danger'); }
+            if (res && res.success) {
+                $('#modalProducto').modal('hide');
+                showToast(
+                    id ? '¡Producto actualizado!' : '¡Producto creado!',
+                    id ? 'Los datos del producto fueron actualizados correctamente.' : 'El producto fue agregado al inventario correctamente.',
+                    'success',
+                    id ? `Código: ${codigo}` : `Código: ${codigo}`
+                );
+                await cargarProductos();
+            } else {
+                mostrarAlerta('alert-producto', res?.message || 'Ocurrió un error al guardar.');
+            }
         }
 
+        /* ═══════════ MODAL AJUSTE ═══════════ */
         async function abrirModalAjuste(productoID, nombreProducto) {
             limpiarAlerta('alert-ajuste');
             document.getElementById('ajuste-producto-id').value = productoID;
@@ -1089,11 +1154,9 @@
                 : '<option value="">No hay bodegas disponibles</option>';
 
             const btn = document.getElementById('btn-guardar-ajuste');
-            btn.disabled = false; btn.innerHTML = '<i class="bi bi-arrow-left-right"></i> Aplicar Ajuste';
-            document.getElementById('modal-ajuste').classList.add('show');
+            btn.disabled = false;
+            btn.innerHTML = '<i class="bi bi-arrow-left-right mr-1"></i> Aplicar Ajuste';
         }
-
-        function cerrarModalAjuste() { document.getElementById('modal-ajuste').classList.remove('show'); }
 
         async function guardarAjuste() {
             limpiarAlerta('alert-ajuste');
@@ -1102,25 +1165,47 @@
             const cantidad = document.getElementById('ajuste-cantidad').value;
             const motivo = document.getElementById('ajuste-motivo').value.trim();
 
-            if (!bodegaID) { mostrarAlerta('alert-ajuste', 'Seleccione una bodega.', 'danger'); return; }
-            if (cantidad === '' || parseInt(cantidad) === 0) { mostrarAlerta('alert-ajuste', 'La cantidad no puede ser 0 ni estar vacía.', 'danger'); return; }
-            if (!motivo) { mostrarAlerta('alert-ajuste', 'Ingrese el motivo del ajuste.', 'danger'); return; }
+            if (!bodegaID) { mostrarAlerta('alert-ajuste', 'Seleccione una bodega.'); return; }
+            if (cantidad === '' || parseInt(cantidad) === 0) { mostrarAlerta('alert-ajuste', 'La cantidad no puede ser 0 ni estar vacía.'); return; }
+            if (!motivo) { mostrarAlerta('alert-ajuste', 'Ingrese el motivo del ajuste.'); return; }
 
             const btn = document.getElementById('btn-guardar-ajuste');
-            btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> Aplicando...';
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner"></span> Aplicando...';
 
             const res = await apiCall('POST', `/productos/${productoID}/ajustar-stock`, {
                 bodegaID: parseInt(bodegaID), cantidad: parseInt(cantidad), motivo
             });
 
-            btn.disabled = false; btn.innerHTML = '<i class="bi bi-arrow-left-right"></i> Aplicar Ajuste';
+            btn.disabled = false;
+            btn.innerHTML = '<i class="bi bi-arrow-left-right mr-1"></i> Aplicar Ajuste';
 
-            if (res && res.success) { cerrarModalAjuste(); showAlert('Stock ajustado correctamente.'); await cargarProductos(); }
-            else { mostrarAlerta('alert-ajuste', res?.message || 'Error al ajustar el stock.', 'danger'); }
+            if (res && res.success) {
+                $('#modalAjuste').modal('hide');
+                showToast(
+                    '¡Stock ajustado!',
+                    'El ajuste fue aplicado correctamente al inventario.',
+                    'success',
+                    'Operación completada'
+                );
+                await cargarProductos();
+            } else {
+                mostrarAlerta('alert-ajuste', res?.message || 'Error al ajustar el stock.');
+            }
         }
 
-        function mostrarAlerta(id, mensaje, tipo) { const el = document.getElementById(id); el.className = `alert-inline ${tipo} show`; el.textContent = mensaje; }
-        function limpiarAlerta(id) { const el = document.getElementById(id); el.className = 'alert-inline'; el.textContent = ''; }
+        /* ═══════════ HELPERS ═══════════ */
+        function mostrarAlerta(id, mensaje) {
+            const el = document.getElementById(id);
+            el.className = 'alert-inline alert alert-danger show';
+            el.textContent = mensaje;
+        }
+
+        function limpiarAlerta(id) {
+            const el = document.getElementById(id);
+            el.className = 'alert-inline alert alert-danger';
+            el.textContent = '';
+        }
 
         cargarProductos();
     </script>

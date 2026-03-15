@@ -4,12 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reportes — Despacho Logística</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+
+    <!-- Bootstrap 4 — igual que solicitudes -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <style>
+        /* ══ VARIABLES ══ */
         :root {
             --sidebar-bg: #1a237e;
             --sidebar-hover: #283593;
@@ -19,19 +23,21 @@
             --sidebar-w: 225px;
         }
 
-        *, *::before, *::after {
+        * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
 
         body {
-            font-family: 'Poppins',sans-serif;
-            font-size: 14px;
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
             background: var(--bg);
             color: #212529;
+            -webkit-font-smoothing: antialiased;
         }
 
+        /* ══ SIDEBAR ══ */
         #sidebar {
             position: fixed;
             top: 0;
@@ -62,15 +68,16 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 16px;
-            font-weight: 800;
+            font-size: 15px;
+            font-weight: 700;
             color: #fff;
         }
 
         .brand-name {
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 700;
             color: #fff;
+            letter-spacing: .5px;
         }
 
         .brand-sub {
@@ -87,35 +94,35 @@
         .nav-section-label {
             padding: 10px 20px 4px;
             font-size: 10px;
-            font-weight: 700;
+            font-weight: 600;
             color: rgba(255,255,255,.3);
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 1.2px;
         }
 
-        .nav-link {
+        .sidebar-nav .nav-link {
             display: flex;
             align-items: center;
             gap: 10px;
-            padding: 10px 20px;
+            padding: 9px 20px;
             color: rgba(255,255,255,.72) !important;
-            font-size: 13.5px;
+            font-size: 12.5px;
             font-weight: 500;
             text-decoration: none;
             transition: background .15s;
         }
 
-            .nav-link i {
-                font-size: 18px;
+            .sidebar-nav .nav-link i {
+                font-size: 17px;
                 width: 20px;
             }
 
-            .nav-link:hover {
+            .sidebar-nav .nav-link:hover {
                 background: var(--sidebar-hover);
                 color: #fff !important;
             }
 
-            .nav-link.active {
+            .sidebar-nav .nav-link.active {
                 background: rgba(255,255,255,.13);
                 color: #fff !important;
                 font-weight: 600;
@@ -131,14 +138,14 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            padding: 10px 20px;
+            padding: 9px 20px;
             background: transparent;
             border: none;
             color: rgba(255,255,255,.6);
-            font-size: 13.5px;
+            font-size: 12.5px;
             font-weight: 500;
             cursor: pointer;
-            font-family: inherit;
+            font-family: 'Inter', sans-serif;
             transition: background .15s;
         }
 
@@ -147,232 +154,251 @@
                 color: #fff;
             }
 
+        /* ══ MAIN ══ */
         #main {
             margin-left: var(--sidebar-w);
             min-height: 100vh;
+            background: var(--bg);
         }
 
         .topbar {
-            height: 48px;
             background: #fff;
             border-bottom: 1px solid var(--border);
+            padding: 0 28px;
+            height: 48px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0 24px;
             position: sticky;
             top: 0;
             z-index: 100;
         }
 
-        .topbar-title {
-            font-size: 15px;
-            font-weight: 700;
-            color: #0F172A;
+        .topbar-hamburger {
+            background: none;
+            border: none;
+            font-size: 20px;
+            color: #64748B;
+            cursor: pointer;
         }
 
-        .topbar-sub {
-            font-size: 11px;
-            color: #94A3B8;
-        }
-
-        .topbar-right {
+        .topbar-user {
             display: flex;
             align-items: center;
-            gap: 10px;
-            font-size: 13px;
+            gap: 6px;
+            font-size: 12.5px;
             font-weight: 500;
             color: #374151;
         }
 
         .page-body {
-            padding: 22px 24px;
-            display: flex;
-            flex-direction: column;
-            gap: 18px;
+            padding: 0 28px 28px;
         }
 
-        .tabs {
-            display: flex;
-            gap: 4px;
+        /* ══ BOTONES — igual que solicitudes ══ */
+        .btn {
+            font-family: 'Inter', sans-serif !important;
+            font-size: 12.5px !important;
+            font-weight: 500 !important;
+            padding: 6px 14px !important;
+        }
+
+        .btn-sm {
+            padding: 4px 10px !important;
+            font-size: 12px !important;
+        }
+
+        .btn + .btn {
+            margin-left: 8px !important;
+        }
+
+        .modal-footer > .btn {
+            margin: 0 !important;
+        }
+
+        .modal-footer {
+            gap: 8px;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        /* ══ FORMULARIOS ══ */
+        .form-control {
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            letter-spacing: -0.01em;
+        }
+
+            .form-control:focus {
+                border-color: var(--blue);
+                box-shadow: 0 0 0 3px rgba(25,118,210,.12);
+            }
+
+        .form-label {
+            display: block;
+            font-size: 12.5px;
+            font-weight: 500;
+            color: #0F172A;
+            margin-bottom: 5px;
+        }
+
+        /* ══ CORTINA ITALIANA — idéntica a solicitudes ══ */
+        .tabs-wrapper {
             background: #fff;
             border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 6px;
-            box-shadow: 0 1px 3px rgba(0,0,0,.06);
-            width: fit-content;
+            border-bottom: none;
+            padding: 0 12px;
         }
 
-        .tab-btn {
-            padding: 8px 20px;
-            border-radius: 7px;
-            border: none;
-            background: transparent;
-            font-size: 13px;
-            font-weight: 500;
-            font-family: inherit;
-            color: #64748B;
-            cursor: pointer;
-            transition: all .15s;
-            display: flex;
-            align-items: center;
-            gap: 7px;
+        .nav-tabs {
+            border-bottom: 1px solid var(--border) !important;
+            flex-wrap: nowrap;
         }
 
-            .tab-btn.active {
-                background: var(--blue);
-                color: #fff;
+            .nav-tabs .nav-item {
+                margin-bottom: -1px;
             }
 
-            .tab-btn:not(.active):hover {
-                background: #F1F5F9;
+            .nav-tabs .nav-link {
+                font-family: 'Inter', sans-serif !important;
+                font-size: 12.5px !important;
+                font-weight: 500 !important;
+                color: #64748B !important;
+                padding: 12px 18px !important;
+                display: inline-flex !important;
+                align-items: center !important;
+                gap: 7px;
+                border: 1px solid transparent !important;
+                border-bottom: none !important;
+                border-radius: 0 !important;
+                background: transparent !important;
+                transition: color .15s, border-color .15s, background .15s;
+                white-space: nowrap;
+                margin-bottom: 0 !important;
             }
+
+                .nav-tabs .nav-link:hover {
+                    color: #334155 !important;
+                    border-color: #E2E8F0 #E2E8F0 transparent !important;
+                    background: #F8FAFC !important;
+                }
+
+                .nav-tabs .nav-link.active {
+                    color: var(--blue) !important;
+                    font-weight: 600 !important;
+                    background: #fff !important;
+                    border-color: var(--border) var(--border) #fff !important;
+                }
 
         .tab-content {
-            display: none;
+            margin-top: 0 !important;
         }
 
-            .tab-content.show {
-                display: flex;
-                flex-direction: column;
-                gap: 18px;
+            .tab-content .table-card {
+                border-top: none !important;
             }
 
-        .dash-card {
+        /* ══ TABLE CARD — igual que solicitudes ══ */
+        .table-card {
             background: #fff;
             border: 1px solid var(--border);
-            border-radius: 10px;
-            box-shadow: 0 1px 3px rgba(0,0,0,.06);
             overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,.05);
         }
 
-        .dash-card-header {
-            padding: 13px 18px;
-            border-bottom: 1px solid var(--border);
+        /* Segunda table-card dentro de un tab (tiene margen) */
+        .table-card-inner {
+            background: #fff;
+            border: 1px solid var(--border);
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,.05);
+            margin-top: 16px;
+        }
+
+        .table-card-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
+            padding: 12px 18px;
+            border-bottom: 1px solid var(--border);
             flex-wrap: wrap;
             gap: 10px;
         }
 
-        .dash-card-title {
-            font-size: 13.5px;
-            font-weight: 700;
-            color: #0F172A;
+        .table-card-title {
             display: flex;
             align-items: center;
-            gap: 7px;
+            gap: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #0F172A;
         }
 
+            .table-card-title i {
+                color: var(--blue);
+                font-size: 15px;
+            }
+
+        /* ══ TABLAS — idénticas a solicitudes ══ */
+        .table-bordered {
+            border: 1px solid #dee2e6 !important;
+        }
+
+            .table-bordered th,
+            .table-bordered td {
+                border: 1px solid #dee2e6 !important;
+            }
+
+            /* TH — 10.5px / 600 / uppercase */
+            .table-bordered th {
+                font-size: 10.5px;
+                font-weight: 600;
+                color: #64748B;
+                text-transform: uppercase;
+                letter-spacing: .6px;
+                background: #F8FAFC;
+                white-space: nowrap;
+                vertical-align: middle;
+                padding: 11px 16px;
+            }
+
+            /* TD — 12.5px */
+            .table-bordered td {
+                font-size: 12.5px;
+                vertical-align: middle;
+                padding: 11px 16px;
+                letter-spacing: -0.01em;
+            }
+
+        .table-hover tbody tr:hover {
+            background: #FAFBFF;
+        }
+
+        /* ══ FILTROS ══ */
         .filter-row {
             display: flex;
-            gap: 12px;
+            gap: 10px;
             align-items: flex-end;
             flex-wrap: wrap;
         }
 
         .filter-group label {
             display: block;
-            font-size: 11px;
+            font-size: 10.5px;
             font-weight: 600;
             color: #64748B;
             text-transform: uppercase;
             letter-spacing: .4px;
-            margin-bottom: 5px;
+            margin-bottom: 4px;
         }
 
-        .filter-group select, .filter-group input {
-            padding: 7px 11px;
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            font-size: 13px;
-            font-family: inherit;
-            outline: none;
-        }
-
-            .filter-group select:focus, .filter-group input:focus {
-                border-color: var(--blue);
-            }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        thead tr {
-            background: #F8FAFC;
-        }
-
-        th {
-            padding: 10px 16px;
-            font-size: 11px;
-            font-weight: 600;
-            color: #64748B;
-            text-transform: uppercase;
-            letter-spacing: .4px;
-            border-bottom: 1px solid var(--border);
-            white-space: nowrap;
-        }
-
-        td {
-            padding: 11px 16px;
-            font-size: 13px;
-            border-bottom: 1px solid #F1F5F9;
-            vertical-align: middle;
-        }
-
-        tbody tr:last-child td {
-            border-bottom: none;
-        }
-
-        tbody tr:hover {
-            background: #FAFBFE;
-        }
-
-        .btn-primary-sm {
-            padding: 7px 14px;
-            background: var(--blue);
-            color: #fff;
-            border: none;
-            border-radius: 6px;
-            font-size: 13px;
-            font-weight: 500;
-            cursor: pointer;
-            font-family: inherit;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            transition: background .15s;
-        }
-
-            .btn-primary-sm:hover {
-                background: #1565C0;
-            }
-
-        .btn-secondary-sm {
-            padding: 7px 14px;
-            background: #F1F5F9;
-            color: #374151;
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            font-size: 13px;
-            font-weight: 500;
-            cursor: pointer;
-            font-family: inherit;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-            .btn-secondary-sm:hover {
-                background: #E2E8F0;
-            }
-
+        /* ══ BADGES ══ */
         .badge-ok {
             background: #E8F5E9;
             color: #2E7D32;
-            padding: 3px 10px;
+            padding: 3px 9px;
             border-radius: 20px;
             font-size: 11px;
             font-weight: 600;
@@ -382,7 +408,7 @@
         .badge-bajo {
             background: #FFEBEE;
             color: #C62828;
-            padding: 3px 10px;
+            padding: 3px 9px;
             border-radius: 20px;
             font-size: 11px;
             font-weight: 600;
@@ -392,7 +418,7 @@
         .badge-sin {
             background: #F1F5F9;
             color: #475569;
-            padding: 3px 10px;
+            padding: 3px 9px;
             border-radius: 20px;
             font-size: 11px;
             font-weight: 600;
@@ -405,6 +431,7 @@
             border-radius: 20px;
             font-size: 11px;
             font-weight: 600;
+            letter-spacing: .01em;
         }
 
         .badge-pendiente {
@@ -432,44 +459,111 @@
             color: #475569;
         }
 
+        /* ══ PAGINACIÓN — igual que solicitudes ══ */
+        .pag-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 16px;
+            border-top: 1px solid var(--border);
+            background: #fff;
+        }
+
+        .pag-info {
+            font-size: 11.5px;
+            color: #94A3B8;
+        }
+
+        .pagination {
+            margin: 0 !important;
+        }
+
+            .pagination .page-link {
+                font-family: 'Inter', sans-serif !important;
+                font-size: 11.5px !important;
+                color: #374151 !important;
+                border-color: var(--border) !important;
+                padding: 4px 10px !important;
+            }
+
+            .pagination .page-item.active .page-link {
+                background-color: var(--blue) !important;
+                border-color: var(--blue) !important;
+                color: #fff !important;
+            }
+
+            .pagination .page-link:hover {
+                background: #F1F5F9 !important;
+                color: var(--blue) !important;
+            }
+
+            .pagination .page-item.disabled .page-link {
+                color: #CBD5E1 !important;
+            }
+
+        /* ══ CHARTS — PEQUEÑAS ══ */
         .charts-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 16px;
+            gap: 14px;
+            padding: 14px 18px;
         }
 
         .chart-card {
             background: #fff;
             border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 16px 18px;
-            box-shadow: 0 1px 3px rgba(0,0,0,.06);
+            padding: 12px 14px;
+            box-shadow: 0 1px 3px rgba(0,0,0,.05);
         }
 
+        /* Título chart — 12px / 600 */
         .chart-title {
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 600;
             color: #0F172A;
-            margin-bottom: 14px;
+            margin-bottom: 10px;
         }
 
+        /* Canvas forzado pequeño */
+        .chart-card canvas {
+            max-height: 140px !important;
+        }
+
+        /* ══ BARRA NIVEL ══ */
         .progress-bar-wrap {
             background: #F1F5F9;
             border-radius: 20px;
-            height: 8px;
-            margin-top: 6px;
+            height: 7px;
+            margin-top: 5px;
             overflow: hidden;
         }
 
         .progress-bar-fill {
-            height: 8px;
+            height: 7px;
             border-radius: 20px;
             background: var(--blue);
             transition: width .5s ease;
         }
+
+        /* ══ SPINNER ══ */
+        .spinner {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border: 2px solid rgba(255,255,255,.35);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin .6s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
     </style>
 </head>
-<body>
+<body spellcheck="false">
 
     <!-- SIDEBAR -->
     <div id="sidebar">
@@ -497,138 +591,201 @@
             <a href="/bodegas.html" class="nav-link" id="link-bodegas" style="display:none;"><i class="bi bi-building"></i> Bodegas</a>
         </nav>
         <div class="sidebar-footer">
-            <button class="btn-logout" onclick="auth.logout()"><i class="bi bi-box-arrow-left"></i> Cerrar Sesión</button>
+            <button class="btn-logout" onclick="auth.logout()">
+                <i class="bi bi-box-arrow-left"></i> Cerrar Sesión
+            </button>
         </div>
     </div>
 
     <!-- MAIN -->
     <div id="main">
+
+        <!-- TOPBAR -->
         <div class="topbar">
-            <div>
-                <div class="topbar-title">Reportes</div>
-                <div class="topbar-sub">Análisis y estadísticas del sistema</div>
-            </div>
-            <div class="topbar-right">
-                <i class="bi bi-person-circle" style="font-size:20px;color:#9CA3AF;"></i>
+            <div><button class="topbar-hamburger"><i class="bi bi-list"></i></button></div>
+            <div class="topbar-user">
+                <i class="bi bi-person-circle" style="font-size:19px;color:#9CA3AF;"></i>
                 <span id="topbar-nombre"></span>
             </div>
         </div>
 
-        <div class="page-body">
-
-            <!-- TABS -->
-            <div class="tabs">
-                <button class="tab-btn active" onclick="cambiarTab('stock')"><i class="bi bi-boxes"></i> Stock General</button>
-                <button class="tab-btn" onclick="cambiarTab('rotacion')"><i class="bi bi-arrow-repeat"></i> Rotación</button>
-                <button class="tab-btn" onclick="cambiarTab('solicitudes')"><i class="bi bi-clipboard-data"></i> Solicitudes</button>
-            </div>
-
-            <!-- TAB STOCK -->
-            <div class="tab-content show" id="tab-stock">
-                <div class="dash-card">
-                    <div class="dash-card-header">
-                        <div class="dash-card-title"><i class="bi bi-boxes" style="color:var(--blue);"></i> Stock General por Producto</div>
-                        <button class="btn-secondary-sm" onclick="exportarStock()"><i class="bi bi-download"></i> Exportar CSV</button>
-                    </div>
-                    <div class="table-responsive">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Código</th>
-                                    <th>Producto</th>
-                                    <th>Unidad</th>
-                                    <th>Stock Mínimo</th>
-                                    <th style="text-align:right;">Stock Actual</th>
-                                    <th>Estado</th>
-                                    <th>Nivel</th>
-                                </tr>
-                            </thead>
-                            <tbody id="tbody-stock">
-                                <tr><td colspan="7" style="text-align:center;color:#94A3B8;padding:32px;">Cargando...</td></tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <!-- TAB ROTACION -->
-            <div class="tab-content" id="tab-rotacion">
-                <div class="dash-card">
-                    <div class="dash-card-header">
-                        <div class="dash-card-title"><i class="bi bi-arrow-repeat" style="color:var(--blue);"></i> Rotación de Productos</div>
-                        <div class="filter-row">
-                            <div class="filter-group">
-                                <label>Mes</label>
-                                <select id="rot-mes"></select>
-                            </div>
-                            <div class="filter-group">
-                                <label>Año</label>
-                                <input type="number" id="rot-anio" style="width:90px;" min="2020" max="2030">
-                            </div>
-                            <button class="btn-primary-sm" onclick="cargarRotacion()"><i class="bi bi-search"></i> Ver</button>
-                            <button class="btn-secondary-sm" onclick="exportarRotacion()"><i class="bi bi-download"></i> CSV</button>
-                        </div>
-                    </div>
-                    <div class="table-responsive">
-                        <table>
-                            <thead>
-                                <!-- ✅ Headers actualizados según API -->
-                                <tr>
-                                    <th>#</th>
-                                    <th>Producto</th>
-                                    <th style="text-align:right;">Total Salidas</th>
-                                    <th style="text-align:right;">% del Total</th>
-                                </tr>
-                            </thead>
-                            <tbody id="tbody-rotacion">
-                                <tr><td colspan="4" style="text-align:center;color:#94A3B8;padding:32px;">Selecciona mes y año</td></tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <!-- TAB SOLICITUDES -->
-            <div class="tab-content" id="tab-solicitudes">
-                <div class="charts-grid">
-                    <div class="chart-card">
-                        <div class="chart-title">Solicitudes por Estado — Este Mes</div>
-                        <canvas id="chart-estados" height="220"></canvas>
-                    </div>
-                    <div class="chart-card">
-                        <div class="chart-title">Productos Más Solicitados</div>
-                        <canvas id="chart-rotacion2" height="220"></canvas>
-                    </div>
-                </div>
-                <div class="dash-card">
-                    <div class="dash-card-header">
-                        <div class="dash-card-title"><i class="bi bi-clipboard-data" style="color:var(--blue);"></i> Resumen de Solicitudes por Estado</div>
-                        <div class="filter-row">
-                            <div class="filter-group">
-                                <label>Mes</label>
-                                <select id="sol-mes"></select>
-                            </div>
-                            <div class="filter-group">
-                                <label>Año</label>
-                                <input type="number" id="sol-anio" style="width:90px;" min="2020" max="2030">
-                            </div>
-                            <button class="btn-primary-sm" onclick="cargarSolicitudes()"><i class="bi bi-search"></i> Ver</button>
-                        </div>
-                    </div>
-                    <div class="table-responsive">
-                        <table>
-                            <thead><tr><th>Estado</th><th style="text-align:right;">Cantidad</th></tr></thead>
-                            <tbody id="tbody-solicitudes">
-                                <tr><td colspan="2" style="text-align:center;color:#94A3B8;padding:32px;">Cargando...</td></tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
+        <!-- TITLE -->
+        <div style="padding:22px 28px 0; display:flex; align-items:center; justify-content:space-between;">
+            <div style="font-size:21px;font-weight:700;color:#0F172A;letter-spacing:-.5px;font-family:'Inter',sans-serif;">Reportes</div>
+            <button class="btn btn-outline-secondary" id="btn-exportar-csv" onclick="exportarCSVActivo()">
+                <i class="bi bi-download mr-1"></i> Exportar CSV
+            </button>
         </div>
-    </div>
 
+        <!-- PAGE BODY -->
+        <div class="page-body mt-3">
+
+            <!-- CORTINA ITALIANA — Bootstrap 4 -->
+            <div class="tabs-wrapper">
+                <ul class="nav nav-tabs" id="tabsReportes" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="tab-stock-link"
+                           data-toggle="tab" href="#tab-stock" role="tab">
+                            <i class="bi bi-boxes"></i> Stock General
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="tab-rotacion-link"
+                           data-toggle="tab" href="#tab-rotacion" role="tab">
+                            <i class="bi bi-arrow-repeat"></i> Rotación
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="tab-solicitudes-link"
+                           data-toggle="tab" href="#tab-solicitudes" role="tab"
+                           onclick="ocultarExportarBtn()">
+                            <i class="bi bi-clipboard-data"></i> Solicitudes
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- TAB CONTENT -->
+            <div class="tab-content">
+
+                <!-- TAB STOCK -->
+                <div class="tab-pane fade show active" id="tab-stock" role="tabpanel">
+                    <div class="table-card">
+                        <div class="table-card-header">
+                            <div class="table-card-title">
+                                <i class="bi bi-boxes"></i> Stock General por Producto
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Código</th>
+                                        <th>Producto</th>
+                                        <th>Unidad</th>
+                                        <th class="text-center">Stock Mínimo</th>
+                                        <th class="text-right">Stock Actual</th>
+                                        <th>Estado</th>
+                                        <th style="min-width:110px;">Nivel</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody-stock">
+                                    <tr><td colspan="7" class="text-center text-muted py-4">Cargando...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB ROTACIÓN -->
+                <div class="tab-pane fade" id="tab-rotacion" role="tabpanel">
+                    <div class="table-card">
+                        <div class="table-card-header">
+                            <div class="table-card-title">
+                                <i class="bi bi-arrow-repeat"></i> Rotación de Productos
+                            </div>
+                            <div class="filter-row">
+                                <div class="filter-group">
+                                    <label>Mes</label>
+                                    <select class="form-control form-control-sm" id="rot-mes" style="width:120px;"></select>
+                                </div>
+                                <div class="filter-group">
+                                    <label>Año</label>
+                                    <input type="number" class="form-control form-control-sm" id="rot-anio"
+                                           style="width:84px;" min="2020" max="2030">
+                                </div>
+                                <button class="btn btn-primary btn-sm" onclick="cargarRotacion()">
+                                    <i class="bi bi-search mr-1"></i> Ver
+                                </button>
+                                <button class="btn btn-outline-secondary btn-sm" onclick="exportarRotacion()">
+                                    <i class="bi bi-download mr-1"></i> CSV
+                                </button>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Producto</th>
+                                        <th class="text-right">Total Salidas</th>
+                                        <th class="text-right">% del Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody-rotacion">
+                                    <tr><td colspan="4" class="text-center text-muted py-4">Selecciona mes y año</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB SOLICITUDES -->
+                <div class="tab-pane fade" id="tab-solicitudes" role="tabpanel">
+
+                    <!-- Gráficas — pequeñas -->
+                    <div class="table-card">
+                        <div class="table-card-header">
+                            <div class="table-card-title">
+                                <i class="bi bi-pie-chart"></i> Gráficas del Período
+                            </div>
+                        </div>
+                        <div class="charts-grid">
+                            <div class="chart-card">
+                                <div class="chart-title">Solicitudes por Estado — Este Mes</div>
+                                <canvas id="chart-estados"></canvas>
+                            </div>
+                            <div class="chart-card">
+                                <div class="chart-title">Productos Más Solicitados</div>
+                                <canvas id="chart-rotacion2"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tabla resumen por estado -->
+                    <div class="table-card-inner">
+                        <div class="table-card-header">
+                            <div class="table-card-title">
+                                <i class="bi bi-clipboard-data"></i> Resumen de Solicitudes por Estado
+                            </div>
+                            <div class="filter-row">
+                                <div class="filter-group">
+                                    <label>Mes</label>
+                                    <select class="form-control form-control-sm" id="sol-mes" style="width:120px;"></select>
+                                </div>
+                                <div class="filter-group">
+                                    <label>Año</label>
+                                    <input type="number" class="form-control form-control-sm" id="sol-anio"
+                                           style="width:84px;" min="2020" max="2030">
+                                </div>
+                                <button class="btn btn-primary btn-sm" onclick="cargarSolicitudes()">
+                                    <i class="bi bi-search mr-1"></i> Ver
+                                </button>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Estado</th>
+                                        <th class="text-right">Cantidad</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody-solicitudes">
+                                    <tr><td colspan="2" class="text-center text-muted py-4">Cargando...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div><!-- /tab-content -->
+        </div><!-- /page-body -->
+    </div><!-- /main -->
+    <!-- Bootstrap 4 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"></script>
     <script src="/js/utils.js"></script>
     <script src="/js/router.js"></script>
     <script>
@@ -643,13 +800,15 @@
             document.getElementById('link-bodegas').style.display = 'flex';
         }
 
-        const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+        const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+            'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
         const mesActual = new Date().getMonth() + 1;
         const anioActual = new Date().getFullYear();
 
         let stockData = [], rotacionData = [];
         let chartEstados = null, chartRotacion2 = null;
 
+        /* ═══════════ INIT ═══════════ */
         function init() {
             ['rot-mes', 'sol-mes'].forEach(id => {
                 document.getElementById(id).innerHTML = meses.map((m, i) =>
@@ -658,20 +817,23 @@
             });
             document.getElementById('rot-anio').value = anioActual;
             document.getElementById('sol-anio').value = anioActual;
+
             cargarStock();
             cargarSolicitudesChart();
-        }
 
-        function cambiarTab(tab) {
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('show'));
-            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-            document.getElementById('tab-' + tab).classList.add('show');
-            const labels = { stock: 'Stock', rotacion: 'Rotación', solicitudes: 'Solicitudes' };
-            document.querySelectorAll('.tab-btn').forEach(btn => {
-                if (btn.textContent.trim().includes(labels[tab])) btn.classList.add('active');
+            /* Controlar botón exportar según tab activa */
+            $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+                const tab = e.target.getAttribute('href');
+                document.getElementById('btn-exportar-csv').style.display =
+                    (tab === '#tab-solicitudes') ? 'none' : '';
             });
         }
 
+        function ocultarExportarBtn() {
+            document.getElementById('btn-exportar-csv').style.display = 'none';
+        }
+
+        /* ═══════════ TAB STOCK ═══════════ */
         async function cargarStock() {
             const res = await apiCall('GET', '/productos');
             if (!res?.success) return;
@@ -685,23 +847,23 @@
                 else if (stock <= p.stockMinimo) { badge = '<span class="badge-bajo">Bajo Mínimo</span>'; color = '#F59E0B'; }
                 else { badge = '<span class="badge-ok">OK</span>'; color = '#1976D2'; }
                 return `
-                        <tr>
-                            <td><code style="background:#F1F5F9;padding:2px 6px;border-radius:4px;font-size:12px;">${p.codigo}</code></td>
-                            <td><strong>${p.nombre}</strong></td>
-                            <td style="color:#64748B;">${p.unidadMedida}</td>
-                            <td style="text-align:center;color:#64748B;">${p.stockMinimo}</td>
-                            <td style="text-align:right;font-weight:700;">${stock}</td>
-                            <td>${badge}</td>
-                            <td style="min-width:100px;">
-                                <div class="progress-bar-wrap">
-                                    <div class="progress-bar-fill" style="width:${pct}%;background:${color};"></div>
-                                </div>
-                            </td>
-                        </tr>`;
+                    <tr>
+                        <td><code style="background:#EFF6FF;color:#1976D2;padding:2px 7px;font-size:11px;font-weight:600;letter-spacing:.2px;">${p.codigo}</code></td>
+                        <td><strong>${p.nombre}</strong></td>
+                        <td style="color:#64748B;">${p.unidadMedida}</td>
+                        <td class="text-center" style="color:#64748B;">${p.stockMinimo}</td>
+                        <td class="text-right" style="font-weight:700;">${stock}</td>
+                        <td>${badge}</td>
+                        <td>
+                            <div class="progress-bar-wrap">
+                                <div class="progress-bar-fill" style="width:${pct}%;background:${color};"></div>
+                            </div>
+                        </td>
+                    </tr>`;
             }).join('');
         }
 
-        // ✅ Corregido: usa campos reales de la API (codigo, nombre, totalSalidas, porcentajeDelTotal)
+        /* ═══════════ TAB ROTACIÓN ═══════════ */
         async function cargarRotacion() {
             const mes = document.getElementById('rot-mes').value;
             const anio = document.getElementById('rot-anio').value;
@@ -710,7 +872,7 @@
             rotacionData = res.data;
             if (!rotacionData.length) {
                 document.getElementById('tbody-rotacion').innerHTML =
-                    '<tr><td colspan="4" style="text-align:center;color:#94A3B8;padding:32px;">Sin datos para el período</td></tr>';
+                    '<tr><td colspan="4" class="text-center text-muted py-4">Sin datos para el período</td></tr>';
                 return;
             }
             document.getElementById('tbody-rotacion').innerHTML = rotacionData.map((p, i) => `
@@ -720,16 +882,17 @@
                             <strong>${p.nombre}</strong>
                             <br><span style="font-size:11px;color:#94A3B8;">${p.codigo}</span>
                         </td>
-                        <td style="text-align:right;color:#C62828;font-weight:700;">${p.totalSalidas || 0}</td>
-                        <td style="text-align:right;color:#1976D2;font-weight:600;">${p.porcentajeDelTotal || 0}%</td>
+                        <td class="text-right" style="color:#C62828;font-weight:700;">${p.totalSalidas || 0}</td>
+                        <td class="text-right" style="color:#1976D2;font-weight:600;">${p.porcentajeDelTotal || 0}%</td>
                     </tr>`).join('');
         }
 
+        /* ═══════════ TAB SOLICITUDES ═══════════ */
         async function cargarSolicitudesChart() {
-            const res = await apiCall('GET', `/dashboard/solicitudes-por-estado?mes=${mesActual}&anio=${anioActual}`);
-            if (res?.success) renderChartEstados(res.data);
-            const res2 = await apiCall('GET', `/dashboard/rotacion?mes=${mesActual}&anio=${anioActual}`);
-            if (res2?.success) renderChartRotacion(res2.data);
+            const r1 = await apiCall('GET', `/dashboard/solicitudes-por-estado?mes=${mesActual}&anio=${anioActual}`);
+            if (r1?.success) renderChartEstados(r1.data);
+            const r2 = await apiCall('GET', `/dashboard/rotacion?mes=${mesActual}&anio=${anioActual}`);
+            if (r2?.success) renderChartRotacion(r2.data);
         }
 
         async function cargarSolicitudes() {
@@ -739,10 +902,19 @@
             if (!res?.success) return;
             renderChartEstados(res.data);
             const estados = ['Borrador', 'Pendiente', 'Aprobada', 'Rechazada', 'Despachada'];
-            const map = { Pendiente: 'badge-pendiente', Aprobada: 'badge-aprobada', Rechazada: 'badge-rechazada', Despachada: 'badge-despachada', Borrador: 'badge-borrador' };
+            const map = {
+                Pendiente: 'badge-pendiente',
+                Aprobada: 'badge-aprobada',
+                Rechazada: 'badge-rechazada',
+                Despachada: 'badge-despachada',
+                Borrador: 'badge-borrador'
+            };
             document.getElementById('tbody-solicitudes').innerHTML = estados.map(e => {
                 const f = res.data.find(d => d.estado === e);
-                return `<tr><td><span class="badge-estado ${map[e]}">${e}</span></td><td style="text-align:right;font-weight:700;">${f ? f.total : 0}</td></tr>`;
+                return `<tr>
+                        <td><span class="badge-estado ${map[e]}">${e}</span></td>
+                        <td class="text-right" style="font-weight:700;">${f ? f.total : 0}</td>
+                    </tr>`;
             }).join('');
         }
 
@@ -754,45 +926,76 @@
             chartEstados = new Chart(document.getElementById('chart-estados'), {
                 type: 'doughnut',
                 data: { labels: estados, datasets: [{ data: totales, backgroundColor: colores, borderWidth: 2 }] },
-                options: { responsive: true, plugins: { legend: { position: 'bottom', labels: { font: { size: 11 } } } } }
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: { font: { size: 10, family: 'Inter' }, boxWidth: 10, padding: 8 }
+                        }
+                    }
+                }
             });
         }
 
-        // ✅ Corregido: usa totalSalidas (campo real de la API)
         function renderChartRotacion(data) {
             if (!data?.length) return;
             if (chartRotacion2) chartRotacion2.destroy();
             chartRotacion2 = new Chart(document.getElementById('chart-rotacion2'), {
                 type: 'bar',
                 data: {
-                    labels: data.slice(0, 8).map(d => d.nombre.length > 18 ? d.nombre.substring(0, 18) + '…' : d.nombre),
-                    datasets: [{ label: 'Salidas', data: data.slice(0, 8).map(d => d.totalSalidas || 0), backgroundColor: '#1976D2', borderRadius: 4 }]
+                    labels: data.slice(0, 6).map(d => d.nombre.length > 15 ? d.nombre.substring(0, 15) + '…' : d.nombre),
+                    datasets: [{
+                        label: 'Salidas',
+                        data: data.slice(0, 6).map(d => d.totalSalidas || 0),
+                        backgroundColor: '#1976D2',
+                        borderRadius: 3
+                    }]
                 },
-                options: { indexAxis: 'y', responsive: true, plugins: { legend: { display: false } }, scales: { x: { grid: { display: false } } } }
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        x: { grid: { display: false }, ticks: { font: { size: 10 } } },
+                        y: { ticks: { font: { size: 10, family: 'Inter' } } }
+                    }
+                }
             });
+        }
+
+        /* ═══════════ EXPORTAR ═══════════ */
+        function exportarCSVActivo() {
+            const activo = document.querySelector('.tab-pane.active');
+            if (!activo) return;
+            if (activo.id === 'tab-stock') exportarStock();
+            if (activo.id === 'tab-rotacion') exportarRotacion();
         }
 
         function exportarStock() {
             if (!stockData.length) return;
             const headers = ['Código', 'Producto', 'Unidad', 'Stock Mínimo', 'Stock Actual', 'Estado'];
-            const rows = stockData.map(p => [p.codigo, p.nombre, p.unidadMedida, p.stockMinimo, p.stockActual || 0,
-            p.stockActual === 0 ? 'Sin Stock' : p.stockActual <= p.stockMinimo ? 'Bajo Mínimo' : 'OK']);
-            const csv = [headers, ...rows].map(r => r.join(',')).join('\n');
-            const a = document.createElement('a');
-            a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
-            a.download = `stock_${new Date().toISOString().split('T')[0]}.csv`;
-            a.click();
+            const rows = stockData.map(p => [
+                p.codigo, p.nombre, p.unidadMedida, p.stockMinimo, p.stockActual || 0,
+                p.stockActual === 0 ? 'Sin Stock' : p.stockActual <= p.stockMinimo ? 'Bajo Mínimo' : 'OK'
+            ]);
+            descargarCSV([headers, ...rows], `stock_${new Date().toISOString().split('T')[0]}.csv`);
         }
 
-        // ✅ Corregido: exporta campos reales
         function exportarRotacion() {
             if (!rotacionData.length) return;
             const headers = ['Código', 'Producto', 'Total Salidas', '% del Total'];
             const rows = rotacionData.map(p => [p.codigo, p.nombre, p.totalSalidas || 0, p.porcentajeDelTotal || 0]);
-            const csv = [headers, ...rows].map(r => r.join(',')).join('\n');
+            descargarCSV([headers, ...rows], `rotacion_${new Date().toISOString().split('T')[0]}.csv`);
+        }
+
+        function descargarCSV(filas, nombre) {
+            const csv = filas.map(r => r.join(',')).join('\n');
             const a = document.createElement('a');
             a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
-            a.download = `rotacion_${new Date().toISOString().split('T')[0]}.csv`;
+            a.download = nombre;
             a.click();
         }
 

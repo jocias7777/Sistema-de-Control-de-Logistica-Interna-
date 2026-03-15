@@ -5,12 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Solicitudes — Despacho Logística</title>
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
+        /* ══ VARIABLES ══ */
         :root {
             --sidebar-bg: #1a237e;
             --sidebar-hover: #283593;
@@ -20,20 +20,21 @@
             --sidebar-w: 225px;
         }
 
-        *, *::before, *::after {
+        * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
 
         body {
-            font-family: 'Poppins', sans-serif;
-            font-size: 14px;
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
             background: var(--bg);
             color: #212529;
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* SIDEBAR */
+        /* ══ SIDEBAR ══ */
         #sidebar {
             position: fixed;
             top: 0;
@@ -64,15 +65,16 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 16px;
-            font-weight: 800;
+            font-size: 15px;
+            font-weight: 700;
             color: #fff;
         }
 
         .brand-name {
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 700;
             color: #fff;
+            letter-spacing: .5px;
         }
 
         .brand-sub {
@@ -86,38 +88,40 @@
             padding: 10px 0;
         }
 
+        /* Etiquetas de sección sidebar — 10px / 600 */
         .nav-section-label {
             padding: 10px 20px 4px;
             font-size: 10px;
-            font-weight: 700;
+            font-weight: 600;
             color: rgba(255,255,255,.3);
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 1.2px;
         }
 
-        .nav-link {
+        /* Links sidebar — 12.5px / 500 */
+        .sidebar-nav .nav-link {
             display: flex;
             align-items: center;
             gap: 10px;
-            padding: 10px 20px;
+            padding: 9px 20px;
             color: rgba(255,255,255,.72) !important;
-            font-size: 13.5px;
+            font-size: 12.5px;
             font-weight: 500;
             text-decoration: none;
-            transition: background .15s, color .15s;
+            transition: background .15s;
         }
 
-            .nav-link i {
-                font-size: 18px;
+            .sidebar-nav .nav-link i {
+                font-size: 17px;
                 width: 20px;
             }
 
-            .nav-link:hover {
+            .sidebar-nav .nav-link:hover {
                 background: var(--sidebar-hover);
                 color: #fff !important;
             }
 
-            .nav-link.active {
+            .sidebar-nav .nav-link.active {
                 background: rgba(255,255,255,.13);
                 color: #fff !important;
                 font-weight: 600;
@@ -133,15 +137,15 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            padding: 10px 20px;
+            padding: 9px 20px;
             background: transparent;
             border: none;
             color: rgba(255,255,255,.6);
-            font-size: 13.5px;
+            font-size: 12.5px;
             font-weight: 500;
             cursor: pointer;
-            font-family: inherit;
-            transition: background .15s, color .15s;
+            font-family: 'Inter', sans-serif;
+            transition: background .15s;
         }
 
             .btn-logout:hover {
@@ -149,234 +153,255 @@
                 color: #fff;
             }
 
-        /* MAIN */
+        /* ══ MAIN ══ */
         #main {
             margin-left: var(--sidebar-w);
             min-height: 100vh;
             background: var(--bg);
         }
 
-        .page-body {
-            padding: 20px 28px 28px;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        /* BUTTONS */
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 8px 16px;
-            border-radius: 6px;
-            font-size: 13px;
-            font-weight: 500;
-            cursor: pointer;
-            border: none;
-            transition: background .15s, box-shadow .15s, opacity .15s;
-            text-decoration: none;
-            font-family: inherit;
-        }
-
-            .btn:disabled {
-                opacity: .6;
-                cursor: not-allowed;
-            }
-
-        .btn-primary {
-            background: var(--blue);
-            color: #fff;
-        }
-
-            .btn-primary:hover:not(:disabled) {
-                background: #1565C0;
-                box-shadow: 0 2px 8px rgba(25,118,210,.3);
-            }
-
-        .btn-secondary {
+        .topbar {
             background: #fff;
-            color: #374151;
-            border: 1px solid var(--border);
-        }
-
-            .btn-secondary:hover:not(:disabled) {
-                background: #F8FAFC;
-            }
-
-        .btn-success {
-            background: #16A34A;
-            color: #fff;
-        }
-
-            .btn-success:hover:not(:disabled) {
-                background: #15803D;
-            }
-
-        .btn-danger {
-            background: #DC2626;
-            color: #fff;
-        }
-
-            .btn-danger:hover:not(:disabled) {
-                background: #B91C1C;
-            }
-
-        .btn-sm {
-            padding: 5px 10px;
-            font-size: 12px;
-        }
-
-        .btn-new {
-            display: inline-flex;
-            align-items: center;
-            gap: 7px;
-            padding: 9px 20px;
-            border-radius: 8px;
-            border: none;
-            background: var(--blue);
-            font-size: 13px;
-            font-weight: 600;
-            color: #fff;
-            cursor: pointer;
-            font-family: inherit;
-            transition: background .15s, box-shadow .15s;
-            white-space: nowrap;
-        }
-
-            .btn-new:hover {
-                background: #1565C0;
-                box-shadow: 0 2px 8px rgba(25,118,210,.3);
-            }
-
-        /* TABS */
-        .tabs-bar {
-            display: flex;
-            gap: 4px;
-            background: #fff;
-            padding: 8px;
-            border-radius: 10px;
-            border: 1px solid var(--border);
-            box-shadow: 0 1px 3px rgba(0,0,0,.06);
-        }
-
-        .tab-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 9px 18px;
-            border-radius: 6px;
-            border: none;
-            background: transparent;
-            color: #64748B;
-            font-size: 13px;
-            font-weight: 500;
-            cursor: pointer;
-            font-family: inherit;
-            transition: all .2s;
-        }
-
-            .tab-btn:hover {
-                background: #F1F5F9;
-                color: #334155;
-            }
-
-            .tab-btn.active {
-                background: var(--blue);
-                color: #fff;
-            }
-
-        .tab-count {
-            background: #F1F5F9;
-            color: #64748B;
-            padding: 1px 8px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: 700;
-        }
-
-        .tab-btn.active .tab-count {
-            background: rgba(255,255,255,.25);
-            color: #fff;
-        }
-
-        .tab-panel {
-            display: none;
-        }
-
-            .tab-panel.active {
-                display: block;
-            }
-
-        /* CARD */
-        .dash-card {
-            background: #fff;
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            box-shadow: 0 1px 3px rgba(0,0,0,.06);
-            overflow: hidden;
-        }
-
-        .dash-card-header {
-            padding: 13px 18px;
             border-bottom: 1px solid var(--border);
+            padding: 0 28px;
+            height: 48px;
             display: flex;
             align-items: center;
             justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
-        .dash-card-title {
-            font-size: 13.5px;
-            font-weight: 700;
-            color: #0F172A;
+        .topbar-hamburger {
+            background: none;
+            border: none;
+            font-size: 20px;
+            color: #64748B;
+            cursor: pointer;
+        }
+
+        /* Usuario topbar — 12.5px / 500 */
+        .topbar-user {
             display: flex;
             align-items: center;
-            gap: 7px;
+            gap: 6px;
+            font-size: 12.5px;
+            font-weight: 500;
+            color: #374151;
         }
 
-        /* TABLE */
-        table {
-            width: 100%;
-            border-collapse: collapse;
+        .page-body {
+            padding: 0 28px 28px;
         }
 
-        thead tr {
-            background: #F8FAFC;
+        /* ══ BOTONES — 12.5px / 500 ══ */
+        .btn {
+            font-family: 'Inter', sans-serif !important;
+            font-size: 12.5px !important;
+            font-weight: 500 !important;
+            padding: 6px 14px !important;
         }
 
-        th {
-            padding: 10px 16px;
+        .btn-sm {
+            padding: 4px 10px !important;
+            font-size: 12px !important;
+        }
+
+        .btn + .btn {
+            margin-left: 8px !important;
+        }
+
+        .modal-footer > .btn {
+            margin: 0 !important;
+        }
+
+        .modal-footer {
+            gap: 8px;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-row > .col, .form-row > [class*="col-"] {
+            padding-right: 8px;
+            padding-left: 8px;
+        }
+
+        .form-row {
+            margin-right: -8px;
+            margin-left: -8px;
+        }
+
+        /* ══ FORMULARIOS — 13px ══ */
+        .form-control {
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            letter-spacing: -0.01em;
+        }
+
+            .form-control:focus {
+                border-color: var(--blue);
+                box-shadow: 0 0 0 3px rgba(25,118,210,.12);
+            }
+
+        /* Labels form — 12.5px / 500 */
+        .form-label {
+            display: block;
+            font-size: 12.5px;
+            font-weight: 500;
+            color: #0F172A;
+            margin-bottom: 5px;
+        }
+
+        /* ══ TABS — CORTINA A LA ITALIANA ══ */
+        .tabs-wrapper {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-bottom: none;
+            box-shadow: none;
+            padding: 0 12px;
+        }
+
+        .nav-tabs {
+            border-bottom: 1px solid var(--border) !important;
+            flex-wrap: nowrap;
+        }
+
+            .nav-tabs .nav-item {
+                margin-bottom: -1px;
+            }
+
+            /* Links de tabs — 12.5px / 500 */
+            .nav-tabs .nav-link {
+                font-family: 'Inter', sans-serif !important;
+                font-size: 12.5px !important;
+                font-weight: 500 !important;
+                color: #64748B !important;
+                padding: 12px 18px !important;
+                display: inline-flex !important;
+                align-items: center !important;
+                gap: 7px;
+                border: 1px solid transparent !important;
+                border-bottom: none !important;
+                border-radius: 0 !important;
+                background: transparent !important;
+                transition: color .15s, border-color .15s, background .15s;
+                white-space: nowrap;
+                margin-bottom: 0 !important;
+            }
+
+                .nav-tabs .nav-link:hover {
+                    color: #334155 !important;
+                    border-color: #E2E8F0 #E2E8F0 transparent !important;
+                    background: #F8FAFC !important;
+                }
+
+                .nav-tabs .nav-link.active {
+                    color: var(--blue) !important;
+                    font-weight: 600 !important;
+                    background: #fff !important;
+                    border-color: var(--border) var(--border) #fff !important;
+                }
+
+        /* Contador de tab — 11px / 600 */
+        .tab-badge {
+            background: #F1F5F9;
+            color: #64748B;
+            padding: 2px 8px;
+            border-radius: 20px;
             font-size: 11px;
+            font-weight: 600;
+            line-height: 1.4;
+        }
+
+        .nav-tabs .nav-link.active .tab-badge {
+            background: #DBEAFE;
+            color: var(--blue);
+        }
+
+        /* Sin gap entre tabs y tabla */
+        .tab-content {
+            margin-top: 0 !important;
+        }
+
+            .tab-content .table-card {
+                border-top: none !important;
+            }
+
+        /* ══ TABLE CARD ══ */
+        .table-card {
+            background: #fff;
+            border: 1px solid var(--border);
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,.05);
+        }
+
+        .table-bordered {
+            border: 1px solid #dee2e6 !important;
+        }
+
+            .table-bordered th, .table-bordered td {
+                border: 1px solid #dee2e6 !important;
+            }
+
+        .table-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 18px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        /* Título de tabla — 13px / 600 */
+        .table-card-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #0F172A;
+        }
+
+            .table-card-title i {
+                color: var(--blue);
+                font-size: 15px;
+            }
+
+        /* TH — 10.5px / 600 uppercase */
+        .table-bordered th {
+            font-size: 10.5px;
             font-weight: 600;
             color: #64748B;
             text-transform: uppercase;
-            letter-spacing: .4px;
-            border-bottom: 1px solid var(--border);
+            letter-spacing: .6px;
+            background: #F8FAFC;
             white-space: nowrap;
-        }
-
-        td {
-            padding: 12px 16px;
-            font-size: 13px;
-            border-bottom: 1px solid #F1F5F9;
             vertical-align: middle;
+            padding: 11px 16px;
         }
 
-        tbody tr:last-child td {
-            border-bottom: none;
+        /* TD — 12.5px / 400 */
+        .table-bordered td {
+            font-size: 12.5px;
+            vertical-align: middle;
+            padding: 11px 16px;
+            letter-spacing: -0.01em;
         }
 
-        tbody tr:hover {
-            background: #FAFBFE;
+        .table-hover tbody tr:hover {
+            background: #FAFBFF;
         }
 
-        /* BADGES */
+        /* ══ BADGES ESTADO — 11px / 600 ══ */
         .badge-estado {
             display: inline-block;
             padding: 3px 10px;
             border-radius: 20px;
             font-size: 11px;
             font-weight: 600;
+            letter-spacing: .01em;
         }
 
         .badge-pendiente {
@@ -404,216 +429,61 @@
             color: #475569;
         }
 
-        /* FORM */
-        .form-control {
-            width: 100%;
-            padding: 8px 12px;
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            font-size: 13px;
-            font-family: inherit;
+        /* ══ MODALES ══ */
+        .modal-content {
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Título modal — 14px / 600 */
+        .modal-title {
+            font-size: 14px;
+            font-weight: 600;
             color: #0F172A;
-            background: #fff;
-            outline: none;
-            transition: border-color .15s, box-shadow .15s;
+            letter-spacing: -0.02em;
         }
 
-            .form-control:focus {
-                border-color: var(--blue);
-                box-shadow: 0 0 0 3px rgba(25,118,210,.12);
-            }
-
-            .form-control::placeholder {
-                color: #94A3B8;
-            }
-
-        .form-label {
-            display: block;
-            font-size: 13px;
-            font-weight: 500;
-            color: #0F172A;
-            margin-bottom: 6px;
+        .modal-header {
+            padding: 16px 22px;
+            border-bottom: 1px solid var(--border);
         }
 
-        .form-group {
-            margin-bottom: 16px;
+        .modal-body {
+            padding: 20px 22px;
         }
 
-        select.form-control {
-            cursor: pointer;
+        .modal-footer {
+            padding: 12px 22px;
+            border-top: 1px solid var(--border);
         }
 
-        textarea.form-control {
-            resize: vertical;
-        }
-
-        /* ALERT */
+        /* Alerta inline — 12.5px */
         .alert-inline {
             display: none;
-            padding: 10px 14px;
-            border-radius: 6px;
-            font-size: 13px;
-            font-weight: 500;
-            margin-bottom: 16px;
+            font-size: 12.5px;
         }
 
             .alert-inline.show {
                 display: block;
             }
 
-            .alert-inline.danger {
-                background: #FEE2E2;
-                color: #991B1B;
-                border: 1px solid #FECACA;
-            }
-
-            .alert-inline.success {
-                background: #DCFCE7;
-                color: #166534;
-                border: 1px solid #A7F3D0;
-            }
-
-            .alert-inline.warning {
-                background: #FEF9C3;
-                color: #854D0E;
-                border: 1px solid #FDE68A;
-            }
-
-        /* TOAST */
-        #global-toast {
-            position: fixed;
-            top: 20px;
-            right: 24px;
-            z-index: 9999;
-            min-width: 280px;
-            padding: 12px 18px;
-            border-radius: 8px;
-            font-size: 13px;
-            font-weight: 500;
-            box-shadow: 0 4px 12px rgba(0,0,0,.12);
-            display: none;
-            align-items: center;
-            gap: 8px;
-        }
-
-            #global-toast.show {
-                display: flex;
-            }
-
-            #global-toast.success {
-                background: #DCFCE7;
-                color: #166534;
-                border: 1px solid #A7F3D0;
-            }
-
-            #global-toast.danger {
-                background: #FEE2E2;
-                color: #991B1B;
-                border: 1px solid #FECACA;
-            }
-
-        /* MODAL */
-        .modal-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(15,23,42,.45);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            padding: 20px;
-        }
-
-            .modal-overlay.show {
-                display: flex;
-            }
-
-        .modal-box {
-            background: #fff;
-            border-radius: 10px;
-            width: 100%;
-            max-width: 520px;
-            box-shadow: 0 20px 60px rgba(0,0,0,.18);
-            animation: modalIn .2s ease;
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-
-        @keyframes modalIn {
-            from {
-                transform: translateY(-10px);
-                opacity: 0;
-            }
-
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-
-        .modal-header {
-            padding: 16px 20px;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            position: sticky;
-            top: 0;
-            background: #fff;
-            z-index: 1;
-        }
-
-        .modal-title {
-            font-size: 15px;
-            font-weight: 700;
-            color: #0F172A;
-        }
-
-        .modal-close {
-            background: none;
-            border: none;
-            font-size: 22px;
-            color: #94A3B8;
-            cursor: pointer;
-            line-height: 1;
-        }
-
-            .modal-close:hover {
-                color: #0F172A;
-            }
-
-        .modal-body {
-            padding: 20px;
-        }
-
-        .modal-footer {
-            padding: 14px 20px;
-            border-top: 1px solid var(--border);
-            display: flex;
-            justify-content: flex-end;
-            gap: 10px;
-            position: sticky;
-            bottom: 0;
-            background: #fff;
-        }
-
-        /* DETALLE */
+        /* ══ DETALLE FILAS MODAL — 12.5px ══ */
         .detalle-fila {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 10px 0;
+            padding: 9px 0;
             border-bottom: 1px solid #F1F5F9;
-            font-size: 13px;
+            font-size: 12.5px;
         }
 
             .detalle-fila:last-child {
                 border-bottom: none;
             }
 
+        /* Etiqueta detalle — 11px / 600 uppercase */
         .detalle-lbl {
             font-size: 11px;
-            font-weight: 700;
+            font-weight: 600;
             color: #94A3B8;
             text-transform: uppercase;
             letter-spacing: .4px;
@@ -624,7 +494,7 @@
             color: #0F172A;
         }
 
-        /* FILA PRODUCTO */
+        /* ══ FILA PRODUCTO ══ */
         .fila-producto {
             display: grid;
             grid-template-columns: 1fr 90px 36px;
@@ -633,11 +503,54 @@
             margin-bottom: 8px;
         }
 
-        /* SPINNER */
+        /* ══ PAGINACIÓN ══ */
+        .pag-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 16px;
+            border-top: 1px solid var(--border);
+            background: #fff;
+        }
+        /* Info paginación — 11.5px */
+        .pag-info {
+            font-size: 11.5px;
+            color: #94A3B8;
+            letter-spacing: .01em;
+        }
+
+        .pagination {
+            margin: 0 !important;
+        }
+
+            .pagination .page-link {
+                font-family: 'Inter', sans-serif !important;
+                font-size: 11.5px !important;
+                color: #374151 !important;
+                border-color: var(--border) !important;
+                padding: 4px 10px !important;
+            }
+
+            .pagination .page-item.active .page-link {
+                background-color: var(--blue) !important;
+                border-color: var(--blue) !important;
+                color: #fff !important;
+            }
+
+            .pagination .page-link:hover {
+                background: #F1F5F9 !important;
+                color: var(--blue) !important;
+            }
+
+            .pagination .page-item.disabled .page-link {
+                color: #CBD5E1 !important;
+            }
+
+        /* ══ SPINNER ══ */
         .spinner {
             display: inline-block;
-            width: 13px;
-            height: 13px;
+            width: 12px;
+            height: 12px;
             border: 2px solid rgba(255,255,255,.35);
             border-top-color: #fff;
             border-radius: 50%;
@@ -650,24 +563,136 @@
             }
         }
 
-        .d-flex {
-            display: flex;
+        /* ══ TOAST ══ */
+        #toast-container {
+            position: fixed;
+            bottom: 28px;
+            right: 28px;
+            z-index: 9999;
+            min-width: 360px;
+            max-width: 460px;
         }
 
-        .gap-2 {
-            gap: 8px;
+        .toast-custom {
+            border: none;
+            border-radius: 0;
+            box-shadow: 0 8px 32px rgba(0,0,0,.18);
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+            opacity: 0;
+            transition: opacity .3s ease, transform .3s ease;
+            transform: translateY(16px);
+            display: none;
         }
 
-        .align-center {
-            align-items: center;
-        }
+            .toast-custom.show {
+                display: block;
+                opacity: 1;
+                transform: translateY(0);
+            }
 
-        .text-muted {
+            .toast-custom .toast-header-custom {
+                padding: 14px 18px 10px;
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                border-bottom: 1px solid rgba(0,0,0,.07);
+            }
+
+            .toast-custom .toast-icon {
+                width: 36px;
+                height: 36px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 17px;
+                flex-shrink: 0;
+            }
+            /* Body toast — 13px */
+            .toast-custom .toast-body-custom {
+                padding: 12px 18px 16px;
+                font-size: 13px;
+                line-height: 1.6;
+            }
+
+            .toast-custom.toast-success {
+                background: #fff;
+                border-left: 5px solid #16A34A;
+            }
+
+                .toast-custom.toast-success .toast-icon {
+                    background: #DCFCE7;
+                    color: #16A34A;
+                }
+                /* Título toast — 13.5px / 600 */
+                .toast-custom.toast-success .toast-titulo {
+                    color: #166534;
+                    font-size: 13.5px;
+                    font-weight: 600;
+                }
+
+                .toast-custom.toast-success .toast-body-custom {
+                    color: #374151;
+                }
+
+            .toast-custom.toast-danger {
+                background: #fff;
+                border-left: 5px solid #DC2626;
+            }
+
+                .toast-custom.toast-danger .toast-icon {
+                    background: #FEE2E2;
+                    color: #DC2626;
+                }
+
+                .toast-custom.toast-danger .toast-titulo {
+                    color: #991B1B;
+                    font-size: 13.5px;
+                    font-weight: 600;
+                }
+
+                .toast-custom.toast-danger .toast-body-custom {
+                    color: #374151;
+                }
+
+        .toast-cerrar {
+            margin-left: auto;
+            background: none;
+            border: none;
+            font-size: 20px;
             color: #94A3B8;
+            cursor: pointer;
+            line-height: 1;
+            padding: 0;
+        }
+
+            .toast-cerrar:hover {
+                color: #374151;
+            }
+
+        .toast-progress {
+            height: 4px;
+            background: #16A34A;
+            animation: progress-shrink 4s linear forwards;
+        }
+
+        .toast-custom.toast-danger .toast-progress {
+            background: #DC2626;
+        }
+
+        @keyframes progress-shrink {
+            from {
+                width: 100%;
+            }
+
+            to {
+                width: 0%;
+            }
         }
     </style>
 </head>
-<body>
+<body spellcheck="false">
 
     <!-- SIDEBAR -->
     <div id="sidebar">
@@ -704,108 +729,136 @@
     <!-- MAIN -->
     <div id="main">
 
-        <div style="background:#fff;border-bottom:1px solid var(--border);height:48px;display:flex;align-items:center;justify-content:space-between;padding:0 28px;">
-            <button style="background:none;border:none;font-size:20px;color:#64748B;cursor:pointer;padding:0;">
-                <i class="bi bi-list"></i>
-            </button>
-            <div style="display:flex;align-items:center;gap:10px;font-size:13px;font-weight:500;color:#374151;">
-                <i class="bi bi-person-circle" style="font-size:20px;color:#9CA3AF;"></i>
+        <!-- TOPBAR -->
+        <div class="topbar">
+            <div>
+                <button class="topbar-hamburger"><i class="bi bi-list"></i></button>
+            </div>
+            <div class="topbar-user">
+                <i class="bi bi-person-circle" style="font-size:19px;color:#9CA3AF;"></i>
                 <span id="topbar-nombre"></span>
             </div>
         </div>
 
-        <div style="padding:24px 28px 0;display:flex;align-items:center;justify-content:space-between;">
+        <!-- TITLE + BTN -->
+        <div style="padding:22px 28px 0; display:flex; align-items:center; justify-content:space-between;">
             <div>
-                <div style="font-size:26px;font-weight:700;color:#0F172A;letter-spacing:-.3px;">Solicitudes de Despacho</div>
-                <div style="font-size:13px;color:#94A3B8;margin-top:3px;">Control y seguimiento de solicitudes</div>
+                <!-- Título página — 21px / 700 -->
+                <div style="font-size:21px;font-weight:700;color:#0F172A;letter-spacing:-.5px;font-family:'Inter',sans-serif;">Solicitudes de Despacho</div>
             </div>
-            <button class="btn-new" onclick="abrirModalNueva()">
-                <i class="bi bi-plus-lg"></i> Nueva Solicitud
+            <button class="btn btn-primary" data-toggle="modal" data-target="#modalNueva" onclick="prepararModalNueva()">
+                <i class="bi bi-plus-lg mr-1"></i> Nueva Solicitud
             </button>
         </div>
 
-        <div class="page-body">
+        <!-- PAGE BODY -->
+        <div class="page-body mt-3">
 
-
-            <!-- TABS -->
-            <div class="tabs-bar">
-                <button class="tab-btn active" id="tab-mis" onclick="switchTab('mis')">
-                    <i class="bi bi-person-lines-fill"></i>
-                    Mis Solicitudes
-                    <span class="tab-count" id="cnt-mis">0</span>
-                </button>
-                <button class="tab-btn" id="tab-bandeja" onclick="switchTab('bandeja')" style="display:none;">
-                    <i class="bi bi-inbox-fill"></i>
-                    Bandeja de Aprobación
-                    <span class="tab-count" id="cnt-bandeja">0</span>
-                </button>
-                <button class="tab-btn" id="tab-historial" onclick="switchTab('historial')" style="display:none;">
-                    <i class="bi bi-clock-history"></i>
-                    Historial Completo
-                    <span class="tab-count" id="cnt-historial">0</span>
-                </button>
+            <!-- TABS CORTINA ITALIANA -->
+            <div class="tabs-wrapper">
+                <ul class="nav nav-tabs" id="tabsSolicitudes" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="tab-mis-link"
+                           data-toggle="tab" href="#panel-mis" role="tab"
+                           aria-controls="panel-mis" aria-selected="true">
+                            <i class="bi bi-person-lines-fill"></i>
+                            Mis Solicitudes
+                            <span class="tab-badge" id="cnt-mis">0</span>
+                        </a>
+                    </li>
+                    <li class="nav-item" id="li-bandeja" style="display:none;">
+                        <a class="nav-link" id="tab-bandeja-link"
+                           data-toggle="tab" href="#panel-bandeja" role="tab"
+                           aria-controls="panel-bandeja" aria-selected="false">
+                            <i class="bi bi-inbox-fill"></i>
+                            Bandeja de Aprobación
+                            <span class="tab-badge" id="cnt-bandeja">0</span>
+                        </a>
+                    </li>
+                    <li class="nav-item" id="li-historial" style="display:none;">
+                        <a class="nav-link" id="tab-historial-link"
+                           data-toggle="tab" href="#panel-historial" role="tab"
+                           aria-controls="panel-historial" aria-selected="false">
+                            <i class="bi bi-clock-history"></i>
+                            Historial Completo
+                            <span class="tab-badge" id="cnt-historial">0</span>
+                        </a>
+                    </li>
+                </ul>
             </div>
 
-            <!-- PANEL: MIS SOLICITUDES -->
-            <div class="tab-panel active" id="panel-mis">
-                <div class="dash-card">
-                    <div class="dash-card-header">
-                        <div class="dash-card-title"><i class="bi bi-person-lines-fill" style="color:#1976D2;"></i> Mis Solicitudes</div>
-                    </div>
-                    <div class="table-responsive">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Número</th>
-                                    <th>Bodega</th>
-                                    <th>Fecha</th>
-                                    <th style="text-align:center;">Líneas</th>
-                                    <th>Estado</th>
-                                    <th>Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody id="tbody-mis">
-                                <tr><td colspan="6" style="text-align:center;color:#94A3B8;padding:32px;">Cargando...</td></tr>
-                            </tbody>
-                        </table>
+            <!-- TAB CONTENT sin margen para efecto cortina -->
+            <div class="tab-content" id="tabContent">
+
+                <!-- MIS SOLICITUDES -->
+                <div class="tab-pane fade show active" id="panel-mis" role="tabpanel">
+                    <div class="table-card">
+                        <div class="table-card-header">
+                            <div class="table-card-title"><i class="bi bi-person-lines-fill"></i> Mis Solicitudes</div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Número</th>
+                                        <th>Bodega</th>
+                                        <th>Fecha</th>
+                                        <th class="text-center">Líneas</th>
+                                        <th class="text-center">Estado</th>
+                                        <th class="text-center">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody-mis">
+                                    <tr><td colspan="6" class="text-center text-muted py-4">Cargando...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="pag-wrapper">
+                            <span class="pag-info" id="pag-info-mis"></span>
+                            <nav><ul class="pagination pagination-sm" id="pag-mis"></ul></nav>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- PANEL: BANDEJA -->
-            <div class="tab-panel" id="panel-bandeja">
-                <div class="dash-card">
-                    <div class="dash-card-header">
-                        <div class="dash-card-title"><i class="bi bi-inbox-fill" style="color:#1976D2;"></i> Solicitudes Pendientes de Aprobación</div>
-                    </div>
-                    <div class="table-responsive">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Número</th>
-                                    <th>Solicitante</th>
-                                    <th>Bodega</th>
-                                    <th>Fecha</th>
-                                    <th style="text-align:center;">Líneas</th>
-                                    <th>Estado</th>
-                                    <th>Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody id="tbody-bandeja">
-                                <tr><td colspan="7" style="text-align:center;color:#94A3B8;padding:32px;">Cargando...</td></tr>
-                            </tbody>
-                        </table>
+                <!-- BANDEJA -->
+                <div class="tab-pane fade" id="panel-bandeja" role="tabpanel">
+                    <div class="table-card">
+                        <div class="table-card-header">
+                            <div class="table-card-title"><i class="bi bi-inbox-fill"></i> Solicitudes Pendientes de Aprobación</div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Número</th>
+                                        <th>Solicitante</th>
+                                        <th>Bodega</th>
+                                        <th>Fecha</th>
+                                        <th class="text-center">Líneas</th>
+                                        <th class="text-center">Estado</th>
+                                        <th class="text-center">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody-bandeja">
+                                    <tr><td colspan="7" class="text-center text-muted py-4">Cargando...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="pag-wrapper">
+                            <span class="pag-info" id="pag-info-bandeja"></span>
+                            <nav><ul class="pagination pagination-sm" id="pag-bandeja"></ul></nav>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- PANEL: HISTORIAL -->
-            <div class="tab-panel" id="panel-historial">
-                <div class="dash-card">
-                    <div class="dash-card-header">
-                        <div class="dash-card-title"><i class="bi bi-clock-history" style="color:#1976D2;"></i> Historial de Solicitudes</div>
-                        <div class="d-flex gap-2 align-center">
-                            <select class="form-control" id="filtro-estado-historial" onchange="renderHistorial()" style="width:auto;font-size:12px;padding:5px 10px;">
+                <!-- HISTORIAL -->
+                <div class="tab-pane fade" id="panel-historial" role="tabpanel">
+                    <div class="table-card">
+                        <div class="table-card-header">
+                            <div class="table-card-title"><i class="bi bi-clock-history"></i> Historial de Solicitudes</div>
+                            <select class="form-control" id="filtro-estado-historial"
+                                    onchange="renderHistorial()"
+                                    style="width:175px;font-size:12px;padding:5px 10px;">
                                 <option value="">Todos los estados</option>
                                 <option value="Borrador">Borrador</option>
                                 <option value="Pendiente">Pendiente</option>
@@ -814,110 +867,163 @@
                                 <option value="Despachada">Despachada</option>
                             </select>
                         </div>
-                    </div>
-                    <div class="table-responsive">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Número</th>
-                                    <th>Solicitante</th>
-                                    <th>Bodega</th>
-                                    <th>Fecha</th>
-                                    <th style="text-align:center;">Líneas</th>
-                                    <th>Estado</th>
-                                    <th>Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody id="tbody-historial">
-                                <tr><td colspan="7" style="text-align:center;color:#94A3B8;padding:32px;">Cargando...</td></tr>
-                            </tbody>
-                        </table>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Número</th>
+                                        <th>Solicitante</th>
+                                        <th>Bodega</th>
+                                        <th>Fecha</th>
+                                        <th class="text-center">Líneas</th>
+                                        <th class="text-center">Estado</th>
+                                        <th class="text-center">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody-historial">
+                                    <tr><td colspan="7" class="text-center text-muted py-4">Cargando...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="pag-wrapper">
+                            <span class="pag-info" id="pag-info-historial"></span>
+                            <nav><ul class="pagination pagination-sm" id="pag-historial"></ul></nav>
+                        </div>
                     </div>
                 </div>
-            </div>
 
+            </div><!-- /tab-content -->
+        </div><!-- /page-body -->
+    </div><!-- /main -->
+    <!-- TOAST -->
+    <div id="toast-container">
+        <div id="toast-custom" class="toast-custom">
+            <div class="toast-header-custom">
+                <div class="toast-icon" id="toast-icon"><i id="toast-icon-i" class="bi bi-check-circle-fill"></i></div>
+                <div>
+                    <div class="toast-titulo" id="toast-titulo">Éxito</div>
+                    <div style="font-size:11px;color:#94A3B8;" id="toast-sub">Operación completada</div>
+                </div>
+                <button class="toast-cerrar" onclick="cerrarToast()">&times;</button>
+            </div>
+            <div class="toast-body-custom" id="toast-body">Mensaje aquí.</div>
+            <div class="toast-progress" id="toast-progress"></div>
         </div>
     </div>
 
-    <!-- GLOBAL TOAST -->
-    <div id="global-toast"></div>
 
     <!-- MODAL NUEVA SOLICITUD -->
-    <div class="modal-overlay" id="modal-nueva">
-        <div class="modal-box" style="max-width:700px;">
-            <div class="modal-header">
-                <div class="modal-title">Nueva Solicitud de Despacho</div>
-                <button class="modal-close" onclick="cerrarModalNueva()">&times;</button>
-            </div>
-            <div class="modal-body">
-                <div id="alert-nueva" class="alert-inline"></div>
-                <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
-                    <div class="form-group">
-                        <label class="form-label">Bodega de Destino <span style="color:#EF4444;">*</span></label>
-                        <select class="form-control" id="sol-bodega-id"><option value="">— Seleccione bodega —</option></select>
+    <div class="modal fade" id="modalNueva" tabindex="-1" role="dialog" aria-labelledby="modalNuevaTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalNuevaTitle">
+                        <i class="bi bi-clipboard-plus mr-2" style="color:var(--blue);"></i>
+                        Nueva Solicitud de Despacho
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="alert-nueva" class="alert-inline alert alert-danger"></div>
+
+                    <div class="form-row">
+                        <div class="col">
+                            <div class="form-group">
+                                <label class="form-label">Bodega de Destino <span class="text-danger">*</span></label>
+                                <select class="form-control" id="sol-bodega-id">
+                                    <option value="">— Seleccione bodega —</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label class="form-label">Observaciones</label>
+                                <input type="text" class="form-control" id="sol-observaciones"
+                                       placeholder="Notas adicionales (opcional)" spellcheck="false">
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label class="form-label">Observaciones</label>
-                        <input type="text" class="form-control" id="sol-observaciones" placeholder="Notas adicionales (opcional)">
+
+                    <div style="display:flex;align-items:center;justify-content:space-between;
+                            padding:10px 0;margin-bottom:12px;
+                            border-top:1px solid #F1F5F9;border-bottom:1px solid #F1F5F9;">
+                        <div style="font-size:12.5px;font-weight:600;color:#0F172A;">
+                            <i class="bi bi-list-ul mr-1"></i> Productos solicitados
+                        </div>
+                        <button class="btn btn-outline-secondary btn-sm" onclick="agregarFilaProducto()">
+                            <i class="bi bi-plus mr-1"></i> Agregar producto
+                        </button>
+                    </div>
+                    <div id="filas-productos">
+                        <div class="text-center text-muted py-3" style="font-size:12.5px;">
+                            <i class="bi bi-arrow-up" style="font-size:20px;display:block;margin-bottom:6px;"></i>
+                            Haga clic en "Agregar producto" para comenzar
+                        </div>
                     </div>
                 </div>
-                <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;margin-top:4px;border-top:1px solid #F1F5F9;border-bottom:1px solid #F1F5F9;margin-bottom:12px;">
-                    <div style="font-size:13px;font-weight:700;color:#0F172A;"><i class="bi bi-list-ul"></i> Productos solicitados</div>
-                    <button class="btn btn-secondary btn-sm" onclick="agregarFilaProducto()"><i class="bi bi-plus"></i> Agregar producto</button>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                        <i class="bi bi-x-lg mr-1"></i> Cancelar
+                    </button>
+                    <button type="button" class="btn btn-primary" id="btn-crear-solicitud" onclick="guardarSolicitud()">
+                        <i class="bi bi-check-lg mr-1"></i> Crear Solicitud
+                    </button>
                 </div>
-                <div id="filas-productos">
-                    <div style="text-align:center;color:#94A3B8;padding:20px;font-size:13px;">
-                        <i class="bi bi-arrow-up" style="font-size:20px;display:block;margin-bottom:6px;"></i>
-                        Haga clic en "Agregar producto" para comenzar
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" onclick="cerrarModalNueva()">Cancelar</button>
-                <button class="btn btn-primary" id="btn-crear-solicitud" onclick="guardarSolicitud()">
-                    <i class="bi bi-check-lg"></i> Crear Solicitud
-                </button>
             </div>
         </div>
     </div>
+
 
     <!-- MODAL DETALLE -->
-    <div class="modal-overlay" id="modal-detalle">
-        <div class="modal-box" style="max-width:480px;">
-            <div class="modal-header">
-                <div class="modal-title" id="det-titulo">Detalle de Solicitud</div>
-                <button class="modal-close" onclick="cerrarModalDetalle()">&times;</button>
-            </div>
-            <div class="modal-body">
-                <div id="alert-detalle" class="alert-inline"></div>
-                <div class="detalle-fila"><span class="detalle-lbl">Número</span><span class="detalle-val" id="det-numero">—</span></div>
-                <div class="detalle-fila"><span class="detalle-lbl">Solicitante</span><span class="detalle-val" id="det-solicitante">—</span></div>
-                <div class="detalle-fila"><span class="detalle-lbl">Bodega</span><span class="detalle-val" id="det-bodega">—</span></div>
-                <div class="detalle-fila"><span class="detalle-lbl">Fecha de Creación</span><span class="detalle-val" id="det-fecha">—</span></div>
-                <div class="detalle-fila"><span class="detalle-lbl">Líneas de Producto</span><span class="detalle-val" id="det-lineas">—</span></div>
-                <div class="detalle-fila"><span class="detalle-lbl">Estado Actual</span><span id="det-estado">—</span></div>
-                <div id="bloque-rechazo" style="display:none;margin-top:16px;">
-                    <div class="form-group" style="margin-bottom:0;">
-                        <label class="form-label">Motivo de rechazo <span style="color:#EF4444;">*</span></label>
-                        <textarea class="form-control" id="motivo-rechazo" rows="3" placeholder="Explique el motivo del rechazo"></textarea>
+    <div class="modal fade" id="modalDetalle" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="det-titulo">Detalle de Solicitud</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="alert-detalle" class="alert-inline alert alert-danger"></div>
+
+                    <div class="detalle-fila"><span class="detalle-lbl">Número</span><span class="detalle-val" id="det-numero">—</span></div>
+                    <div class="detalle-fila"><span class="detalle-lbl">Solicitante</span><span class="detalle-val" id="det-solicitante">—</span></div>
+                    <div class="detalle-fila"><span class="detalle-lbl">Bodega</span><span class="detalle-val" id="det-bodega">—</span></div>
+                    <div class="detalle-fila"><span class="detalle-lbl">Fecha de Creación</span><span class="detalle-val" id="det-fecha">—</span></div>
+                    <div class="detalle-fila"><span class="detalle-lbl">Líneas de Producto</span><span class="detalle-val" id="det-lineas">—</span></div>
+                    <div class="detalle-fila"><span class="detalle-lbl">Estado Actual</span><span id="det-estado">—</span></div>
+
+                    <div id="bloque-rechazo" style="display:none;margin-top:16px;">
+                        <div class="form-group mb-0">
+                            <label class="form-label">Motivo de rechazo <span class="text-danger">*</span></label>
+                            <textarea class="form-control" id="motivo-rechazo" rows="3"
+                                      placeholder="Explique el motivo del rechazo" spellcheck="false"></textarea>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="modal-footer" id="detalle-footer">
-                <button class="btn btn-secondary" onclick="cerrarModalDetalle()">Cerrar</button>
+                <div class="modal-footer" id="detalle-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                </div>
             </div>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Bootstrap 4 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"></script>
     <script src="/js/utils.js"></script>
     <script src="/js/router.js"></script>
     <script>
         auth.checkAuth();
         const user = auth.getUser();
-        $('#topbar-nombre') && $('#topbar-nombre').text(user.nombre);
+        const elTopbar = document.getElementById('topbar-nombre');
+        if (elTopbar) elTopbar.textContent = user.nombre;
 
-        // ✅ Mostrar sección Admin
         if (auth.hasRole('Admin')) {
             document.getElementById('label-admin').style.display = 'block';
             document.getElementById('link-usuarios').style.display = 'flex';
@@ -927,45 +1033,45 @@
         const esAdminOBodeguero = auth.hasRole('Admin') || auth.hasRole('Bodeguero');
         const esAdminOGerente = auth.hasRole('Admin') || auth.hasRole('Gerente');
 
-        if (esAdminOBodeguero) document.getElementById('tab-bandeja').style.display = 'inline-flex';
-        if (esAdminOGerente) document.getElementById('tab-historial').style.display = 'inline-flex';
+        if (esAdminOBodeguero) document.getElementById('li-bandeja').style.display = 'block';
+        if (esAdminOGerente) document.getElementById('li-historial').style.display = 'block';
 
-        function showAlert(msg, tipo = 'success') {
-            const el = document.getElementById('global-toast');
-            el.className = `show ${tipo}`;
-            el.innerHTML = `<i class="bi bi-${tipo === 'success' ? 'check-circle' : 'exclamation-circle'}"></i> ${msg}`;
-            setTimeout(() => { el.className = ''; }, 3500);
+        /* ═══════════ TOAST ═══════════ */
+        let toastTimer = null;
+
+        function showToast(titulo, mensaje, tipo = 'success', subtitulo = 'Operación completada') {
+            const el = document.getElementById('toast-custom');
+            const iconEl = document.getElementById('toast-icon-i');
+            el.className = `toast-custom toast-${tipo}`;
+            document.getElementById('toast-titulo').textContent = titulo;
+            document.getElementById('toast-sub').textContent = subtitulo;
+            document.getElementById('toast-body').textContent = mensaje;
+            iconEl.className = `bi bi-${tipo === 'success' ? 'check-circle-fill' : 'exclamation-circle-fill'}`;
+            const prog = document.getElementById('toast-progress');
+            prog.style.animation = 'none';
+            prog.offsetHeight;
+            prog.style.animation = '';
+            el.classList.add('show');
+            if (toastTimer) clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => cerrarToast(), 4500);
         }
 
-        function badgeEstado(estado) {
-            const map = { 'Pendiente': 'badge-pendiente', 'Aprobada': 'badge-aprobada', 'Rechazada': 'badge-rechazada', 'Despachada': 'badge-despachada', 'Borrador': 'badge-borrador' };
-            return `<span class="badge-estado ${map[estado] || 'badge-borrador'}">${estado}</span>`;
+        function cerrarToast() {
+            document.getElementById('toast-custom').classList.remove('show');
         }
 
+        /* ═══════════ DATA ═══════════ */
         let todasLasSolicitudes = [], productosCache = [], bodegasCache = [];
-        let solicitudActual = null, filaIdx = 0, filasProductos = [], tabActivo = 'mis';
-
-        function switchTab(tab) {
-            tabActivo = tab;
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-            document.getElementById('tab-' + tab).classList.add('active');
-            document.getElementById('panel-' + tab).classList.add('active');
-            renderTabActivo();
-        }
-
-        function renderTabActivo() {
-            if (tabActivo === 'mis') renderMisSolicitudes();
-            else if (tabActivo === 'bandeja') renderBandeja();
-            else if (tabActivo === 'historial') renderHistorial();
-        }
+        let solicitudActual = null, filaIdx = 0, filasProductos = [];
 
         async function cargarSolicitudes() {
             const res = await apiCall('GET', '/solicitudes');
             if (res && res.success) {
                 todasLasSolicitudes = res.data || [];
                 actualizarContadores();
-                renderTabActivo();
+                renderMisSolicitudes();
+                renderBandeja();
+                renderHistorial();
             }
         }
 
@@ -975,105 +1081,236 @@
             document.getElementById('cnt-mis').textContent = mis.length;
             document.getElementById('cnt-bandeja').textContent = pendientes.length;
             document.getElementById('cnt-historial').textContent = todasLasSolicitudes.length;
-            if (pendientes.length > 0 && tabActivo !== 'bandeja') {
+            if (pendientes.length > 0) {
                 const cnt = document.getElementById('cnt-bandeja');
                 cnt.style.background = '#FEF3C7';
                 cnt.style.color = '#92400E';
             }
         }
 
-        function renderMisSolicitudes() { renderTabla(todasLasSolicitudes.filter(s => s.solicitante === user.nombre), 'tbody-mis', false); }
-        function renderBandeja() { renderTabla(todasLasSolicitudes.filter(s => s.estado === 'Pendiente'), 'tbody-bandeja', true); }
+        function badgeEstado(estado) {
+            const map = {
+                'Pendiente': 'badge-pendiente',
+                'Aprobada': 'badge-aprobada',
+                'Rechazada': 'badge-rechazada',
+                'Despachada': 'badge-despachada',
+                'Borrador': 'badge-borrador'
+            };
+            return `<span class="badge-estado ${map[estado] || 'badge-borrador'}">${estado}</span>`;
+        }
+
+        /* ═══════════ PAGINACIÓN ═══════════ */
+        const PAG_SIZE = 8;
+        const pagState = { mis: 1, bandeja: 1, historial: 1 };
+
+        function renderMisSolicitudes() {
+            renderTabla(todasLasSolicitudes.filter(s => s.solicitante === user.nombre), 'tbody-mis', false, 'mis');
+        }
+        function renderBandeja() {
+            renderTabla(todasLasSolicitudes.filter(s => s.estado === 'Pendiente'), 'tbody-bandeja', true, 'bandeja');
+        }
         function renderHistorial() {
             const filtro = document.getElementById('filtro-estado-historial')?.value || '';
             const lista = filtro ? todasLasSolicitudes.filter(s => s.estado === filtro) : todasLasSolicitudes;
-            renderTabla(lista, 'tbody-historial', true);
+            renderTabla(lista, 'tbody-historial', true, 'historial');
         }
 
-        function renderTabla(lista, tbodyId, mostrarSolicitante) {
+        function renderTabla(lista, tbodyId, mostrarSolicitante, pagKey) {
             const tbody = document.getElementById(tbodyId);
             const cols = mostrarSolicitante ? 7 : 6;
+            const total = lista.length;
+            const totalPag = Math.ceil(total / PAG_SIZE) || 1;
+
+            if (pagState[pagKey] > totalPag) pagState[pagKey] = 1;
+            const pag = pagState[pagKey];
+            const inicio = (pag - 1) * PAG_SIZE;
+            const pagina = lista.slice(inicio, inicio + PAG_SIZE);
+
             if (!lista || lista.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="${cols}" style="text-align:center;color:#94A3B8;padding:32px;">No hay solicitudes para mostrar</td></tr>`;
-                return;
+                tbody.innerHTML = `<tr><td colspan="${cols}" class="text-center text-muted py-4">No hay solicitudes para mostrar</td></tr>`;
+            } else {
+                tbody.innerHTML = pagina.map(s => `
+                    <tr>
+                        <td><strong>${s.numeroSolicitud}</strong></td>
+                        ${mostrarSolicitante ? `<td>${s.solicitante}</td>` : ''}
+                        <td>${s.bodega}</td>
+                        <td style="color:#64748B;">${formatDate(s.fechaCreacion)}</td>
+                        <td class="text-center">${s.totalLineas}</td>
+                        <td class="text-center">${badgeEstado(s.estado)}</td>
+                        <td class="text-center">
+                            <button class="btn btn-outline-secondary btn-sm"
+                                    data-toggle="modal" data-target="#modalDetalle"
+                                    onclick="abrirModalDetalle(${s.solicitudID})">
+                                <i class="bi bi-eye mr-1"></i> Ver
+                            </button>
+                        </td>
+                    </tr>`).join('');
             }
-            tbody.innerHTML = lista.map(s => `
-                        <tr>
-                            <td><strong>${s.numeroSolicitud}</strong></td>
-                            ${mostrarSolicitante ? `<td>${s.solicitante}</td>` : ''}
-                            <td>${s.bodega}</td>
-                            <td>${formatDate(s.fechaCreacion)}</td>
-                            <td style="text-align:center;">${s.totalLineas}</td>
-                            <td>${badgeEstado(s.estado)}</td>
-                            <td><button class="btn btn-secondary btn-sm" onclick="abrirModalDetalle(${s.solicitudID})"><i class="bi bi-eye"></i> Ver</button></td>
-                        </tr>`).join('');
+
+            const infoEl = document.getElementById(`pag-info-${pagKey}`);
+            if (infoEl) {
+                if (total === 0) { infoEl.textContent = ''; }
+                else {
+                    const fin = Math.min(inicio + PAG_SIZE, total);
+                    infoEl.textContent = `Mostrando ${inicio + 1}–${fin} de ${total} registros`;
+                }
+            }
+
+            const pagEl = document.getElementById(`pag-${pagKey}`);
+            if (!pagEl) return;
+            if (totalPag <= 1) { pagEl.innerHTML = ''; return; }
+
+            let html = '';
+            html += `<li class="page-item ${pag === 1 ? 'disabled' : ''}">
+                <a class="page-link" href="#" onclick="irPag('${pagKey}',${pag - 1});return false;">
+                    <i class="bi bi-chevron-left" style="font-size:10px;"></i>
+                </a></li>`;
+
+            for (let i = 1; i <= totalPag; i++) {
+                if (totalPag > 7) {
+                    if (i !== 1 && i !== totalPag && (i < pag - 1 || i > pag + 1)) {
+                        if (i === pag - 2 || i === pag + 2) html += `<li class="page-item disabled"><a class="page-link" href="#">…</a></li>`;
+                        continue;
+                    }
+                }
+                html += `<li class="page-item ${i === pag ? 'active' : ''}">
+                    <a class="page-link" href="#" onclick="irPag('${pagKey}',${i});return false;">${i}</a></li>`;
+            }
+
+            html += `<li class="page-item ${pag === totalPag ? 'disabled' : ''}">
+                <a class="page-link" href="#" onclick="irPag('${pagKey}',${pag + 1});return false;">
+                    <i class="bi bi-chevron-right" style="font-size:10px;"></i>
+                </a></li>`;
+
+            pagEl.innerHTML = html;
         }
 
-        async function abrirModalNueva() {
+        function irPag(key, pag) {
+            pagState[key] = pag;
+            if (key === 'mis') renderMisSolicitudes();
+            if (key === 'bandeja') renderBandeja();
+            if (key === 'historial') renderHistorial();
+        }
+
+        /* ═══════════ MODAL NUEVA ═══════════ */
+        async function prepararModalNueva() {
             limpiarAlerta('alert-nueva');
             filasProductos = []; filaIdx = 0;
             document.getElementById('sol-observaciones').value = '';
             renderFilasProductos();
-            if (bodegasCache.length === 0) { const r = await apiCall('GET', '/bodegas'); if (r && r.success) bodegasCache = r.data || []; }
-            document.getElementById('sol-bodega-id').innerHTML = '<option value="">— Seleccione bodega —</option>' + bodegasCache.map(b => `<option value="${b.bodegaID}">${b.nombre}</option>`).join('');
-            if (productosCache.length === 0) { const r = await apiCall('GET', '/productos'); if (r && r.success) productosCache = r.data || []; }
+            if (bodegasCache.length === 0) {
+                const r = await apiCall('GET', '/bodegas');
+                if (r && r.success) bodegasCache = r.data || [];
+            }
+            document.getElementById('sol-bodega-id').innerHTML =
+                '<option value="">— Seleccione bodega —</option>' +
+                bodegasCache.map(b => `<option value="${b.bodegaID}">${b.nombre}</option>`).join('');
+            if (productosCache.length === 0) {
+                const r = await apiCall('GET', '/productos');
+                if (r && r.success) productosCache = r.data || [];
+            }
             const btn = document.getElementById('btn-crear-solicitud');
-            btn.disabled = false; btn.innerHTML = '<i class="bi bi-check-lg"></i> Crear Solicitud';
-            document.getElementById('modal-nueva').classList.add('show');
+            btn.disabled = false;
+            btn.innerHTML = '<i class="bi bi-check-lg mr-1"></i> Crear Solicitud';
         }
 
-        function cerrarModalNueva() { document.getElementById('modal-nueva').classList.remove('show'); }
+        function agregarFilaProducto() {
+            filasProductos.push({ idx: filaIdx++, productoID: '', cantidad: '' });
+            renderFilasProductos();
+        }
 
-        function agregarFilaProducto() { filasProductos.push({ idx: filaIdx++, productoID: '', cantidad: '' }); renderFilasProductos(); }
-        function eliminarFila(idx) { filasProductos = filasProductos.filter(f => f.idx !== idx); renderFilasProductos(); }
+        function eliminarFila(idx) {
+            filasProductos = filasProductos.filter(f => f.idx !== idx);
+            renderFilasProductos();
+        }
 
         function renderFilasProductos() {
             const container = document.getElementById('filas-productos');
             if (filasProductos.length === 0) {
-                container.innerHTML = `<div style="text-align:center;color:#94A3B8;padding:20px;font-size:13px;"><i class="bi bi-arrow-up" style="font-size:20px;display:block;margin-bottom:6px;"></i>Haga clic en "Agregar producto" para comenzar</div>`;
+                container.innerHTML = `
+                    <div class="text-center text-muted py-3" style="font-size:12.5px;">
+                        <i class="bi bi-arrow-up" style="font-size:20px;display:block;margin-bottom:6px;"></i>
+                        Haga clic en "Agregar producto" para comenzar
+                    </div>`;
                 return;
             }
             container.innerHTML = filasProductos.map(f => `
-                        <div class="fila-producto" id="fila-${f.idx}">
-                            <select class="form-control" id="sel-prod-${f.idx}">
-                                <option value="">— Seleccione producto —</option>
-                                ${productosCache.map(p => `<option value="${p.productoID}" ${f.productoID == p.productoID ? 'selected' : ''} ${p.stockActual === 0 ? 'style="color:#EF4444;"' : ''}>[${p.codigo}] ${p.nombre} — Stock: ${p.stockActual} ${p.unidadMedida}</option>`).join('')}
-                            </select>
-                            <input type="number" class="form-control" id="cant-${f.idx}" placeholder="Cant." min="1" value="${f.cantidad || ''}" style="text-align:center;">
-                            <button class="btn btn-danger btn-sm" onclick="eliminarFila(${f.idx})" style="padding:6px 9px;"><i class="bi bi-trash"></i></button>
-                        </div>`).join('');
+                <div class="fila-producto" id="fila-${f.idx}">
+                    <select class="form-control" id="sel-prod-${f.idx}">
+                        <option value="">— Seleccione producto —</option>
+                        ${productosCache.map(p => `
+                            <option value="${p.productoID}"
+                                ${f.productoID == p.productoID ? 'selected' : ''}
+                                ${p.stockActual === 0 ? 'style="color:#EF4444;"' : ''}>
+                                [${p.codigo}] ${p.nombre} — Stock: ${p.stockActual} ${p.unidadMedida}
+                            </option>`).join('')}
+                    </select>
+                    <input type="number" class="form-control text-center"
+                           id="cant-${f.idx}" placeholder="Cant." min="1"
+                           value="${f.cantidad || ''}" spellcheck="false">
+                    <button class="btn btn-outline-danger btn-sm"
+                            onclick="eliminarFila(${f.idx})"
+                            style="padding:4px 8px !important;">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </div>`).join('');
         }
 
         async function guardarSolicitud() {
             limpiarAlerta('alert-nueva');
             const bodegaID = document.getElementById('sol-bodega-id').value;
             const observaciones = document.getElementById('sol-observaciones').value.trim();
-            if (!bodegaID) { mostrarAlerta('alert-nueva', 'Seleccione una bodega de destino.', 'danger'); return; }
-            if (filasProductos.length === 0) { mostrarAlerta('alert-nueva', 'Agregue al menos un producto a la solicitud.', 'danger'); return; }
+
+            if (!bodegaID) { mostrarAlerta('alert-nueva', 'Seleccione una bodega de destino.'); return; }
+            if (filasProductos.length === 0) { mostrarAlerta('alert-nueva', 'Agregue al menos un producto a la solicitud.'); return; }
+
             filasProductos.forEach(f => {
                 const sel = document.getElementById(`sel-prod-${f.idx}`);
                 const cant = document.getElementById(`cant-${f.idx}`);
                 if (sel) f.productoID = sel.value;
                 if (cant) f.cantidad = cant.value;
             });
+
             for (const f of filasProductos) {
-                if (!f.productoID) { mostrarAlerta('alert-nueva', 'Seleccione un producto en todas las filas.', 'danger'); return; }
-                if (!f.cantidad || parseInt(f.cantidad) <= 0) { mostrarAlerta('alert-nueva', 'Ingrese una cantidad mayor a 0 en todas las filas.', 'danger'); return; }
+                if (!f.productoID) { mostrarAlerta('alert-nueva', 'Seleccione un producto en todas las filas.'); return; }
+                if (!f.cantidad || parseInt(f.cantidad) <= 0) { mostrarAlerta('alert-nueva', 'Ingrese una cantidad mayor a 0 en todas las filas.'); return; }
             }
+
             const ids = filasProductos.map(f => String(f.productoID));
-            if (new Set(ids).size !== ids.length) { mostrarAlerta('alert-nueva', 'No puede repetir el mismo producto.', 'warning'); return; }
+            if (new Set(ids).size !== ids.length) {
+                mostrarAlerta('alert-nueva', 'No puede repetir el mismo producto.');
+                return;
+            }
+
             const btn = document.getElementById('btn-crear-solicitud');
-            btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> Creando...';
-            const res = await apiCall('POST', '/solicitudes', { bodegaID: parseInt(bodegaID), observaciones, items: filasProductos.map(f => ({ productoID: parseInt(f.productoID), cantidad: parseInt(f.cantidad) })) });
-            btn.disabled = false; btn.innerHTML = '<i class="bi bi-check-lg"></i> Crear Solicitud';
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner"></span> Creando...';
+
+            const res = await apiCall('POST', '/solicitudes', {
+                bodegaID: parseInt(bodegaID),
+                observaciones,
+                items: filasProductos.map(f => ({ productoID: parseInt(f.productoID), cantidad: parseInt(f.cantidad) }))
+            });
+
+            btn.disabled = false;
+            btn.innerHTML = '<i class="bi bi-check-lg mr-1"></i> Crear Solicitud';
+
             if (res && res.success) {
-                cerrarModalNueva();
-                const num = res.data?.numeroSolicitud ? ` ${res.data.numeroSolicitud}` : '';
-                showAlert(`Solicitud${num} creada en estado Borrador. Ábrala y envíela a aprobación.`, 'success');
+                $('#modalNueva').modal('hide');
+                const num = res.data?.numeroSolicitud || '';
+                showToast(
+                    '¡Solicitud creada exitosamente!',
+                    `La solicitud ${num} fue creada en estado Borrador. Ábrala y envíela a aprobación cuando esté lista.`,
+                    'success',
+                    `Número: ${num}`
+                );
                 await cargarSolicitudes();
-            } else { mostrarAlerta('alert-nueva', res?.message || 'Error al crear la solicitud.', 'danger'); }
+            } else {
+                mostrarAlerta('alert-nueva', res?.message || 'Error al crear la solicitud.');
+            }
         }
 
+        /* ═══════════ MODAL DETALLE ═══════════ */
         function abrirModalDetalle(solicitudID) {
             solicitudActual = todasLasSolicitudes.find(s => s.solicitudID === solicitudID);
             if (!solicitudActual) return;
@@ -1089,58 +1326,95 @@
             document.getElementById('det-lineas').textContent = `${s.totalLineas} línea(s)`;
             document.getElementById('det-estado').innerHTML = badgeEstado(s.estado);
             renderBotonesDetalle(s.estado);
-            document.getElementById('modal-detalle').classList.add('show');
         }
-
-        function cerrarModalDetalle() { document.getElementById('modal-detalle').classList.remove('show'); solicitudActual = null; }
 
         function renderBotonesDetalle(estado) {
             const footer = document.getElementById('detalle-footer');
-            let html = `<button class="btn btn-secondary" onclick="cerrarModalDetalle()">Cerrar</button>`;
-            if (estado === 'Borrador') html += `<button class="btn btn-primary" id="btn-enviar" onclick="enviarAprobacion()"><i class="bi bi-send"></i> Enviar a Aprobación</button>`;
-            if (estado === 'Pendiente' && esAdminOBodeguero) html += `<button class="btn btn-danger" id="btn-rechazar" onclick="iniciarRechazo()"><i class="bi bi-x-circle"></i> Rechazar</button><button class="btn btn-success" id="btn-aprobar" onclick="aprobarSolicitud()"><i class="bi bi-check-circle"></i> Aprobar</button>`;
-            if (estado === 'Aprobada' && esAdminOBodeguero) html += `<button class="btn btn-primary" id="btn-despachar" onclick="confirmarDespacho()"><i class="bi bi-truck"></i> Despachar</button>`;
+            let html = `<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>`;
+            if (estado === 'Borrador')
+                html += `<button class="btn btn-primary" id="btn-enviar" onclick="enviarAprobacion()"><i class="bi bi-send mr-1"></i> Enviar a Aprobación</button>`;
+            if (estado === 'Pendiente' && esAdminOBodeguero)
+                html += `<button class="btn btn-danger" id="btn-rechazar" onclick="iniciarRechazo()"><i class="bi bi-x-circle mr-1"></i> Rechazar</button>
+                         <button class="btn btn-success" id="btn-aprobar" onclick="aprobarSolicitud()"><i class="bi bi-check-circle mr-1"></i> Aprobar</button>`;
+            if (estado === 'Aprobada' && esAdminOBodeguero)
+                html += `<button class="btn btn-primary" id="btn-despachar" onclick="confirmarDespacho()"><i class="bi bi-truck mr-1"></i> Despachar</button>`;
             footer.innerHTML = html;
         }
 
-        async function enviarAprobacion() { await cambiarEstado('Pendiente', '', 'btn-enviar', 'Enviando...', '<i class="bi bi-send"></i> Enviar a Aprobación', 'Solicitud enviada a aprobación correctamente.'); }
-        async function aprobarSolicitud() { await cambiarEstado('Aprobada', '', 'btn-aprobar', 'Aprobando...', '<i class="bi bi-check-circle"></i> Aprobar', 'Solicitud aprobada correctamente.'); }
+        async function enviarAprobacion() {
+            await cambiarEstado('Pendiente', '', 'btn-enviar', 'Enviando...', 'Enviado a aprobación correctamente.', '¡Solicitud enviada!');
+        }
+        async function aprobarSolicitud() {
+            await cambiarEstado('Aprobada', '', 'btn-aprobar', 'Aprobando...', 'Solicitud aprobada correctamente.', '¡Solicitud aprobada!');
+        }
 
         function iniciarRechazo() {
             document.getElementById('bloque-rechazo').style.display = 'block';
-            document.getElementById('detalle-footer').innerHTML = `<button class="btn btn-secondary" onclick="cancelarRechazo()">Cancelar</button><button class="btn btn-danger" id="btn-confirmar-rechazo" onclick="rechazarSolicitud()"><i class="bi bi-x-circle"></i> Confirmar Rechazo</button>`;
+            document.getElementById('detalle-footer').innerHTML = `
+                <button class="btn btn-secondary" onclick="cancelarRechazo()">Cancelar</button>
+                <button class="btn btn-danger" id="btn-confirmar-rechazo" onclick="rechazarSolicitud()">
+                    <i class="bi bi-x-circle mr-1"></i> Confirmar Rechazo
+                </button>`;
         }
 
-        function cancelarRechazo() { document.getElementById('bloque-rechazo').style.display = 'none'; document.getElementById('motivo-rechazo').value = ''; renderBotonesDetalle('Pendiente'); }
+        function cancelarRechazo() {
+            document.getElementById('bloque-rechazo').style.display = 'none';
+            document.getElementById('motivo-rechazo').value = '';
+            renderBotonesDetalle('Pendiente');
+        }
 
         async function rechazarSolicitud() {
             const motivo = document.getElementById('motivo-rechazo').value.trim();
-            if (!motivo) { mostrarAlerta('alert-detalle', 'Ingrese el motivo del rechazo.', 'danger'); return; }
-            await cambiarEstado('Rechazada', motivo, 'btn-confirmar-rechazo', 'Rechazando...', '<i class="bi bi-x-circle"></i> Confirmar Rechazo', 'Solicitud rechazada.');
+            if (!motivo) { mostrarAlerta('alert-detalle', 'Ingrese el motivo del rechazo.'); return; }
+            await cambiarEstado('Rechazada', motivo, 'btn-confirmar-rechazo', 'Rechazando...', 'Solicitud rechazada.', 'Solicitud rechazada');
         }
 
-        function confirmarDespacho() { if (confirm(`¿Confirma el despacho de la solicitud ${solicitudActual.numeroSolicitud}?\n\nEsta acción descuenta el stock y no se puede deshacer.`)) despacharSolicitud(); }
+        function confirmarDespacho() {
+            if (confirm(`¿Confirma el despacho de la solicitud ${solicitudActual.numeroSolicitud}?\n\nEsta acción descuenta el stock y no se puede deshacer.`))
+                despacharSolicitud();
+        }
 
         async function despacharSolicitud() {
             const btn = document.getElementById('btn-despachar');
             if (btn) { btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> Despachando...'; }
             const res = await apiCall('PUT', `/solicitudes/${solicitudActual.solicitudID}/despachar`, {});
-            if (res && res.success) { cerrarModalDetalle(); showAlert('Solicitud despachada correctamente. Stock descontado.', 'success'); await cargarSolicitudes(); }
-            else { if (btn) { btn.disabled = false; btn.innerHTML = '<i class="bi bi-truck"></i> Despachar'; } mostrarAlerta('alert-detalle', res?.message || 'Error al despachar la solicitud.', 'danger'); }
+            if (res && res.success) {
+                $('#modalDetalle').modal('hide');
+                showToast('¡Despacho confirmado!', 'El stock fue descontado correctamente del inventario.', 'success', 'Operación completada');
+                await cargarSolicitudes();
+            } else {
+                if (btn) { btn.disabled = false; btn.innerHTML = '<i class="bi bi-truck mr-1"></i> Despachar'; }
+                mostrarAlerta('alert-detalle', res?.message || 'Error al despachar la solicitud.');
+            }
         }
 
-        async function cambiarEstado(nuevoEstado, motivo, btnId, txtLoading, txtOriginal, mensajeOk) {
+        async function cambiarEstado(nuevoEstado, motivo, btnId, txtLoading, mensajeOk, toastTitulo) {
             const btn = document.getElementById(btnId);
             if (btn) { btn.disabled = true; btn.innerHTML = `<span class="spinner"></span> ${txtLoading}`; }
             const body = { nuevoEstado };
             if (motivo) body.motivo = motivo;
             const res = await apiCall('PUT', `/solicitudes/${solicitudActual.solicitudID}/estado`, body);
-            if (res && res.success) { cerrarModalDetalle(); showAlert(mensajeOk, 'success'); await cargarSolicitudes(); }
-            else { if (btn) { btn.disabled = false; btn.innerHTML = txtOriginal; } mostrarAlerta('alert-detalle', res?.message || 'Error al cambiar el estado.', 'danger'); }
+            if (res && res.success) {
+                $('#modalDetalle').modal('hide');
+                showToast(toastTitulo, mensajeOk, 'success', `Solicitud ${solicitudActual.numeroSolicitud}`);
+                await cargarSolicitudes();
+            } else {
+                if (btn) { btn.disabled = false; btn.innerHTML = btn.getAttribute('data-orig') || btnId; }
+                mostrarAlerta('alert-detalle', res?.message || 'Error al cambiar el estado.');
+            }
         }
 
-        function mostrarAlerta(id, mensaje, tipo) { const el = document.getElementById(id); el.className = `alert-inline ${tipo} show`; el.textContent = mensaje; }
-        function limpiarAlerta(id) { const el = document.getElementById(id); el.className = 'alert-inline'; el.textContent = ''; }
+        function mostrarAlerta(id, mensaje) {
+            const el = document.getElementById(id);
+            el.className = 'alert-inline alert alert-danger show';
+            el.textContent = mensaje;
+        }
+
+        function limpiarAlerta(id) {
+            const el = document.getElementById(id);
+            el.className = 'alert-inline alert alert-danger';
+            el.textContent = '';
+        }
 
         cargarSolicitudes();
     </script>
